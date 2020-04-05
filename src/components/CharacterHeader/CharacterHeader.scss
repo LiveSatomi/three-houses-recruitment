@@ -1,12 +1,15 @@
 @import "src/themeFunctions";
 
 .jm-CharacterHeader {
-    min-height: $character-bar-height;
-    max-height: $character-bar-height;
+    @include character-bar-height();
 
     &__portrait {
         width: auto;
         height: 100%;
+        padding: {
+            left: 0;
+            right: 0;
+        }
     }
 
     img {
@@ -20,6 +23,7 @@
         align-content: stretch;
         padding-left: map-get($spacers, 0);
         padding-right: map-get($spacers, 0);
+        line-height: 1;
         div {
             text-align: center;
             flex: 1 0 auto;

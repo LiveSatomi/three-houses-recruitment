@@ -5,7 +5,7 @@ import { Col, Row } from "react-bootstrap";
 import additional from "../../icons/additional.png";
 
 const bem = bemNames.create("CharacterHeader");
-
+//
 export default class CharacterHeader extends React.Component<
     CharacterHeaderProps
 > {

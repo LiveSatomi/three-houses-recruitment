@@ -1,7 +1,7 @@
 @import "src/themeFunctions";
 
 .jm-Chapter {
-    min-height: $character-bar-height;
+    @include character-bar-height();
 
     &__opportunity {
         padding-left: map-get($spacers, 0);

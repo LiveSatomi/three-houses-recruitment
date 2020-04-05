@@ -1,1 +1,11 @@
 @import "~bootstrap/scss/bootstrap";
+
+span {
+    font-size: 7pt;
+}
+
+@include media-breakpoint-up(md) {
+    span {
+        font-size: 13pt;
+    }
+}

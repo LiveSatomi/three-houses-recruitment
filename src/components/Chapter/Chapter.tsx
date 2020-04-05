@@ -11,15 +11,21 @@ export default class Chapter extends React.Component<ChapterProps> {
         return (
             <Col className={bem.b("border")} xs={6}>
                 <Row>
-                    <Col className={bem.e("opportunity")} xs={1}>
+                    <Col className={bem.e("opportunity")} xs={2}>
                         <img src={additional} alt={"additional"} />
                     </Col>
 
-                    <Col className={bem.e("opportunity")} xs={1}>
+                    <Col className={bem.e("opportunity")} xs={2}>
                         <img src={additional} alt={"additional"} />
                     </Col>
 
-                    <Col className={bem.e("opportunity")} xs={1}>
+                    <Col className={bem.e("opportunity")} xs={2}>
+                        <img src={additional} alt={"additional"} />
+                    </Col>
+                    <Col className={bem.e("opportunity")} xs={2}>
+                        <img src={additional} alt={"additional"} />
+                    </Col>
+                    <Col className={bem.e("opportunity")} xs={2}>
                         <img src={additional} alt={"additional"} />
                     </Col>
                 </Row>
