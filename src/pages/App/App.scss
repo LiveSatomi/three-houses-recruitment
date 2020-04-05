@@ -1,1 +1,5 @@
 @import "src/theme";
+
+body::-webkit-scrollbar {
+    width: 0 !important;
+}
