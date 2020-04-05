@@ -1,0 +1,31 @@
+.jm-HouseSelector {
+    div {
+        width: 25%;
+        float: left;
+        text-align: center;
+    }
+
+    &__azure-moon {
+        background: {
+            color: blue;
+        }
+    }
+
+    &__crimson-flower {
+        background: {
+            color: red;
+        }
+    }
+
+    &__silver-snow {
+        background: {
+            color: silver;
+        }
+    }
+
+    &__verdant-wind {
+        background: {
+            color: gold;
+        }
+    }
+}
