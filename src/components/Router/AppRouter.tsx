@@ -9,7 +9,7 @@ const AppRouter: React.FC = () => {
                 <Route exact path="/">
                     <SupportPlanner />
                 </Route>
-                <Route path="/about">
+                <Route exact path="/about">
                     <div>
                         <p>test about</p>
                     </div>
