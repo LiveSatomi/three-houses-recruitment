@@ -1,5 +1,9 @@
 {
     "_id": "lysithea",
     "name": "Lysithea",
-    "portraitUrl": "characters/portrait/lysithea.png"
+    "portraitUrl": "characters/portrait/lysithea.png",
+    "gifts": [
+        "tasty-baked-treat"
+    ],
+    "routes": []
 }

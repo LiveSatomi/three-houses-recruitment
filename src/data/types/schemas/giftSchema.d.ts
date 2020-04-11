@@ -11,27 +11,16 @@
 export type GiftId = "tasty-baked-treat" | "hunting-dagger";
 
 /**
- * Fire Emblem Character Schema
+ * Fire Emblem Gift Schema
  */
-export interface Character {
+export interface Gift {
+    _id: GiftId;
     /**
-     * PouchDB required ID
-     */
-    _id: string;
-    /**
-     * Character Name
+     * Gift Name
      */
     name: string;
     /**
-     * URL for the character portrait, relative to src
+     * URL for the object image, relative to src
      */
-    portraitUrl: string;
-    /**
-     * List of liked gifts
-     */
-    gifts: GiftId[];
-    /**
-     * Route specific information for the character
-     */
-    routes: any[];
+    imageUrl: string;
 }

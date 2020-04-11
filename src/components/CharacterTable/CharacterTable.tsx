@@ -34,7 +34,7 @@ export default class CharacterTable extends React.Component<
         let database = new Database();
         database
             .initialize()
-            .then((success) => {
+            .then(() => {
                 return database.fetchCharacters();
             })
             .then((fetch: PouchDB.Core.AllDocsResponse<Character>) => {
@@ -56,7 +56,7 @@ export default class CharacterTable extends React.Component<
             <Row className={bem.b()}>
                 <Col xs={3}>{this.createCharacters()}</Col>
                 <Col className={bem.e("table")}>
-                    <ChapterTable />
+                    <ChapterTable characters={this.state.characters} />
                 </Col>
             </Row>
         );

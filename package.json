@@ -35,7 +35,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "shema2type": "json2ts -i src/data/schemas/ -o src/data/types/"
+    "shema2type": "json2ts --cwd=src/data/schemas -i src/data/schemas/ -o src/data/types/"
   },
   "eslintConfig": {
     "extends": "react-app"

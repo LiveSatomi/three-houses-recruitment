@@ -2,36 +2,79 @@ import * as React from "react";
 import bemNames from "util/bemnames";
 import "./Chapter.scss";
 import { Col, Row } from "react-bootstrap";
-import additional from "icons/additional.png";
+import { Character } from "data/types/schemas/characterSchema";
+import Database from "../../util/Database";
+import PouchDB from "pouchdb";
+import Assertions from "../../util/Assertions";
+import { Gift } from "../../data/types/schemas/giftSchema";
+import Opportunity from "../Opportunity/Opportunity";
 
 const bem = bemNames.create("Chapter");
 
-export default class Chapter extends React.Component<ChapterProps> {
+type ChapterProps = {
+    character: Character;
+};
+
+type ChapterState = {
+    gifts: Gift[];
+};
+
+export default class Chapter extends React.Component<
+    ChapterProps,
+    ChapterState
+> {
+    constructor(props: ChapterProps) {
+        super(props);
+        this.state = {
+            gifts: [],
+        };
+
+        this.componentDidMount = this.componentDidMount.bind(this);
+    }
+
+    componentDidMount(): void {
+        let database = new Database();
+        database
+            .initialize()
+            .then(() => {
+                return database.fetchGifts();
+            })
+            .then((fetch: PouchDB.Core.AllDocsResponse<Gift>) => {
+                this.setState({
+                    gifts: fetch.rows.map((r) => {
+                        let doc = r.doc;
+                        Assertions.isDefined(
+                            doc,
+                            "Fetch must contain document"
+                        );
+                        return doc;
+                    }),
+                });
+            });
+    }
+
     render() {
         return (
             <Col className={bem.b("border")} xs={6}>
                 <Row>
-                    <Col className={bem.e("opportunity")} xs={2}>
-                        <img src={additional} alt={"additional"} />
-                    </Col>
-
-                    <Col className={bem.e("opportunity")} xs={2}>
-                        <img src={additional} alt={"additional"} />
-                    </Col>
-
-                    <Col className={bem.e("opportunity")} xs={2}>
-                        <img src={additional} alt={"additional"} />
-                    </Col>
-                    <Col className={bem.e("opportunity")} xs={2}>
-                        <img src={additional} alt={"additional"} />
-                    </Col>
-                    <Col className={bem.e("opportunity")} xs={2}>
-                        <img src={additional} alt={"additional"} />
-                    </Col>
+                    {this.props.character.gifts.map((gift) => {
+                        if (this.state.gifts.length !== 0) {
+                            return (
+                                <Opportunity
+                                    key={gift}
+                                    gift={
+                                        this.state.gifts.filter((value) => {
+                                            return value._id === gift;
+                                        })[0]
+                                    }
+                                />
+                            );
+                        } else {
+                            return <span key={gift}>Loading</span>;
+                        }
+                    })}
                 </Row>
             </Col>
         );
     }
 }
-
-type ChapterProps = {};

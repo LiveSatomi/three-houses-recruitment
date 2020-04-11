@@ -1,5 +1,9 @@
 {
     "_id": "felix",
     "name": "Felix",
-    "portraitUrl": "characters/portrait/felix.png"
+    "portraitUrl": "characters/portrait/felix.png",
+    "gifts": [
+        "hunting-dagger"
+    ],
+    "routes": []
 }

@@ -1,20 +1,31 @@
 import PouchDB from "pouchdb";
 import characters from "data/characters";
+import gifts from "data/gifts";
 import { Character } from "data/types/schemas/characterSchema";
+import { Gift } from "../data/types/schemas/giftSchema";
 
 export default class Database {
     private characterDb: PouchDB.Database<Character>;
+    private giftDb: PouchDB.Database<Gift>;
 
     constructor() {
         this.characterDb = new PouchDB("characters");
+        this.giftDb = new PouchDB("gifts");
     }
 
     initialize() {
         return this.characterDb
             .allDocs()
-            .then((all: PouchDB.Core.AllDocsResponse<Character>) => {
+            .then((all: PouchDB.Core.AllDocsResponse<Character>):
+                | Promise<true>
+                | boolean => {
                 if (all.total_rows === 0) {
-                    return this.populateCharacters();
+                    return Promise.all([
+                        this.populateCharacters(),
+                        this.populateGifts(),
+                    ]).then(() => {
+                        return true;
+                    });
                 } else {
                     return true;
                 }
@@ -31,8 +42,20 @@ export default class Database {
         });
     }
 
-    private populateCharacters() {
+    fetchGifts(): Promise<PouchDB.Core.AllDocsResponse<Gift>> {
+        return this.giftDb.allDocs({
+            include_docs: true,
+        });
+    }
+
+    private populateCharacters(): void {
         Promise.all(characters.map((char) => this.characterDb.put(char))).then(
+            () => true
+        );
+    }
+
+    private populateGifts(): void {
+        Promise.all(gifts.map((gift) => this.giftDb.put(gift))).then(
             () => true
         );
     }

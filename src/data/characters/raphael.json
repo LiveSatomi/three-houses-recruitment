@@ -1,0 +1,9 @@
+{
+  "_id": "raphael",
+  "name": "Raphael",
+  "portraitUrl": "characters/portrait/raphael.png",
+  "gifts": [
+    "hunting-dagger"
+  ],
+  "routes": []
+}

@@ -1,0 +1,30 @@
+{
+    "title": "Gift",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["_id", "name", "imageUrl"],
+    "description": "Fire Emblem Gift Schema",
+    "additionalProperties": false,
+    "definitions": {
+        "giftId": {
+            "title": "GiftId",
+            "description": "PouchDB required ID",
+            "type": "string",
+            "enum": ["tasty-baked-treat", "hunting-dagger"]
+        }
+    },
+    "properties": {
+        "_id": {
+            "$ref": "#/definitions/giftId"
+        },
+        "name": {
+            "description": "Gift Name",
+            "type": "string"
+        },
+        "imageUrl": {
+            "description": "URL for the object image, relative to src",
+            "type": "string",
+            "format": "uri-template"
+        }
+    }
+}

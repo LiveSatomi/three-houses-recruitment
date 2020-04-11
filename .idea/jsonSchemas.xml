@@ -38,6 +38,23 @@
             </SchemaInfo>
           </value>
         </entry>
+        <entry key="giftSchema">
+          <value>
+            <SchemaInfo>
+              <option name="name" value="giftSchema" />
+              <option name="relativePathToSchema" value="src/data/schemas/giftSchema.json" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/data/gifts" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
       </map>
     </state>
   </component>

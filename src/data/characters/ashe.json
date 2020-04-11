@@ -1,5 +1,36 @@
 {
-  "_id": "ashe",
-  "name": "Ashe",
-  "portraitUrl": "characters/portrait/ashe.png"
+    "_id": "ashe",
+    "name": "Ashe",
+    "portraitUrl": "characters/portrait/ashe.png",
+    "gifts": ["tasty-baked-treat"],
+    "routes": [
+        {
+            "id": "crimson-flower",
+            "chapter": [
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                }
+            ]
+        },
+        {
+            "id": "azure-moon",
+            "chapter": [
+                {
+                    "available": false
+                },
+                {
+                    "available": false
+                },
+                {
+                    "available": false
+                }
+            ]
+        }
+    ]
 }

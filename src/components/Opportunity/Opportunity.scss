@@ -1,0 +1,9 @@
+@import "src/themeFunctions";
+
+.jm-Opportunity {
+    padding-left: map-get($spacers, 0);
+    padding-right: map-get($spacers, 0);
+    img {
+        width: 100%;
+    }
+}
