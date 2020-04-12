@@ -8,7 +8,21 @@
 /**
  * PouchDB required ID
  */
-export type GiftId = "tasty-baked-treat" | "hunting-dagger";
+export type GiftId =
+    | "ancient-coin"
+    | "arithmetic-textbook"
+    | "armored-bear-stuffy"
+    | "blue-cheese"
+    | "book-of-crest-designs"
+    | "ceremonial-sword"
+    | "exotic-spices"
+    | "hunting-dagger"
+    | "legends-of-chivalry"
+    | "lily"
+    | "smoked-meat"
+    | "tasty-baked-treat"
+    | "training-weight"
+    | "violet";
 
 /**
  * Fire Emblem Character Schema

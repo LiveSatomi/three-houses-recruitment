@@ -10,7 +10,22 @@
             "title": "GiftId",
             "description": "PouchDB required ID",
             "type": "string",
-            "enum": ["tasty-baked-treat", "hunting-dagger"]
+            "enum": [
+                "ancient-coin",
+                "arithmetic-textbook",
+                "armored-bear-stuffy",
+                "blue-cheese",
+                "book-of-crest-designs",
+                "ceremonial-sword",
+                "exotic-spices",
+                "hunting-dagger",
+                "legends-of-chivalry",
+                "lily",
+                "smoked-meat",
+                "tasty-baked-treat",
+                "training-weight",
+                "violet"
+            ]
         }
     },
     "properties": {

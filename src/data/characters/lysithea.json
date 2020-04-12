@@ -3,7 +3,11 @@
     "name": "Lysithea",
     "portraitUrl": "characters/portrait/lysithea.png",
     "gifts": [
-        "tasty-baked-treat"
+        "tasty-baked-treat",
+        "lily",
+        "armored-bear-stuffy",
+        "arithmetic-textbook",
+        "book-of-crest-designs"
     ],
     "routes": []
 }

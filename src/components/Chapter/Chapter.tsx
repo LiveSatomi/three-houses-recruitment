@@ -58,19 +58,21 @@ export default class Chapter extends React.Component<
             <Col className={bem.b("border")} xs={6}>
                 <Row>
                     {this.props.character.gifts.map((gift) => {
-                        if (this.state.gifts.length !== 0) {
+                        let giftForCharacter = this.state.gifts.filter(
+                            (value: Gift) => {
+                                return value._id === gift;
+                            }
+                        )[0];
+                        if (this.state.gifts.length === 0) {
+                            return <span key={gift}>Loading</span>;
+                        } else {
                             return (
                                 <Opportunity
                                     key={gift}
-                                    gift={
-                                        this.state.gifts.filter((value) => {
-                                            return value._id === gift;
-                                        })[0]
-                                    }
+                                    giftId={gift}
+                                    gift={giftForCharacter}
                                 />
                             );
-                        } else {
-                            return <span key={gift}>Loading</span>;
                         }
                     })}
                 </Row>

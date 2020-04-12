@@ -7,11 +7,12 @@ import { Gift } from "../../data/types/schemas/giftSchema";
 const bem = bemNames.create("Opportunity");
 
 type OpportunityProps = {
-    gift: Gift;
+    gift?: Gift;
+    giftId: string;
 };
 
 type OpportunityState = {
-    image: any;
+    image: string;
 };
 
 export default class Opportunity extends React.Component<
@@ -24,18 +25,29 @@ export default class Opportunity extends React.Component<
     }
 
     componentDidMount(): void {
-        import(`data/${this.props.gift.imageUrl}`).then((image) => {
+        if (this.props.gift === undefined) {
             this.setState({
-                image: image.default,
+                image:
+                    "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7\n",
             });
-        });
+        } else {
+            import(`data/${this.props.gift.imageUrl}`).then((image) => {
+                this.setState({
+                    image: image.default,
+                });
+            });
+        }
         return;
     }
 
     render() {
+        let title =
+            this.props.gift === undefined
+                ? this.props.giftId
+                : this.props.gift.name;
         return (
-            <Col className={bem.b("opportunity")} xs={2}>
-                <img src={this.state.image} alt={this.props.gift.name} />
+            <Col className={bem.b("border")} xs={2}>
+                <img src={this.state.image} title={title} alt={title} />
             </Col>
         );
     }

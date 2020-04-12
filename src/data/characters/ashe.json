@@ -2,7 +2,13 @@
     "_id": "ashe",
     "name": "Ashe",
     "portraitUrl": "characters/portrait/ashe.png",
-    "gifts": ["tasty-baked-treat"],
+    "gifts": [
+        "tasty-baked-treat",
+        "violet",
+        "legends-of-chivalry",
+        "exotic-spices",
+        "ancient-coin"
+    ],
     "routes": [
         {
             "id": "crimson-flower",

@@ -3,7 +3,10 @@
     "name": "Felix",
     "portraitUrl": "characters/portrait/felix.png",
     "gifts": [
-        "hunting-dagger"
+        "hunting-dagger",
+        "smoked-meat",
+        "training-weight",
+        "ceremonial-sword"
     ],
     "routes": []
 }
