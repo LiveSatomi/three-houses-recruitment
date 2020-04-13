@@ -9,10 +9,12 @@ const bem = bemNames.create("Opportunity");
 type OpportunityProps = {
     gift?: Gift;
     giftId: string;
+    onSelected: (selected: boolean) => void;
 };
 
 type OpportunityState = {
     image: string;
+    selected: boolean;
 };
 
 export default class Opportunity extends React.Component<
@@ -22,6 +24,8 @@ export default class Opportunity extends React.Component<
     constructor(props: OpportunityProps, state: OpportunityState) {
         super(props);
         this.state = state;
+
+        this.opportunitySelected = this.opportunitySelected.bind(this);
     }
 
     componentDidMount(): void {
@@ -41,14 +45,43 @@ export default class Opportunity extends React.Component<
     }
 
     render() {
+        return (
+            <Col className={bem.b("border")} xs={2}>
+                {this.getChildren()}
+            </Col>
+        );
+    }
+
+    getChildren() {
         let title =
             this.props.gift === undefined
                 ? this.props.giftId
                 : this.props.gift.name;
+        let selectedMarker = <></>;
+        if (this.state.selected) {
+            selectedMarker = <span className={bem.e("selected")}>✓</span>;
+        }
         return (
-            <Col className={bem.b("border")} xs={2}>
-                <img src={this.state.image} title={title} alt={title} />
-            </Col>
+            <>
+                <img
+                    src={this.state.image}
+                    title={title}
+                    alt={title}
+                    onClick={this.opportunitySelected}
+                />
+                {selectedMarker}
+            </>
+        );
+    }
+
+    opportunitySelected() {
+        this.setState(
+            {
+                selected: !this.state.selected,
+            },
+            () => {
+                this.props.onSelected(this.state.selected);
+            }
         );
     }
 }

@@ -7,11 +7,17 @@ import { Character } from "data/types/schemas/characterSchema";
 
 const bem = bemNames.create("ChapterTable");
 
-type ChapterListProps = {
+type ChapterTableProps = {
     characters: Character[];
+    onPointChange: (points: number, character: Character) => void;
 };
 
-export default class ChapterTable extends React.Component<ChapterListProps> {
+export default class ChapterTable extends React.Component<ChapterTableProps> {
+    constructor(props: ChapterTableProps) {
+        super(props);
+        this.handlePointChange = this.handlePointChange.bind(this);
+    }
+
     render() {
         return (
             <Row className={bem.b()}>
@@ -19,14 +25,27 @@ export default class ChapterTable extends React.Component<ChapterListProps> {
                     {this.props.characters.map((char) => {
                         return (
                             <Row key={char._id} className="flex-nowrap">
-                                <Chapter character={char} />
-                                <Chapter character={char} />
-                                <Chapter character={char} />
+                                <Chapter
+                                    character={char}
+                                    onPointChange={this.handlePointChange}
+                                />
+                                <Chapter
+                                    character={char}
+                                    onPointChange={this.handlePointChange}
+                                />
+                                <Chapter
+                                    character={char}
+                                    onPointChange={this.handlePointChange}
+                                />
                             </Row>
                         );
                     })}
                 </Col>
             </Row>
         );
+    }
+
+    handlePointChange(points: number, character: Character) {
+        this.props.onPointChange(points, character);
     }
 }

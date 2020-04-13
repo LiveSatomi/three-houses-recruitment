@@ -8,6 +8,7 @@ import Database from "../../util/Database";
 import PouchDB from "pouchdb";
 import { Character } from "../../data/types/schemas/characterSchema";
 import Assertions from "../../util/Assertions";
+import CharacterSelection from "../../data/types/CharacterSelection";
 
 const bem = bemNames.create("CharacterTable");
 
@@ -15,6 +16,7 @@ type CharacterTableProps = {};
 
 type CharacterTableState = {
     characters: Character[];
+    characterSelections: CharacterSelection[];
 };
 
 export default class CharacterTable extends React.Component<
@@ -25,9 +27,11 @@ export default class CharacterTable extends React.Component<
         super(props);
         this.state = {
             characters: [],
+            characterSelections: [],
         };
 
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.handlePointChange = this.handlePointChange.bind(this);
     }
 
     componentDidMount(): void {
@@ -38,15 +42,18 @@ export default class CharacterTable extends React.Component<
                 return database.fetchCharacters();
             })
             .then((fetch: PouchDB.Core.AllDocsResponse<Character>) => {
+                let characterSelections: CharacterSelection[] = [];
+                let characters = fetch.rows.map((r, i) => {
+                    let doc = r.doc;
+                    Assertions.isDefined(doc, "Fetch must contain document");
+                    let characterSelection = new CharacterSelection(doc._id);
+                    characterSelection.points = 0;
+                    characterSelections[i] = characterSelection;
+                    return doc;
+                });
                 this.setState({
-                    characters: fetch.rows.map((r) => {
-                        let doc = r.doc;
-                        Assertions.isDefined(
-                            doc,
-                            "Fetch must contain document"
-                        );
-                        return doc;
-                    }),
+                    characters: characters,
+                    characterSelections: characterSelections,
                 });
             });
     }
@@ -56,7 +63,10 @@ export default class CharacterTable extends React.Component<
             <Row className={bem.b()}>
                 <Col xs={3}>{this.createCharacters()}</Col>
                 <Col className={bem.e("table")}>
-                    <ChapterTable characters={this.state.characters} />
+                    <ChapterTable
+                        characters={this.state.characters}
+                        onPointChange={this.handlePointChange}
+                    />
                 </Col>
             </Row>
         );
@@ -65,14 +75,25 @@ export default class CharacterTable extends React.Component<
     createCharacters(): React.ReactElement {
         return (
             <Row>
-                {this.state.characters.map((char) => (
+                {this.state.characters.map((char, i) => (
                     <CharacterHeader
+                        key={char._id}
                         name={char.name}
                         portraitUrl={char.portraitUrl}
-                        key={char._id}
+                        points={this.state.characterSelections[i].points || 0}
                     />
                 ))}
             </Row>
         );
+    }
+
+    handlePointChange(points: number, character: Character) {
+        let index = this.state.characters.indexOf(character);
+        let characterSelection = this.state.characterSelections[index];
+        characterSelection.points = points;
+        let characterSelections = this.state.characterSelections;
+        this.setState({
+            characterSelections: characterSelections,
+        });
     }
 }

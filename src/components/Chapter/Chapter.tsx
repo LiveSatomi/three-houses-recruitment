@@ -13,10 +13,12 @@ const bem = bemNames.create("Chapter");
 
 type ChapterProps = {
     character: Character;
+    onPointChange: (points: number, character: Character) => void;
 };
 
 type ChapterState = {
     gifts: Gift[];
+    pointTotal: number;
 };
 
 export default class Chapter extends React.Component<
@@ -26,10 +28,12 @@ export default class Chapter extends React.Component<
     constructor(props: ChapterProps) {
         super(props);
         this.state = {
+            pointTotal: 0,
             gifts: [],
         };
 
         this.componentDidMount = this.componentDidMount.bind(this);
+        this.opportunitySelected = this.opportunitySelected.bind(this);
     }
 
     componentDidMount(): void {
@@ -71,12 +75,27 @@ export default class Chapter extends React.Component<
                                     key={gift}
                                     giftId={gift}
                                     gift={giftForCharacter}
+                                    onSelected={this.opportunitySelected}
                                 />
                             );
                         }
                     })}
                 </Row>
             </Col>
+        );
+    }
+
+    opportunitySelected(selected: boolean) {
+        this.setState(
+            {
+                pointTotal: this.state.pointTotal + 2 * (selected ? 1 : -1),
+            },
+            () => {
+                this.props.onPointChange(
+                    this.state.pointTotal,
+                    this.props.character
+                );
+            }
         );
     }
 }

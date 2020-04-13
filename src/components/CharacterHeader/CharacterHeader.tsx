@@ -8,6 +8,7 @@ const bem = bemNames.create("CharacterHeader");
 type CharacterHeaderProps = {
     name: string;
     portraitUrl: string;
+    points: number;
 };
 
 type CharacterHeaderState = {
@@ -47,7 +48,7 @@ export default class CharacterHeader extends React.Component<
                             <span>C</span>
                         </div>
                         <div className={"border"}>
-                            <span>0</span>
+                            <span>{this.props.points}</span>
                         </div>
                     </Col>
                 </Row>
