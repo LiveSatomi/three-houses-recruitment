@@ -1,16 +1,20 @@
 import PouchDB from "pouchdb";
 import characters from "data/characters";
 import gifts from "data/gifts";
+import monastery from "data/monastery/monastery.json";
 import { Character } from "data/types/schemas/characterSchema";
 import { Gift } from "../data/types/schemas/giftSchema";
+import { Monastery } from "../data/types/schemas/monasterySchema";
 
 export default class Database {
     private characterDb: PouchDB.Database<Character>;
+    private monasteryDb: PouchDB.Database<Monastery>;
     private giftDb: PouchDB.Database<Gift>;
 
     constructor() {
         this.characterDb = new PouchDB("characters");
         this.giftDb = new PouchDB("gifts");
+        this.monasteryDb = new PouchDB("monastery");
     }
 
     initialize() {
@@ -23,6 +27,7 @@ export default class Database {
                     return Promise.all([
                         this.populateCharacters(),
                         this.populateGifts(),
+                        this.populateMonastery(),
                     ]).then(() => {
                         return true;
                     });
@@ -48,15 +53,25 @@ export default class Database {
         });
     }
 
-    private populateCharacters(): void {
-        Promise.all(characters.map((char) => this.characterDb.put(char))).then(
+    fetchMonastery(): Promise<PouchDB.Core.AllDocsResponse<Monastery>> {
+        return this.monasteryDb.allDocs({
+            include_docs: true,
+        });
+    }
+
+    private populateCharacters(): Promise<boolean> {
+        return Promise.all(
+            characters.map((char) => this.characterDb.put(char))
+        ).then(() => true);
+    }
+
+    private populateGifts(): Promise<boolean> {
+        return Promise.all(gifts.map((gift) => this.giftDb.put(gift))).then(
             () => true
         );
     }
 
-    private populateGifts(): void {
-        Promise.all(gifts.map((gift) => this.giftDb.put(gift))).then(
-            () => true
-        );
+    private populateMonastery(): Promise<boolean> {
+        return this.monasteryDb.put(monastery as Monastery).then(() => true);
     }
 }

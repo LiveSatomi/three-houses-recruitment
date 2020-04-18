@@ -2,13 +2,27 @@
     "title": "Character",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "required": ["_id", "name", "portraitUrl", "gifts", "routes"],
+    "required": [
+        "_id",
+        "name",
+        "portraitUrl",
+        "gifts",
+        "lostItems",
+        "meals",
+        "routes"
+    ],
     "description": "Fire Emblem Character Schema",
     "additionalProperties": false,
+    "definitions": {
+        "characterId": {
+            "description": "Character id",
+            "type": "string",
+            "enum": ["ashe", "felix", "lysithea", "raphael"]
+        }
+    },
     "properties": {
         "_id": {
-            "description": "PouchDB required ID",
-            "type": "string"
+            "$ref": "#/definitions/characterId"
         },
         "name": {
             "description": "Character Name",
@@ -26,9 +40,59 @@
                 "$ref": "giftSchema.json#/definitions/giftId"
             }
         },
+        "lostItems": {
+            "description": "List of liked gifts",
+            "type": "array",
+            "items": {
+                "$ref": "lostItemSchema.json#/definitions/lostItemId"
+            }
+        },
+        "meals": {
+            "description": "Lists of liked and disliked meals",
+            "type": "object",
+            "required": ["liked", "disliked"],
+            "additionalProperties": false,
+            "properties": {
+                "liked": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "mealSchema.json#/definitions/mealId"
+                    }
+                },
+                "disliked": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "mealSchema.json#/definitions/mealId"
+                    }
+                }
+            }
+        },
         "routes": {
             "description": "Route specific information for the character",
-            "type": "array"
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["id", "chapters"],
+                "additionalProperties": false,
+                "properties": {
+                    "id": {
+                        "$ref": "monasterySchema.json#/definitions/routeId"
+                    },
+                    "chapters": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "required": ["available"],
+                            "additionalProperties": false,
+                            "properties": {
+                                "available": {
+                                    "type": "boolean"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

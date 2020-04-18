@@ -38,16 +38,89 @@
             </SchemaInfo>
           </value>
         </entry>
+        <entry key="facilitySchema">
+          <value>
+            <SchemaInfo>
+              <option name="name" value="facilitySchema" />
+              <option name="relativePathToSchema" value="src/data/schemas/facilitySchema.json" />
+              <option name="schemaVersion" value="JSON schema version 7" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/data/facility" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
         <entry key="giftSchema">
           <value>
             <SchemaInfo>
               <option name="name" value="giftSchema" />
               <option name="relativePathToSchema" value="src/data/schemas/giftSchema.json" />
+              <option name="schemaVersion" value="JSON schema version 7" />
               <option name="patterns">
                 <list>
                   <Item>
                     <option name="directory" value="true" />
                     <option name="path" value="src/data/gifts" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="mealSchema">
+          <value>
+            <SchemaInfo>
+              <option name="name" value="mealSchema" />
+              <option name="relativePathToSchema" value="src/data/schemas/mealSchema.json" />
+              <option name="schemaVersion" value="JSON schema version 7" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/data/meal" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="merchantSchema">
+          <value>
+            <SchemaInfo>
+              <option name="name" value="merchantSchema" />
+              <option name="relativePathToSchema" value="src/data/schemas/merchantSchema.json" />
+              <option name="schemaVersion" value="JSON schema version 7" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/data/merchant" />
+                    <option name="mappingKind" value="Directory" />
+                  </Item>
+                </list>
+              </option>
+            </SchemaInfo>
+          </value>
+        </entry>
+        <entry key="monasterySchema">
+          <value>
+            <SchemaInfo>
+              <option name="name" value="monasterySchema" />
+              <option name="relativePathToSchema" value="src/data/schemas/monasterySchema.json" />
+              <option name="schemaVersion" value="JSON schema version 7" />
+              <option name="patterns">
+                <list>
+                  <Item>
+                    <option name="directory" value="true" />
+                    <option name="path" value="src/data/monastery" />
                     <option name="mappingKind" value="Directory" />
                   </Item>
                 </list>

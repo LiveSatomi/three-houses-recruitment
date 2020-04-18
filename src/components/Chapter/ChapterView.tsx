@@ -3,16 +3,18 @@ import bemNames from "util/bemnames";
 import "./Chapter.scss";
 import { Col, Row } from "react-bootstrap";
 import { Character } from "data/types/schemas/characterSchema";
-import Database from "../../util/Database";
+import Database from "util/Database";
 import PouchDB from "pouchdb";
-import Assertions from "../../util/Assertions";
-import { Gift } from "../../data/types/schemas/giftSchema";
-import Opportunity from "../Opportunity/Opportunity";
+import Assertions from "util/Assertions";
+import { Gift } from "data/types/schemas/giftSchema";
+import Opportunity from "components/Opportunity/Opportunity";
+import { Chapter } from "data/types/schemas/monasterySchema";
 
 const bem = bemNames.create("Chapter");
 
 type ChapterProps = {
     character: Character;
+    chapter: Chapter;
     onPointChange: (points: number, character: Character) => void;
 };
 
@@ -21,7 +23,7 @@ type ChapterState = {
     pointTotal: number;
 };
 
-export default class Chapter extends React.Component<
+export default class ChapterView extends React.Component<
     ChapterProps,
     ChapterState
 > {

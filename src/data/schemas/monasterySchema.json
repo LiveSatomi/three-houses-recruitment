@@ -1,0 +1,151 @@
+{
+    "title": "Monastery",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["_id", "routes"],
+    "description": "Defines what opportunities are available at the monastery.",
+    "additionalProperties": false,
+    "definitions": {
+        "routeId": {
+            "type": "string",
+            "enum": [
+                "white-clouds",
+                "silver-snow",
+                "crimson-flower",
+                "azure-moon",
+                "verdant-wind"
+            ]
+        },
+        "chapter": {
+            "type": "object",
+            "title": "Chapter",
+            "required": [
+                "facilities",
+                "lostItem",
+                "dialog",
+                "merchant"
+            ],
+            "additionalProperties": false,
+            "properties": {
+                "facilities": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": ["id", "available"],
+                        "additionalProperties": false,
+                        "properties": {
+                            "id": {
+                                "$ref": "facilitySchema.json#/definitions/facilityId"
+                            },
+                            "available": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                },
+                "lostItem": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "name",
+                            "recipient",
+                            "location"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "recipient": {
+                                "type": "string"
+                            },
+                            "location": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "dialog": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "id",
+                            "recipient",
+                            "conversation",
+                            "answer"
+                        ],
+                        "additionalProperties": false,
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "recipient": {
+                                "type": "string"
+                            },
+                            "conversation": {
+                                "type": "string"
+                            },
+                            "answer": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "merchant": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": ["id", "available"],
+                        "additionalProperties": false,
+                        "properties": {
+                            "id": {
+                                "$ref": "merchantSchema.json#/definitions/merchantId"
+                            },
+                            "available": {
+                                "type": "boolean"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+    },
+    "properties": {
+        "_id": {
+            "description": "PouchDB required ID",
+            "type": "string"
+        },
+        "routes": {
+            "description": "Route specific information for the monastery",
+            "type": "array",
+            "items": {
+                "title": "Route",
+                "required": ["id", "routeName", "chapters"],
+                "description": "A route in the game",
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "$ref": "#/definitions/routeId"
+                    },
+                    "routeName": {
+                        "type": "string"
+                    },
+                    "chapters": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/definitions/chapter"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

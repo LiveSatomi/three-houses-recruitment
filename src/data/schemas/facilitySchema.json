@@ -1,0 +1,60 @@
+{
+    "title": "Gift",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["_id", "name", "imageUrl"],
+    "description": "Fire Emblem Facility Schema",
+    "additionalProperties": false,
+    "definitions": {
+        "facilityId": {
+            "title": "FacilityId",
+            "description": "Name of facility",
+            "type": "string",
+            "enum": [
+                "choir-practice",
+                "cooking-together",
+                "share-a-meal",
+                "sauna",
+                "advice-box"
+            ]
+        }
+    },
+    "properties": {
+        "_id": {
+            "$ref": "#/definitions/facilityId"
+        },
+        "name": {
+            "description": "Facility Name",
+            "type": "string"
+        },
+        "imageUrl": {
+            "description": "URL for the object image, relative to src",
+            "type": "string",
+            "format": "uri-template"
+        },
+        "configuration": {
+            "required": ["character", "repeatConfiguration"],
+            "additionalProperties": false,
+            "character": {
+                "type": "integer"
+            },
+            "object": {
+                "type": "integer"
+            },
+            "repeatConfiguration": {
+                "type": "object",
+                "properties": {
+                    "oncePerCharacter": {
+                        "type": "boolean"
+                    },
+                    "oncePerActivity": {
+                        "type": "boolean"
+                    },
+                    "usesProfessorPoint": {
+                        "type": "boolean"
+                    }
+                }
+            }
+        }
+    }
+}

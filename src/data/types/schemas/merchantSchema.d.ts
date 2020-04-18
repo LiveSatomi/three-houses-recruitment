@@ -6,6 +6,10 @@
  */
 
 /**
+ * Type of merchant
+ */
+export type MerchantId = "eastern" | "southern" | "dark";
+/**
  * Name of gift
  */
 export type GiftId =
@@ -25,16 +29,19 @@ export type GiftId =
     | "violet";
 
 /**
- * Fire Emblem Gift Schema
+ * Fire Emblem Merchant Schema
  */
 export interface Gift {
-    _id: GiftId;
+    _id: MerchantId;
     /**
-     * Gift Name
+     * Merchant name
      */
     name: string;
     /**
-     * URL for the object image, relative to src
+     * List of items sold
      */
-    imageUrl: string;
+    wares: {
+        id: GiftId;
+        price: number;
+    }[];
 }

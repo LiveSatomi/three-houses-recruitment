@@ -9,5 +9,46 @@
         "arithmetic-textbook",
         "book-of-crest-designs"
     ],
-    "routes": []
+    "lostItems": ["encyclopediaOfSweets", "princessDoll", "newBottleOfPerfume"],
+    "meals": {
+        "liked": ["peachSorbet"],
+        "disliked": ["friedCrayfish"]
+    },
+    "routes": [
+        {
+            "id": "white-clouds",
+            "chapters": [
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                }
+            ]
+        }
+    ]
 }

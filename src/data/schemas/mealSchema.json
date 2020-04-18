@@ -1,0 +1,28 @@
+{
+    "title": "Meal",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["_id", "name"],
+    "description": "Fire Emblem Meal Schema",
+    "additionalProperties": false,
+    "definitions": {
+        "mealId": {
+            "title": "Meal",
+            "description": "Name of meal",
+            "type": "string",
+            "enum": [
+                "peachSorbet",
+                "friedCrayfish"
+            ]
+        }
+    },
+    "properties": {
+        "_id": {
+            "$ref": "#/definitions/mealId"
+        },
+        "name": {
+            "description": "Meal name",
+            "type": "string"
+        }
+    }
+}

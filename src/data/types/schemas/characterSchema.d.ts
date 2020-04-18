@@ -6,7 +6,11 @@
  */
 
 /**
- * PouchDB required ID
+ * Character id
+ */
+export type CharacterId = "ashe" | "felix" | "lysithea" | "raphael";
+/**
+ * Name of gift
  */
 export type GiftId =
     | "ancient-coin"
@@ -23,15 +27,32 @@ export type GiftId =
     | "tasty-baked-treat"
     | "training-weight"
     | "violet";
+/**
+ * ID of lost item
+ */
+export type LostItemId =
+    | "encyclopediaOfSweets"
+    | "princessDoll"
+    | "newBottleOfPerfume"
+    | "moonKnightsTale"
+    | "evilRepellingAmulet"
+    | "bundleOfHerbs"
+    | "blackIronSpur"
+    | "swordBeltFragment"
+    | "toothedDagger"
+    | "woodenButton"
+    | "burlapSackOfRocks"
+    | "bigSpoon";
+/**
+ * Name of meal
+ */
+export type Meal = "peachSorbet" | "friedCrayfish";
 
 /**
  * Fire Emblem Character Schema
  */
 export interface Character {
-    /**
-     * PouchDB required ID
-     */
-    _id: string;
+    _id: CharacterId;
     /**
      * Character Name
      */
@@ -45,7 +66,28 @@ export interface Character {
      */
     gifts: GiftId[];
     /**
+     * List of liked gifts
+     */
+    lostItems: LostItemId[];
+    /**
+     * Lists of liked and disliked meals
+     */
+    meals: {
+        liked: Meal[];
+        disliked: Meal[];
+    };
+    /**
      * Route specific information for the character
      */
-    routes: any[];
+    routes: {
+        id:
+            | "white-clouds"
+            | "silver-snow"
+            | "crimson-flower"
+            | "azure-moon"
+            | "verdant-wind";
+        chapters: {
+            available: boolean;
+        }[];
+    }[];
 }

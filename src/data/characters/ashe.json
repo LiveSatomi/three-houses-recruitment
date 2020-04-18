@@ -9,10 +9,15 @@
         "exotic-spices",
         "ancient-coin"
     ],
+    "lostItems": ["moonKnightsTale", "evilRepellingAmulet", "bundleOfHerbs"],
+    "meals": {
+        "liked": ["peachSorbet"],
+        "disliked": ["friedCrayfish"]
+    },
     "routes": [
         {
-            "id": "crimson-flower",
-            "chapter": [
+            "id": "white-clouds",
+            "chapters": [
                 {
                     "available": true
                 },
@@ -21,20 +26,27 @@
                 },
                 {
                     "available": true
-                }
-            ]
-        },
-        {
-            "id": "azure-moon",
-            "chapter": [
-                {
-                    "available": false
                 },
                 {
-                    "available": false
+                    "available": true
                 },
                 {
-                    "available": false
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
                 }
             ]
         }

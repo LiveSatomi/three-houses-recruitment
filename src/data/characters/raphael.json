@@ -1,12 +1,53 @@
 {
-  "_id": "raphael",
-  "name": "Raphael",
-  "portraitUrl": "characters/portrait/raphael.png",
-  "gifts": [
-    "smoked-meat",
-    "training-weight",
-    "tasty-baked-treat",
-    "blue-cheese"
-  ],
-  "routes": []
+    "_id": "raphael",
+    "name": "Raphael",
+    "portraitUrl": "characters/portrait/raphael.png",
+    "gifts": [
+        "smoked-meat",
+        "training-weight",
+        "tasty-baked-treat",
+        "blue-cheese"
+    ],
+    "lostItems": ["woodenButton", "burlapSackOfRocks", "bigSpoon"],
+    "meals": {
+        "liked": ["peachSorbet"],
+        "disliked": ["friedCrayfish"]
+    },
+    "routes": [
+        {
+            "id": "white-clouds",
+            "chapters": [
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                }
+            ]
+        }
+    ]
 }

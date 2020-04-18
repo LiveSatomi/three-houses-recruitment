@@ -1,0 +1,46 @@
+{
+    "title": "Gift",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["_id", "name", "wares"],
+    "description": "Fire Emblem Merchant Schema",
+    "additionalProperties": false,
+    "definitions": {
+        "merchantId": {
+            "title": "merchantId",
+            "description": "Type of merchant",
+            "type": "string",
+            "enum": [
+                "eastern",
+                "southern",
+                "dark"
+            ]
+        }
+    },
+    "properties": {
+        "_id": {
+            "$ref": "#/definitions/merchantId"
+        },
+        "name": {
+            "description": "Merchant name",
+            "type": "string"
+        },
+        "wares": {
+            "description": "List of items sold",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": ["id", "price"],
+                "additionalProperties": false,
+                "properties": {
+                    "id": {
+                        "$ref": "giftSchema.json#/definitions/giftId"
+                    },
+                    "price": {
+                        "type": "integer"
+                    }
+                }
+            }
+        }
+    }
+}

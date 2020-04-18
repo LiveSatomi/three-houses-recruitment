@@ -8,5 +8,46 @@
         "training-weight",
         "ceremonial-sword"
     ],
-    "routes": []
+    "lostItems": ["blackIronSpur", "swordBeltFragment", "toothedDagger"],
+    "meals": {
+        "liked": ["peachSorbet"],
+        "disliked": ["friedCrayfish"]
+    },
+    "routes": [
+        {
+            "id": "white-clouds",
+            "chapters": [
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                },
+                {
+                    "available": true
+                }
+            ]
+        }
+    ]
 }

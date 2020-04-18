@@ -1,0 +1,38 @@
+{
+    "title": "Lost Items",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": ["_id", "name"],
+    "description": "Fire Emblem Lost Item Schema",
+    "additionalProperties": false,
+    "definitions": {
+        "lostItemId": {
+            "title": "LostItemId",
+            "description": "ID of lost item",
+            "type": "string",
+            "enum": [
+                "encyclopediaOfSweets",
+                "princessDoll",
+                "newBottleOfPerfume",
+                "moonKnightsTale",
+                "evilRepellingAmulet",
+                "bundleOfHerbs",
+                "blackIronSpur",
+                "swordBeltFragment",
+                "toothedDagger",
+                "woodenButton",
+                "burlapSackOfRocks",
+                "bigSpoon"
+            ]
+        }
+    },
+    "properties": {
+        "_id": {
+            "$ref": "#/definitions/lostItemId"
+        },
+        "name": {
+            "description": "Lost Item Name",
+            "type": "string"
+        }
+    }
+}

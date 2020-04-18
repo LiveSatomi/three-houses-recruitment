@@ -8,7 +8,7 @@
     "definitions": {
         "giftId": {
             "title": "GiftId",
-            "description": "PouchDB required ID",
+            "description": "Name of gift",
             "type": "string",
             "enum": [
                 "ancient-coin",

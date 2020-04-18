@@ -1,0 +1,108 @@
+{
+    "_id": "a",
+    "routes": [
+        {
+            "id": "white-clouds",
+            "routeName": "White Clouds",
+            "chapters": [
+                {
+                    "facilities": [
+                        {
+                            "id": "share-a-meal",
+                            "available": false
+                        }
+                    ],
+                    "lostItem": [
+                        {
+                            "id": "",
+                            "name": "",
+                            "recipient": "",
+                            "location": ""
+                        }
+                    ],
+                    "dialog": [
+                        {
+                            "id": "",
+                            "recipient": "",
+                            "conversation": "",
+                            "answer": ""
+                        }
+                    ],
+                    "merchant": [
+                    ]
+                },
+                {
+                    "facilities": [
+                        {
+                            "id": "share-a-meal",
+                            "available": false
+                        }
+                    ],
+                    "lostItem": [
+                        {
+                            "id": "",
+                            "name": "",
+                            "recipient": "",
+                            "location": ""
+                        }
+                    ],
+                    "dialog": [
+                        {
+                            "id": "",
+                            "recipient": "",
+                            "conversation": "",
+                            "answer": ""
+                        }
+                    ],
+                    "merchant": [
+                    ]
+                },{
+                    "facilities": [
+                        {
+                            "id": "share-a-meal",
+                            "available": false
+                        }
+                    ],
+                    "lostItem": [
+                        {
+                            "id": "",
+                            "name": "",
+                            "recipient": "",
+                            "location": ""
+                        }
+                    ],
+                    "dialog": [
+                        {
+                            "id": "",
+                            "recipient": "",
+                            "conversation": "",
+                            "answer": ""
+                        }
+                    ],
+                    "merchant": [
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "azure-moon",
+            "routeName": "Azure Moon",
+            "chapters": []
+        },
+        {
+            "id": "silver-snow",
+            "routeName": "Silver Snow",
+            "chapters": []
+        },
+        {
+            "id": "crimson-flower",
+            "routeName": "Azure Moon",
+            "chapters": []
+        },
+        {
+            "id": "verdant-wind",
+            "routeName": "Verdant Winds",
+            "chapters": []
+        }
+    ]
+}

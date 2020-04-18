@@ -1,0 +1,10 @@
+{
+    "_id": "dark",
+    "name": "Dark Merchant",
+    "wares": [
+        {
+            "id": "ancient-coin",
+            "price": 300
+        }
+    ]
+}

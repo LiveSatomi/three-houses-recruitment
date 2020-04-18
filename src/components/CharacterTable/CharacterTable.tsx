@@ -1,14 +1,15 @@
 import * as React from "react";
 import bemNames from "util/bemnames";
 import "./CharacterTable.scss";
-import CharacterHeader from "../CharacterHeader/CharacterHeader";
-import ChapterTable from "../ChapterTable/ChapterTable";
+import CharacterHeader from "components/CharacterHeader/CharacterHeader";
+import ChapterTable from "components/ChapterTable/ChapterTable";
 import { Col, Row } from "react-bootstrap";
-import Database from "../../util/Database";
+import Database from "util/Database";
 import PouchDB from "pouchdb";
-import { Character } from "../../data/types/schemas/characterSchema";
-import Assertions from "../../util/Assertions";
-import CharacterSelection from "../../data/types/CharacterSelection";
+import { Character } from "data/types/schemas/characterSchema";
+import Assertions from "util/Assertions";
+import CharacterSelection from "data/types/CharacterSelection";
+import { Monastery } from "data/types/schemas/monasterySchema";
 
 const bem = bemNames.create("CharacterTable");
 
@@ -17,6 +18,7 @@ type CharacterTableProps = {};
 type CharacterTableState = {
     characters: Character[];
     characterSelections: CharacterSelection[];
+    monastery?: Monastery;
 };
 
 export default class CharacterTable extends React.Component<
@@ -28,6 +30,7 @@ export default class CharacterTable extends React.Component<
         this.state = {
             characters: [],
             characterSelections: [],
+            monastery: undefined,
         };
 
         this.componentDidMount = this.componentDidMount.bind(this);
@@ -55,6 +58,16 @@ export default class CharacterTable extends React.Component<
                     characters: characters,
                     characterSelections: characterSelections,
                 });
+            })
+            .then(() => {
+                return database.fetchMonastery();
+            })
+            .then((fetch: PouchDB.Core.AllDocsResponse<Monastery>) => {
+                let doc = fetch.rows[0].doc;
+                Assertions.isDefined(doc, "Fetch must contain document");
+                this.setState({
+                    monastery: doc,
+                });
             });
     }
 
@@ -62,12 +75,7 @@ export default class CharacterTable extends React.Component<
         return (
             <Row className={bem.b()}>
                 <Col xs={3}>{this.createCharacters()}</Col>
-                <Col className={bem.e("table")}>
-                    <ChapterTable
-                        characters={this.state.characters}
-                        onPointChange={this.handlePointChange}
-                    />
-                </Col>
+                <Col className={bem.e("table")}>{this.getChapterTable()}</Col>
             </Row>
         );
     }
@@ -95,5 +103,22 @@ export default class CharacterTable extends React.Component<
         this.setState({
             characterSelections: characterSelections,
         });
+    }
+
+    private getChapterTable() {
+        if (
+            this.state.monastery === undefined ||
+            this.state.characters === undefined
+        ) {
+            return <div>Loading</div>;
+        } else {
+            return (
+                <ChapterTable
+                    characters={this.state.characters}
+                    monastery={this.state.monastery}
+                    onPointChange={this.handlePointChange}
+                />
+            );
+        }
     }
 }
