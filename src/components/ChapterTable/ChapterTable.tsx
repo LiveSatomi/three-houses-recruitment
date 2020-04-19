@@ -31,17 +31,24 @@ export default class ChapterTable extends React.Component<ChapterTableProps> {
                                     .find((route) => {
                                         return route.id === "white-clouds";
                                     })
-                                    ?.chapters.map((chapter: Chapter) => {
-                                        return (
-                                            <ChapterView
-                                                character={char}
-                                                chapter={chapter}
-                                                onPointChange={
-                                                    this.handlePointChange
-                                                }
-                                            />
-                                        );
-                                    })}
+                                    ?.chapters.map(
+                                        (chapter: Chapter, index) => {
+                                            return (
+                                                <ChapterView
+                                                    key={
+                                                        char._id +
+                                                        "_white-clouds_" +
+                                                        index
+                                                    }
+                                                    character={char}
+                                                    chapter={chapter}
+                                                    onPointChange={
+                                                        this.handlePointChange
+                                                    }
+                                                />
+                                            );
+                                        }
+                                    )}
                             </Row>
                         );
                     })}

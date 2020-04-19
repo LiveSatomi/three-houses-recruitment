@@ -6,9 +6,9 @@ import { Character } from "data/types/schemas/characterSchema";
 import Database from "util/Database";
 import PouchDB from "pouchdb";
 import Assertions from "util/Assertions";
-import { Gift } from "data/types/schemas/giftSchema";
-import Opportunity from "components/Opportunity/Opportunity";
+import { Gift, GiftId } from "data/types/schemas/giftSchema";
 import { Chapter } from "data/types/schemas/monasterySchema";
+import GiftOpportunity from "../Opportunity/GiftOpportunity/GiftOpportunity";
 
 const bem = bemNames.create("Chapter");
 
@@ -35,7 +35,7 @@ export default class ChapterView extends React.Component<
         };
 
         this.componentDidMount = this.componentDidMount.bind(this);
-        this.opportunitySelected = this.opportunitySelected.bind(this);
+        this.worthUpdated = this.worthUpdated.bind(this);
     }
 
     componentDidMount(): void {
@@ -63,21 +63,21 @@ export default class ChapterView extends React.Component<
         return (
             <Col className={bem.b("border")} xs={6}>
                 <Row>
-                    {this.props.character.gifts.map((gift) => {
-                        let giftForCharacter = this.state.gifts.filter(
+                    {this.props.character.gifts.map((giftId: GiftId) => {
+                        let giftForCharacter: Gift = this.state.gifts.filter(
                             (value: Gift) => {
-                                return value._id === gift;
+                                return value._id === giftId;
                             }
                         )[0];
                         if (this.state.gifts.length === 0) {
-                            return <span key={gift}>Loading</span>;
+                            return <span key={giftId}>Loading</span>;
                         } else {
                             return (
-                                <Opportunity
-                                    key={gift}
-                                    giftId={gift}
+                                <GiftOpportunity
+                                    key={giftId}
                                     gift={giftForCharacter}
-                                    onSelected={this.opportunitySelected}
+                                    character={this.props.character}
+                                    onWorthChanged={this.worthUpdated}
                                 />
                             );
                         }
@@ -87,10 +87,10 @@ export default class ChapterView extends React.Component<
         );
     }
 
-    opportunitySelected(selected: boolean) {
+    worthUpdated(worth: number) {
         this.setState(
             {
-                pointTotal: this.state.pointTotal + 2 * (selected ? 1 : -1),
+                pointTotal: this.state.pointTotal + worth,
             },
             () => {
                 this.props.onPointChange(
