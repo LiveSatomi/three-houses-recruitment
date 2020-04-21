@@ -42,6 +42,9 @@ export default class ChapterTable extends React.Component<ChapterTableProps> {
                                                     }
                                                     character={char}
                                                     chapter={chapter}
+                                                    monastery={
+                                                        this.props.monastery
+                                                    }
                                                     onPointChange={
                                                         this.handlePointChange
                                                     }

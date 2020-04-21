@@ -14,7 +14,7 @@ import trainingWeight from "data/gifts/trainingWeight.json";
 import violet from "data/gifts/violet.json";
 import { Gift } from "../types/schemas/giftSchema";
 
-let gifts: Gift[] = [
+let gifts: ReadonlyArray<Readonly<Gift>> = [
     ancientCoin as Gift,
     arithmeticTextbook as Gift,
     armoredBearStuffy as Gift,
