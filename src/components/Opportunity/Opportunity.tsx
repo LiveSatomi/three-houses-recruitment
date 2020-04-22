@@ -6,7 +6,7 @@ import { Col } from "react-bootstrap";
 const bem = bemNames.create("Opportunity");
 
 type OpportunityProps = {
-    onClick: () => void;
+    onSelect: () => void;
     imageUrl: string;
     imageTitle: string;
     isSelected: boolean;
@@ -42,16 +42,16 @@ export default class Opportunity extends React.Component<
     render() {
         return (
             <Col
-                onClick={this.props.onClick}
+                onClick={this.props.onSelect}
                 className={bem.b("border")}
                 xs={2}
             >
-                {this.getChildren()}
+                {this.getContent()}
             </Col>
         );
     }
 
-    getChildren() {
+    getContent() {
         let title = this.props.imageTitle;
         let selectedMarker = <></>;
         if (this.props.isSelected) {

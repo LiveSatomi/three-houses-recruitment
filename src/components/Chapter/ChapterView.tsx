@@ -15,7 +15,7 @@ const bem = bemNames.create("Chapter");
 
 type ChapterProps = {
     character: Character;
-    chapter: Chapter;
+    chapterIndex: number;
     monastery: Monastery;
     onPointChange: (points: number, character: Character) => void;
 };
@@ -58,6 +58,7 @@ export default class ChapterView extends React.Component<
                         key={"additional"}
                         character={this.props.character}
                         monastery={this.props.monastery}
+                        chapterIndex={this.props.chapterIndex}
                         onAddGift={this.addGift}
                     />
                 </Row>

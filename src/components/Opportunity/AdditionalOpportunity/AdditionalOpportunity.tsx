@@ -7,9 +7,11 @@ import { Gift } from "data/types/schemas/giftSchema";
 import Database from "util/Database";
 import PouchDB from "pouchdb";
 import Assertions from "util/Assertions";
+import { Item, Menu, MenuProvider } from "react-contexify";
 
 type AdditionalOpportunityProps = {
     character: Character;
+    chapterIndex: number;
     monastery: Monastery;
     onAddGift: (gift: Gift) => void;
 };
@@ -30,6 +32,7 @@ export default class AdditionalOpportunity extends React.Component<
         this.state = state;
 
         this.showAddMenu = this.showAddMenu.bind(this);
+        this.addGift = this.addGift.bind(this);
     }
 
     componentDidMount(): void {
@@ -54,13 +57,21 @@ export default class AdditionalOpportunity extends React.Component<
     }
 
     render() {
+        let menuId = this.props.character._id + " " + this.props.chapterIndex;
         return (
-            <Opportunity
-                onClick={this.showAddMenu}
-                imageUrl={"misc/additional.png"}
-                imageTitle={"Add Support"}
-                isSelected={false}
-            />
+            <>
+                <Menu id={menuId}>
+                    <Item>Tasty Baked Treat</Item>
+                </Menu>
+                <MenuProvider event={"onClick"} id={menuId}>
+                    <Opportunity
+                        onSelect={() => {}}
+                        imageUrl={"misc/additional.png"}
+                        imageTitle={"Add Support"}
+                        isSelected={false}
+                    />
+                </MenuProvider>
+            </>
         );
     }
 
@@ -70,5 +81,9 @@ export default class AdditionalOpportunity extends React.Component<
         );
         Assertions.isDefined(treat, "tasty-baked-treat does not exist");
         this.props.onAddGift(treat);
+    }
+
+    addGift(prop: any) {
+        console.log(prop);
     }
 }

@@ -29,7 +29,7 @@ export default class GiftOpportunity extends React.Component<
     render() {
         return (
             <Opportunity
-                onClick={this.opportunitySelected}
+                onSelect={this.opportunitySelected}
                 imageUrl={this.props.gift.imageUrl}
                 imageTitle={this.props.gift.name}
                 isSelected={this.state.isSelected}

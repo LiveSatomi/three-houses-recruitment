@@ -31,27 +31,23 @@ export default class ChapterTable extends React.Component<ChapterTableProps> {
                                     .find((route) => {
                                         return route.id === "white-clouds";
                                     })
-                                    ?.chapters.map(
-                                        (chapter: Chapter, index) => {
-                                            return (
-                                                <ChapterView
-                                                    key={
-                                                        char._id +
-                                                        "_white-clouds_" +
-                                                        index
-                                                    }
-                                                    character={char}
-                                                    chapter={chapter}
-                                                    monastery={
-                                                        this.props.monastery
-                                                    }
-                                                    onPointChange={
-                                                        this.handlePointChange
-                                                    }
-                                                />
-                                            );
-                                        }
-                                    )}
+                                    ?.chapters.map((_: Chapter, index) => {
+                                        return (
+                                            <ChapterView
+                                                key={
+                                                    char._id +
+                                                    "_white-clouds_" +
+                                                    index
+                                                }
+                                                character={char}
+                                                chapterIndex={index}
+                                                monastery={this.props.monastery}
+                                                onPointChange={
+                                                    this.handlePointChange
+                                                }
+                                            />
+                                        );
+                                    })}
                             </Row>
                         );
                     })}
