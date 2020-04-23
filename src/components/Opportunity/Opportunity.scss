@@ -3,10 +3,7 @@
 .jm-Opportunity {
     padding-left: map-get($spacers, 0);
     padding-right: map-get($spacers, 0);
-    min-height: 80px;
-    img {
-        width: 100%;
-    }
+    max-width: 80px;
 
     &__selected {
         position: absolute;

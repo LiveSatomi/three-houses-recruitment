@@ -3,11 +3,8 @@ import bemNames from "util/bemnames";
 import "./Chapter.scss";
 import { Col, Row } from "react-bootstrap";
 import { Character } from "data/types/schemas/characterSchema";
-import Database from "util/Database";
-import PouchDB from "pouchdb";
-import Assertions from "util/Assertions";
-import { Gift, GiftId } from "data/types/schemas/giftSchema";
-import { Chapter, Monastery } from "data/types/schemas/monasterySchema";
+import { Gift } from "data/types/schemas/giftSchema";
+import { Monastery } from "data/types/schemas/monasterySchema";
 import GiftOpportunity from "../Opportunity/GiftOpportunity/GiftOpportunity";
 import AdditionalOpportunity from "../Opportunity/AdditionalOpportunity/AdditionalOpportunity";
 
@@ -25,7 +22,7 @@ type ChapterState = {
     pointTotal: number;
 };
 
-export default class ChapterView extends React.Component<
+export default class Chapter extends React.Component<
     ChapterProps,
     ChapterState
 > {

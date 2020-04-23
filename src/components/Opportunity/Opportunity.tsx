@@ -1,7 +1,7 @@
 import * as React from "react";
 import bemNames from "util/bemnames";
 import "./Opportunity.scss";
-import { Col } from "react-bootstrap";
+import { Col, Image } from "react-bootstrap";
 
 const bem = bemNames.create("Opportunity");
 
@@ -59,7 +59,7 @@ export default class Opportunity extends React.Component<
         }
         return (
             <>
-                <img src={this.state.image} title={title} alt={title} />
+                <Image fluid src={this.state.image} title={title} alt={title} />
                 {selectedMarker}
             </>
         );

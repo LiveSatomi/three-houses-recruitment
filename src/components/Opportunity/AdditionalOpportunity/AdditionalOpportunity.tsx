@@ -8,6 +8,7 @@ import Database from "util/Database";
 import PouchDB from "pouchdb";
 import Assertions from "util/Assertions";
 import { Item, Menu, MenuProvider } from "react-contexify";
+import { MenuItemEventHandler } from "react-contexify/lib/types";
 
 type AdditionalOpportunityProps = {
     character: Character;
@@ -24,12 +25,11 @@ export default class AdditionalOpportunity extends React.Component<
     AdditionalOpportunityProps,
     AdditionalOpportunityState
 > {
-    constructor(
-        props: AdditionalOpportunityProps,
-        state: AdditionalOpportunityState
-    ) {
+    constructor(props: AdditionalOpportunityProps) {
         super(props);
-        this.state = state;
+        this.state = {
+            possibleOpportunities: [],
+        };
 
         this.showAddMenu = this.showAddMenu.bind(this);
         this.addGift = this.addGift.bind(this);
@@ -58,10 +58,26 @@ export default class AdditionalOpportunity extends React.Component<
 
     render() {
         let menuId = this.props.character._id + " " + this.props.chapterIndex;
+
+        let item = (props: { gift: Gift }) => {
+            return (
+                <Item data={props.gift} onClick={this.addGift}>
+                    Tasty Baked Treat
+                </Item>
+            );
+        };
+        if (this.state.possibleOpportunities.length === 0) {
+            return <span>loading</span>;
+        }
+
         return (
             <>
                 <Menu id={menuId}>
-                    <Item>Tasty Baked Treat</Item>
+                    {item({
+                        gift: this.state.possibleOpportunities.find(
+                            (g) => g._id === "tasty-baked-treat"
+                        )!,
+                    })}
                 </Menu>
                 <MenuProvider event={"onClick"} id={menuId}>
                     <Opportunity
@@ -83,7 +99,7 @@ export default class AdditionalOpportunity extends React.Component<
         this.props.onAddGift(treat);
     }
 
-    addGift(prop: any) {
-        console.log(prop);
+    addGift(eventHandler: MenuItemEventHandler) {
+        this.props.onAddGift(eventHandler.props as Gift);
     }
 }

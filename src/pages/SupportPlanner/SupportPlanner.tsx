@@ -1,7 +1,7 @@
 import * as React from "react";
 import HouseSelector from "components/HouseSelector/HouseSelector";
 import PageSelector from "components/PageSelector/PageSelector";
-import CharacterTable from "../../components/CharacterTable/CharacterTable";
+import PlannerTable from "components/PlannerTable/PlannerTable";
 import { Container } from "react-bootstrap";
 
 type SupportPlanningProps = {};
@@ -12,7 +12,7 @@ class SupportPlanner extends React.Component<SupportPlanningProps> {
             <Container>
                 <HouseSelector />
                 <PageSelector />
-                <CharacterTable />
+                <PlannerTable />
             </Container>
         );
     }

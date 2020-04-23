@@ -1,13 +1,8 @@
 @import "src/themeFunctions";
 
 .jm-Chapter {
-    @include character-bar-height();
-
     &__opportunity {
         padding-left: map-get($spacers, 0);
         padding-right: map-get($spacers, 0);
-        img {
-            width: 100%;
-        }
     }
 }

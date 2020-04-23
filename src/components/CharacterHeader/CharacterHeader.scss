@@ -1,20 +1,15 @@
 @import "src/themeFunctions";
 
 .jm-CharacterHeader {
-    @include character-bar-height();
+    z-index: 1;
+    // Opaque white
+    background: #ffffffff;
 
     &__portrait {
-        width: auto;
-        height: 100%;
         padding: {
             left: 0;
             right: 0;
         }
-    }
-
-    img {
-        width: auto;
-        height: 100%;
     }
 
     &__stats {

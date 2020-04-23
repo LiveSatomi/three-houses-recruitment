@@ -1,11 +1,12 @@
 import * as React from "react";
 import bemNames from "util/bemnames";
 import "./CharacterHeader.scss";
-import { Col, Row } from "react-bootstrap";
+import { Image, Col, Row } from "react-bootstrap";
 
 const bem = bemNames.create("CharacterHeader");
 
 type CharacterHeaderProps = {
+    anchor: number;
     name: string;
     portraitUrl: string;
     points: number;
@@ -35,10 +36,14 @@ export default class CharacterHeader extends React.Component<
 
     render() {
         return (
-            <Col className={bem.b("col-12")}>
+            <Col className={bem.b("col-4")} style={{ left: this.props.anchor }}>
                 <Row className={"h-100"}>
                     <Col className={bem.e("portrait")}>
-                        <img src={this.state.image} alt={this.props.name} />
+                        <Image
+                            fluid
+                            src={this.state.image}
+                            alt={this.props.name}
+                        />
                     </Col>
                     <Col className={bem.e("stats")}>
                         <div className={"border"}>

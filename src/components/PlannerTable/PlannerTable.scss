@@ -1,0 +1,11 @@
+.jm-PlannerTable {
+    > .col {
+        overflow: {
+            x: auto;
+            y: hidden;
+        }
+    }
+    &__bar {
+        flex-wrap: nowrap;
+    }
+}

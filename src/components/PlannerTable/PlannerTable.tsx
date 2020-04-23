@@ -1,8 +1,7 @@
 import * as React from "react";
 import bemNames from "util/bemnames";
-import "./CharacterTable.scss";
+import "./PlannerTable.scss";
 import CharacterHeader from "components/CharacterHeader/CharacterHeader";
-import ChapterTable from "components/ChapterTable/ChapterTable";
 import { Col, Row } from "react-bootstrap";
 import Database from "util/Database";
 import PouchDB from "pouchdb";
@@ -10,27 +9,30 @@ import { Character } from "data/types/schemas/characterSchema";
 import Assertions from "util/Assertions";
 import CharacterSelection from "data/types/CharacterSelection";
 import { Monastery } from "data/types/schemas/monasterySchema";
+import Chapter from "../Chapter/Chapter";
 
-const bem = bemNames.create("CharacterTable");
+const bem = bemNames.create("PlannerTable");
 
-type CharacterTableProps = {};
+type PlannerTableProps = {};
 
-type CharacterTableState = {
+type PlannerTableState = {
     characters: Character[];
     characterSelections: CharacterSelection[];
     monastery?: Monastery;
+    scroll: number;
 };
 
-export default class CharacterTable extends React.Component<
-    CharacterTableProps,
-    CharacterTableState
+export default class PlannerTable extends React.Component<
+    PlannerTableProps,
+    PlannerTableState
 > {
-    constructor(props: CharacterTableProps) {
+    constructor(props: PlannerTableProps) {
         super(props);
         this.state = {
             characters: [],
             characterSelections: [],
             monastery: undefined,
+            scroll: 0,
         };
 
         this.componentDidMount = this.componentDidMount.bind(this);
@@ -72,25 +74,52 @@ export default class CharacterTable extends React.Component<
     }
 
     render() {
+        if (this.state.monastery === undefined) {
+            return <span>Loading...</span>;
+        }
         return (
-            <Row className={bem.b()}>
-                <Col xs={3}>{this.createCharacters()}</Col>
-                <Col className={bem.e("table")}>{this.getChapterTable()}</Col>
-            </Row>
-        );
-    }
-
-    createCharacters(): React.ReactElement {
-        return (
-            <Row>
-                {this.state.characters.map((char, i) => (
-                    <CharacterHeader
-                        key={char._id}
-                        name={char.name}
-                        portraitUrl={char.portraitUrl}
-                        points={this.state.characterSelections[i].points || 0}
-                    />
-                ))}
+            <Row
+                className={bem.b()}
+                onScroll={(e: any) => {
+                    this.setState({ scroll: e.nativeEvent.target.scrollLeft });
+                }}
+            >
+                <Col>
+                    {this.state.characters.map((char, i) => {
+                        return (
+                            <Row className={bem.e("bar")} key={char._id}>
+                                <CharacterHeader
+                                    anchor={this.state.scroll}
+                                    name={char.name}
+                                    portraitUrl={char.portraitUrl}
+                                    points={
+                                        this.state.characterSelections[i]
+                                            .points || 0
+                                    }
+                                />
+                                {this.state
+                                    .monastery!.routes.find((route) => {
+                                        return route.id === "white-clouds";
+                                    })!
+                                    .chapters.map((_, i) => {
+                                        return (
+                                            <Chapter
+                                                key={char._id + " chapter" + i}
+                                                character={char}
+                                                chapterIndex={i}
+                                                monastery={
+                                                    this.state.monastery!
+                                                }
+                                                onPointChange={
+                                                    this.handlePointChange
+                                                }
+                                            />
+                                        );
+                                    })}
+                            </Row>
+                        );
+                    })}
+                </Col>
             </Row>
         );
     }
@@ -103,22 +132,5 @@ export default class CharacterTable extends React.Component<
         this.setState({
             characterSelections: characterSelections,
         });
-    }
-
-    private getChapterTable() {
-        if (
-            this.state.monastery === undefined ||
-            this.state.characters === undefined
-        ) {
-            return <div>Loading</div>;
-        } else {
-            return (
-                <ChapterTable
-                    characters={this.state.characters}
-                    monastery={this.state.monastery}
-                    onPointChange={this.handlePointChange}
-                />
-            );
-        }
     }
 }
