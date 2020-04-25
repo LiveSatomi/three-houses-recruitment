@@ -1,17 +1,18 @@
 import * as React from "react";
 import "./GiftOpportunity.scss";
-import { Gift } from "data/types/schemas/giftSchema";
+import { Gift, GiftId } from "data/types/schemas/giftSchema";
 import { Character } from "data/types/schemas/characterSchema";
 import Opportunity from "../Opportunity";
+import Database from "../../../util/Database";
 
 type GiftOpportunityProps = {
-    gift: Gift;
+    gift: GiftId;
     character: Character;
     onWorthChanged: (change: number) => void;
 };
 
 type GiftOpportunityState = {
-    image: string;
+    gift: Gift;
     isSelected: boolean;
 };
 
@@ -26,12 +27,23 @@ export default class GiftOpportunity extends React.Component<
         this.opportunitySelected = this.opportunitySelected.bind(this);
     }
 
+    componentDidMount(): void {
+        let datbase = new Database();
+        datbase.initialize().then(() => {
+            datbase.fetchGift(this.props.gift).then((gift) => {
+                this.setState({
+                    gift: gift,
+                });
+            });
+        });
+    }
+
     render() {
         return (
             <Opportunity
                 onSelect={this.opportunitySelected}
-                imageUrl={this.props.gift.imageUrl}
-                imageTitle={this.props.gift.name}
+                imageUrl={this.state.gift.imageUrl}
+                imageTitle={this.state.gift.name}
                 isSelected={this.state.isSelected}
             />
         );
@@ -43,7 +55,7 @@ export default class GiftOpportunity extends React.Component<
                 isSelected: !this.state.isSelected,
             },
             () => {
-                if (this.props.character.gifts.includes(this.props.gift._id)) {
+                if (this.props.character.gifts.includes(this.state.gift._id)) {
                     this.props.onWorthChanged(
                         20 * (this.state.isSelected ? 1 : -1)
                     );

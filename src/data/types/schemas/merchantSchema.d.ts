@@ -31,7 +31,7 @@ export type GiftId =
 /**
  * Fire Emblem Merchant Schema
  */
-export interface Gift {
+export interface Merchant {
     _id: MerchantId;
     /**
      * Merchant name

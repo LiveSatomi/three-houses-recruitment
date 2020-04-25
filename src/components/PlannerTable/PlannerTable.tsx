@@ -106,6 +106,7 @@ export default class PlannerTable extends React.Component<
                                             <Chapter
                                                 key={char._id + " chapter" + i}
                                                 character={char}
+                                                route={"white-clouds"}
                                                 chapterIndex={i}
                                                 monastery={
                                                     this.state.monastery!

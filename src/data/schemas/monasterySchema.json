@@ -23,7 +23,7 @@
                 "facilities",
                 "lostItem",
                 "dialog",
-                "merchant"
+                "merchants"
             ],
             "additionalProperties": false,
             "properties": {
@@ -97,7 +97,7 @@
                         }
                     }
                 },
-                "merchant": {
+                "merchants": {
                     "type": "array",
                     "items": {
                         "type": "object",

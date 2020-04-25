@@ -28,7 +28,14 @@
                             "answer": ""
                         }
                     ],
-                    "merchant": [
+                    "merchants": [{
+                        "id": "eastern",
+                        "available": true
+                    },
+                        {
+                            "id": "southern",
+                            "available": true
+                        }
                     ]
                 },
                 {
@@ -54,7 +61,7 @@
                             "answer": ""
                         }
                     ],
-                    "merchant": [
+                    "merchants": [
                     ]
                 },{
                     "facilities": [
@@ -79,7 +86,7 @@
                             "answer": ""
                         }
                     ],
-                    "merchant": [
+                    "merchants": [
                     ]
                 }
             ]

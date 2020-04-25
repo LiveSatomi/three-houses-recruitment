@@ -63,7 +63,7 @@ export interface Chapter {
         conversation: string;
         answer: string;
     }[];
-    merchant: {
+    merchants: {
         id: MerchantId;
         available: boolean;
     }[];

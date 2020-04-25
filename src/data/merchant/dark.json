@@ -3,7 +3,7 @@
     "name": "Dark Merchant",
     "wares": [
         {
-            "id": "ancient-coin",
+            "id": "ceremonial-sword",
             "price": 300
         }
     ]
