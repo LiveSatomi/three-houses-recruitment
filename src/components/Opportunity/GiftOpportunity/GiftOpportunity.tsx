@@ -3,7 +3,7 @@ import "./GiftOpportunity.scss";
 import { Gift, GiftId } from "data/types/schemas/giftSchema";
 import { Character } from "data/types/schemas/characterSchema";
 import Opportunity from "../Opportunity";
-import Database from "../../../util/Database";
+import Database from "util/Database";
 
 type GiftOpportunityProps = {
     gift: GiftId;
@@ -25,9 +25,9 @@ export default class GiftOpportunity extends React.Component<GiftOpportunityProp
     }
 
     componentDidMount(): void {
-        let datbase = new Database();
-        datbase.initialize().then(() => {
-            datbase.fetchGift(this.props.gift).then((gift) => {
+        let database = new Database();
+        database.initialize().then(() => {
+            database.fetchGift(this.props.gift).then((gift) => {
                 this.setState({
                     gift: gift,
                 });

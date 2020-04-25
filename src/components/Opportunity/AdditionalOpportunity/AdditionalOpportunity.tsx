@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ReactElement } from "react";
 import "./AdditionalOpportunity.scss";
 import { Character } from "data/types/schemas/characterSchema";
 import Opportunity from "../Opportunity";
@@ -10,7 +11,6 @@ import { Item, Menu, MenuProvider, Submenu } from "react-contexify";
 import { MenuItemEventHandler } from "react-contexify/lib/types";
 import { Merchant } from "../../../data/types/schemas/merchantSchema";
 import GiftSource from "../../../data/types/GiftSource";
-import { ReactElement } from "react";
 import GiftItem from "./GiftItem";
 
 type AdditionalOpportunityProps = {
@@ -94,9 +94,9 @@ export default class AdditionalOpportunity extends React.Component<
             merchantMenu = null;
         }
 
-        let item = (props: { gift: GiftSource }) => {
-            return (
-                <>
+        return (
+            <>
+                <Menu style={{ zIndex: 2 }} id={menuId}>
                     {merchantMenu}
                     <Submenu label={"Facilities"}>
                         <Item>Share a Meal</Item>
@@ -110,16 +110,6 @@ export default class AdditionalOpportunity extends React.Component<
                     <Submenu label={"Quests"}>
                         <Item>Share a Meal</Item>
                     </Submenu>
-                </>
-            );
-        };
-
-        return (
-            <>
-                <Menu style={{ zIndex: 2 }} id={menuId}>
-                    {item({
-                        gift: this.state.merchantWares.find((g) => g.gift === "tasty-baked-treat")!,
-                    })}
                 </Menu>
                 <MenuProvider event={"onClick"} id={menuId}>
                     <Opportunity
