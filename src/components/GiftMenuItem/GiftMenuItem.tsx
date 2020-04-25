@@ -3,20 +3,23 @@ import { Gift } from "data/types/schemas/giftSchema";
 import Database from "util/Database";
 import { Item } from "react-contexify";
 import GiftSource from "data/types/GiftSource";
+import { MenuItemEventHandler } from "react-contexify/lib/types";
 
-type GiftItemProps = {
+type GiftMenuItemProps = {
     giftSource: GiftSource;
+    onAddGift: (gift: GiftSource) => void;
 };
 
-type GiftItemState = {
+type GiftMenuItemState = {
     gift: Gift;
     image: string;
 };
 
-export default class GiftItem extends React.Component<GiftItemProps, GiftItemState> {
-    constructor(props: GiftItemProps, state: GiftItemState) {
+export default class GiftMenuItem extends React.Component<GiftMenuItemProps, GiftMenuItemState> {
+    constructor(props: GiftMenuItemProps, state: GiftMenuItemState) {
         super(props);
         this.state = state;
+        this.addGift = this.addGift.bind(this);
     }
 
     componentDidMount(): void {
@@ -41,7 +44,15 @@ export default class GiftItem extends React.Component<GiftItemProps, GiftItemSta
         if (this.state.gift === undefined) {
             return <Item>{this.props.giftSource.gift}</Item>;
         } else {
-            return <Item>{this.state.gift.name}</Item>;
+            return (
+                <Item onClick={this.addGift} data={this.props.giftSource}>
+                    {this.state.gift.name}
+                </Item>
+            );
         }
+    }
+
+    addGift(eventHandler: MenuItemEventHandler) {
+        this.props.onAddGift(eventHandler.props as GiftSource);
     }
 }

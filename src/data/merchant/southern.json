@@ -5,6 +5,10 @@
         {
             "id": "armored-bear-stuffy",
             "price": 300
+        },
+        {
+            "id": "tasty-baked-treat",
+            "price": 100
         }
     ]
 }

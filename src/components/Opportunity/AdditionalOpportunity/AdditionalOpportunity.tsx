@@ -1,17 +1,11 @@
 import * as React from "react";
-import { ReactElement } from "react";
 import "./AdditionalOpportunity.scss";
 import { Character } from "data/types/schemas/characterSchema";
 import Opportunity from "../Opportunity";
 import { Monastery, RouteId } from "data/types/schemas/monasterySchema";
-import Database from "util/Database";
-import PouchDB from "pouchdb";
-import Assertions from "util/Assertions";
 import { Item, Menu, MenuProvider, Submenu } from "react-contexify";
-import { MenuItemEventHandler } from "react-contexify/lib/types";
-import { Merchant } from "../../../data/types/schemas/merchantSchema";
-import GiftSource from "../../../data/types/GiftSource";
-import GiftItem from "./GiftItem";
+import GiftSource from "data/types/GiftSource";
+import MerchantMenu from "components/MerchantMenu/MerchantMenu";
 
 type AdditionalOpportunityProps = {
     character: Character;
@@ -21,10 +15,7 @@ type AdditionalOpportunityProps = {
     onAddGift: (gift: GiftSource) => void;
 };
 
-type AdditionalOpportunityState = {
-    merchantWares: GiftSource[];
-    merchants: Merchant[];
-};
+type AdditionalOpportunityState = {};
 
 export default class AdditionalOpportunity extends React.Component<
     AdditionalOpportunityProps,
@@ -32,72 +23,25 @@ export default class AdditionalOpportunity extends React.Component<
 > {
     constructor(props: AdditionalOpportunityProps) {
         super(props);
-        this.state = {
-            merchantWares: [],
-            merchants: [],
-        };
 
-        this.showAddMenu = this.showAddMenu.bind(this);
         this.addGift = this.addGift.bind(this);
-    }
-
-    componentDidMount(): void {
-        let database = new Database();
-        database.initialize().then(() => {
-            Promise.all(
-                this.props.monastery.routes
-                    .find((route) => route.id === "white-clouds")!
-                    .chapters[this.props.chapterIndex].merchants.map((merchant) => {
-                        return database.fetchMerchant(merchant.id);
-                    })
-            ).then((values: PouchDB.Core.Document<Merchant>[]) => {
-                this.setState({
-                    merchants: values,
-                    merchantWares: values
-                        .map((merchant) => {
-                            return merchant.wares.map(
-                                (ware) =>
-                                    new GiftSource(ware.id, merchant._id, this.props.route, this.props.chapterIndex)
-                            );
-                        })
-                        .flat(),
-                });
-            });
-        });
     }
 
     render() {
         let menuId = this.props.character._id + " " + this.props.chapterIndex;
 
-        let merchantMenu: ReactElement | null;
-
-        if (this.state.merchantWares.length !== 0) {
-            let byMerchant = this.state.merchantWares.reduce((ac, source) => {
-                return { ...ac, [source.merchant as string]: source };
-            }, {});
-            merchantMenu = (
-                <Submenu label={"Merchants"}>
-                    {Object.keys(byMerchant).map((merchant: string) => {
-                        return (
-                            <Submenu key={merchant} label={this.state.merchants.find((m) => m._id === merchant)!.name}>
-                                {this.state.merchantWares
-                                    .filter((source) => merchant === source.merchant)
-                                    .map((source) => (
-                                        <GiftItem key={source.getId()} giftSource={source} />
-                                    ))}
-                            </Submenu>
-                        );
-                    })}
-                </Submenu>
-            );
-        } else {
-            merchantMenu = null;
-        }
-
         return (
             <>
                 <Menu style={{ zIndex: 2 }} id={menuId}>
-                    {merchantMenu}
+                    <MerchantMenu
+                        character={this.props.character}
+                        chapterIndex={this.props.chapterIndex}
+                        route={this.props.route}
+                        merchants={this.props.monastery.routes
+                            .find((route) => route.id === "white-clouds")!
+                            .chapters[this.props.chapterIndex].merchants.map((m) => m.id)}
+                        onAddGift={this.addGift}
+                    />
                     <Submenu label={"Facilities"}>
                         <Item>Share a Meal</Item>
                     </Submenu>
@@ -123,13 +67,7 @@ export default class AdditionalOpportunity extends React.Component<
         );
     }
 
-    showAddMenu() {
-        let treat = this.state.merchantWares.find((g) => g.gift === "tasty-baked-treat");
-        Assertions.isDefined(treat, "tasty-baked-treat does not exist");
-        this.props.onAddGift(treat);
-    }
-
-    addGift(eventHandler: MenuItemEventHandler) {
-        this.props.onAddGift(eventHandler.props as GiftSource);
+    addGift(giftSource: GiftSource) {
+        this.props.onAddGift(giftSource);
     }
 }

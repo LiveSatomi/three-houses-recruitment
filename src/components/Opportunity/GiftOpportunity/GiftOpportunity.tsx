@@ -36,14 +36,18 @@ export default class GiftOpportunity extends React.Component<GiftOpportunityProp
     }
 
     render() {
-        return (
-            <Opportunity
-                onSelect={this.opportunitySelected}
-                imageUrl={this.state.gift.imageUrl}
-                imageTitle={this.state.gift.name}
-                isSelected={this.state.isSelected}
-            />
-        );
+        if (this.state.gift === undefined) {
+            return <span>Loading</span>;
+        } else {
+            return (
+                <Opportunity
+                    onSelect={this.opportunitySelected}
+                    imageUrl={this.state.gift.imageUrl}
+                    imageTitle={this.state.gift.name}
+                    isSelected={this.state.isSelected}
+                />
+            );
+        }
     }
 
     private opportunitySelected() {
