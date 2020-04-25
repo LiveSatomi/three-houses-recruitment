@@ -1,6 +1,6 @@
 {
     "_id": "eastern",
-    "name": "Eastern Merchant",
+    "name": "Eastern",
     "wares": [
         {
             "id": "ancient-coin",

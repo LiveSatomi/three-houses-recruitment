@@ -3,7 +3,6 @@ import bemNames from "util/bemnames";
 import "./Chapter.scss";
 import { Col, Row } from "react-bootstrap";
 import { Character } from "data/types/schemas/characterSchema";
-import { Gift } from "data/types/schemas/giftSchema";
 import { Monastery, RouteId } from "data/types/schemas/monasterySchema";
 import GiftOpportunity from "../Opportunity/GiftOpportunity/GiftOpportunity";
 import AdditionalOpportunity from "../Opportunity/AdditionalOpportunity/AdditionalOpportunity";

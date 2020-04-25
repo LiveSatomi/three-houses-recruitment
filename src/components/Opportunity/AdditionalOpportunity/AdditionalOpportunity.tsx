@@ -3,7 +3,6 @@ import "./AdditionalOpportunity.scss";
 import { Character } from "data/types/schemas/characterSchema";
 import Opportunity from "../Opportunity";
 import { Monastery, RouteId } from "data/types/schemas/monasterySchema";
-import { Gift } from "data/types/schemas/giftSchema";
 import Database from "util/Database";
 import PouchDB from "pouchdb";
 import Assertions from "util/Assertions";
@@ -12,6 +11,7 @@ import { MenuItemEventHandler } from "react-contexify/lib/types";
 import { Merchant } from "../../../data/types/schemas/merchantSchema";
 import GiftSource from "../../../data/types/GiftSource";
 import { ReactElement } from "react";
+import GiftItem from "./GiftItem";
 
 type AdditionalOpportunityProps = {
     character: Character;
@@ -23,6 +23,7 @@ type AdditionalOpportunityProps = {
 
 type AdditionalOpportunityState = {
     merchantWares: GiftSource[];
+    merchants: Merchant[];
 };
 
 export default class AdditionalOpportunity extends React.Component<
@@ -33,6 +34,7 @@ export default class AdditionalOpportunity extends React.Component<
         super(props);
         this.state = {
             merchantWares: [],
+            merchants: [],
         };
 
         this.showAddMenu = this.showAddMenu.bind(this);
@@ -50,6 +52,7 @@ export default class AdditionalOpportunity extends React.Component<
                     })
             ).then((values: PouchDB.Core.Document<Merchant>[]) => {
                 this.setState({
+                    merchants: values,
                     merchantWares: values
                         .map((merchant) => {
                             return merchant.wares.map(
@@ -76,11 +79,11 @@ export default class AdditionalOpportunity extends React.Component<
                 <Submenu label={"Merchants"}>
                     {Object.keys(byMerchant).map((merchant: string) => {
                         return (
-                            <Submenu key={merchant} label={merchant}>
+                            <Submenu key={merchant} label={this.state.merchants.find((m) => m._id === merchant)!.name}>
                                 {this.state.merchantWares
                                     .filter((source) => merchant === source.merchant)
                                     .map((source) => (
-                                        <Item key={source.getId()}>{source.gift}</Item>
+                                        <GiftItem key={source.getId()} giftSource={source} />
                                     ))}
                             </Submenu>
                         );
