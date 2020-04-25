@@ -16,10 +16,7 @@ type OpportunityState = {
     image: "";
 };
 
-export default class Opportunity extends React.Component<
-    OpportunityProps,
-    OpportunityState
-> {
+export default class Opportunity extends React.Component<OpportunityProps, OpportunityState> {
     constructor(props: OpportunityProps, state: OpportunityState) {
         super(props);
         this.state = state;
@@ -41,11 +38,7 @@ export default class Opportunity extends React.Component<
 
     render() {
         return (
-            <Col
-                onClick={this.props.onSelect}
-                className={bem.b("border")}
-                xs={2}
-            >
+            <Col onClick={this.props.onSelect} className={bem.b("border")} xs={2}>
                 {this.getContent()}
             </Col>
         );

@@ -22,10 +22,7 @@ type PlannerTableState = {
     scroll: number;
 };
 
-export default class PlannerTable extends React.Component<
-    PlannerTableProps,
-    PlannerTableState
-> {
+export default class PlannerTable extends React.Component<PlannerTableProps, PlannerTableState> {
     constructor(props: PlannerTableProps) {
         super(props);
         this.state = {
@@ -92,10 +89,7 @@ export default class PlannerTable extends React.Component<
                                     anchor={this.state.scroll}
                                     name={char.name}
                                     portraitUrl={char.portraitUrl}
-                                    points={
-                                        this.state.characterSelections[i]
-                                            .points || 0
-                                    }
+                                    points={this.state.characterSelections[i].points || 0}
                                 />
                                 {this.state
                                     .monastery!.routes.find((route) => {
@@ -108,12 +102,8 @@ export default class PlannerTable extends React.Component<
                                                 character={char}
                                                 route={"white-clouds"}
                                                 chapterIndex={i}
-                                                monastery={
-                                                    this.state.monastery!
-                                                }
-                                                onPointChange={
-                                                    this.handlePointChange
-                                                }
+                                                monastery={this.state.monastery!}
+                                                onPointChange={this.handlePointChange}
                                             />
                                         );
                                     })}

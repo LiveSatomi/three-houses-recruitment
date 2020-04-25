@@ -16,10 +16,7 @@ type CharacterHeaderState = {
     image: any;
 };
 
-export default class CharacterHeader extends React.Component<
-    CharacterHeaderProps,
-    CharacterHeaderState
-> {
+export default class CharacterHeader extends React.Component<CharacterHeaderProps, CharacterHeaderState> {
     constructor(props: CharacterHeaderProps, state: CharacterHeaderState) {
         super(props);
         this.state = state;
@@ -39,11 +36,7 @@ export default class CharacterHeader extends React.Component<
             <Col className={bem.b("col-4")} style={{ left: this.props.anchor }}>
                 <Row className={"h-100"}>
                     <Col className={bem.e("portrait")}>
-                        <Image
-                            fluid
-                            src={this.state.image}
-                            alt={this.props.name}
-                        />
+                        <Image fluid src={this.state.image} alt={this.props.name} />
                     </Col>
                     <Col className={bem.e("stats")}>
                         <div className={"border"}>

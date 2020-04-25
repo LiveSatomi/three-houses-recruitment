@@ -24,10 +24,7 @@ type ChapterState = {
     pointTotal: number;
 };
 
-export default class Chapter extends React.Component<
-    ChapterProps,
-    ChapterState
-> {
+export default class Chapter extends React.Component<ChapterProps, ChapterState> {
     constructor(props: ChapterProps) {
         super(props);
         this.state = {
@@ -43,18 +40,16 @@ export default class Chapter extends React.Component<
         return (
             <Col className={bem.b("border")} xs={6}>
                 <Row>
-                    {this.state.shownOpportunities.map(
-                        (gift: GiftSource, index) => {
-                            return (
-                                <GiftOpportunity
-                                    key={gift.gift + "+" + index}
-                                    gift={gift.gift}
-                                    character={this.props.character}
-                                    onWorthChanged={this.worthUpdated}
-                                />
-                            );
-                        }
-                    )}
+                    {this.state.shownOpportunities.map((gift: GiftSource, index) => {
+                        return (
+                            <GiftOpportunity
+                                key={gift.gift + "+" + index}
+                                gift={gift.gift}
+                                character={this.props.character}
+                                onWorthChanged={this.worthUpdated}
+                            />
+                        );
+                    })}
                     <AdditionalOpportunity
                         key={"additional"}
                         character={this.props.character}
@@ -74,10 +69,7 @@ export default class Chapter extends React.Component<
                 pointTotal: this.state.pointTotal + worth,
             },
             () => {
-                this.props.onPointChange(
-                    this.state.pointTotal,
-                    this.props.character
-                );
+                this.props.onPointChange(this.state.pointTotal, this.props.character);
             }
         );
     }

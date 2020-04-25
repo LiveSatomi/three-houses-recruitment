@@ -45,23 +45,16 @@ export default class AdditionalOpportunity extends React.Component<
             Promise.all(
                 this.props.monastery.routes
                     .find((route) => route.id === "white-clouds")!
-                    .chapters[this.props.chapterIndex].merchants.map(
-                        (merchant) => {
-                            return database.fetchMerchant(merchant.id);
-                        }
-                    )
+                    .chapters[this.props.chapterIndex].merchants.map((merchant) => {
+                        return database.fetchMerchant(merchant.id);
+                    })
             ).then((values: PouchDB.Core.Document<Merchant>[]) => {
                 this.setState({
                     merchantWares: values
                         .map((merchant) => {
                             return merchant.wares.map(
                                 (ware) =>
-                                    new GiftSource(
-                                        ware.id,
-                                        merchant._id,
-                                        this.props.route,
-                                        this.props.chapterIndex
-                                    )
+                                    new GiftSource(ware.id, merchant._id, this.props.route, this.props.chapterIndex)
                             );
                         })
                         .flat(),
@@ -85,13 +78,9 @@ export default class AdditionalOpportunity extends React.Component<
                         return (
                             <Submenu key={merchant} label={merchant}>
                                 {this.state.merchantWares
-                                    .filter(
-                                        (source) => merchant === source.merchant
-                                    )
+                                    .filter((source) => merchant === source.merchant)
                                     .map((source) => (
-                                        <Item key={source.getId()}>
-                                            {source.gift}
-                                        </Item>
+                                        <Item key={source.getId()}>{source.gift}</Item>
                                     ))}
                             </Submenu>
                         );
@@ -126,9 +115,7 @@ export default class AdditionalOpportunity extends React.Component<
             <>
                 <Menu style={{ zIndex: 2 }} id={menuId}>
                     {item({
-                        gift: this.state.merchantWares.find(
-                            (g) => g.gift === "tasty-baked-treat"
-                        )!,
+                        gift: this.state.merchantWares.find((g) => g.gift === "tasty-baked-treat")!,
                     })}
                 </Menu>
                 <MenuProvider event={"onClick"} id={menuId}>
@@ -144,9 +131,7 @@ export default class AdditionalOpportunity extends React.Component<
     }
 
     showAddMenu() {
-        let treat = this.state.merchantWares.find(
-            (g) => g.gift === "tasty-baked-treat"
-        );
+        let treat = this.state.merchantWares.find((g) => g.gift === "tasty-baked-treat");
         Assertions.isDefined(treat, "tasty-baked-treat does not exist");
         this.props.onAddGift(treat);
     }

@@ -24,9 +24,7 @@ export default class Database {
     initialize() {
         return this.characterDb
             .allDocs()
-            .then((all: PouchDB.Core.AllDocsResponse<Character>):
-                | Promise<true>
-                | boolean => {
+            .then((all: PouchDB.Core.AllDocsResponse<Character>): Promise<true> | boolean => {
                 if (all.total_rows === 0) {
                     return Promise.all([
                         this.populateCharacters(),
@@ -73,21 +71,15 @@ export default class Database {
     }
 
     private populateCharacters(): Promise<boolean> {
-        return Promise.all(
-            characters.map((char) => this.characterDb.put(char))
-        ).then(() => true);
+        return Promise.all(characters.map((char) => this.characterDb.put(char))).then(() => true);
     }
 
     private populateGifts(): Promise<boolean> {
-        return Promise.all(gifts.map((gift) => this.giftDb.put(gift))).then(
-            () => true
-        );
+        return Promise.all(gifts.map((gift) => this.giftDb.put(gift))).then(() => true);
     }
 
     private populateMerchants(): Promise<boolean> {
-        return Promise.all(
-            merchants.map((merchant) => this.merchantDb.put(merchant))
-        ).then(() => true);
+        return Promise.all(merchants.map((merchant) => this.merchantDb.put(merchant))).then(() => true);
     }
 
     private populateMonastery(): Promise<boolean> {

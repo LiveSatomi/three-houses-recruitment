@@ -12,10 +12,7 @@ $character-bar-heights: (
     xl: 120px,
 );
 
-@mixin character-bar-height(
-    $height-map: $character-bar-heights,
-    $fs-breakpoints: $grid-breakpoints
-) {
+@mixin character-bar-height($height-map: $character-bar-heights, $fs-breakpoints: $grid-breakpoints) {
     @each $fs-breakpoint, $fs-font-size in $height-map {
         @if $fs-breakpoint == null {
             min-height: $fs-font-size;

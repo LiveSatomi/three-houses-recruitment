@@ -16,10 +16,7 @@ type GiftOpportunityState = {
     isSelected: boolean;
 };
 
-export default class GiftOpportunity extends React.Component<
-    GiftOpportunityProps,
-    GiftOpportunityState
-> {
+export default class GiftOpportunity extends React.Component<GiftOpportunityProps, GiftOpportunityState> {
     constructor(props: GiftOpportunityProps, state: GiftOpportunityState) {
         super(props);
         this.state = state;
@@ -56,13 +53,9 @@ export default class GiftOpportunity extends React.Component<
             },
             () => {
                 if (this.props.character.gifts.includes(this.state.gift._id)) {
-                    this.props.onWorthChanged(
-                        20 * (this.state.isSelected ? 1 : -1)
-                    );
+                    this.props.onWorthChanged(20 * (this.state.isSelected ? 1 : -1));
                 } else {
-                    this.props.onWorthChanged(
-                        10 * (this.state.isSelected ? 1 : -1)
-                    );
+                    this.props.onWorthChanged(10 * (this.state.isSelected ? 1 : -1));
                 }
             }
         );
