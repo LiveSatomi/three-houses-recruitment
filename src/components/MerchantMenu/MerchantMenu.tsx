@@ -1,12 +1,13 @@
 import { Character } from "data/types/schemas/characterSchema";
 import { RouteId } from "data/types/schemas/monasterySchema";
-import GiftSource from "data/types/GiftSource";
+import GiftSource, { getId } from "data/types/GiftSource";
 import { Merchant, MerchantId } from "data/types/schemas/merchantSchema";
 import * as React from "react";
 import Database from "util/Database";
 import PouchDB from "pouchdb";
 import { Submenu } from "react-contexify";
 import GiftItem from "../GiftMenuItem/GiftMenuItem";
+import isEqual from "lodash/isEqual";
 
 type MerchantMenuProps = {
     character: Character;
@@ -14,6 +15,7 @@ type MerchantMenuProps = {
     route: RouteId;
     merchants: MerchantId[];
     onAddGift: (gift: GiftSource) => void;
+    selected: GiftSource[];
 };
 
 type MerchantMenuState = {
@@ -33,12 +35,12 @@ export default class MerchantMenu extends React.Component<MerchantMenuProps, Mer
     componentDidMount(): void {
         let database = new Database();
         database.initialize().then(() => {
-            Promise.all(
+            return Promise.all(
                 this.props.merchants.map((merchant) => {
                     return database.fetchMerchant(merchant);
                 })
             ).then((values: PouchDB.Core.Document<Merchant>[]) => {
-                this.setState({
+                return this.setState({
                     merchants: values,
                     merchantWares: values
                         .map((merchant) => {
@@ -62,20 +64,23 @@ export default class MerchantMenu extends React.Component<MerchantMenuProps, Mer
                     {this.state.merchants.map((merchant: Merchant) => {
                         return (
                             <Submenu key={merchant._id} label={merchant.name}>
-                                {this.state.merchantWares
-                                    .filter((source) => merchant._id === source.merchant)
-                                    .map((source) => (
-                                        <GiftItem
-                                            key={source.getId()}
-                                            giftSource={source}
-                                            onAddGift={this.props.onAddGift}
-                                        />
-                                    ))}
+                                {this.getItems(merchant)}
                             </Submenu>
                         );
                     })}
                 </Submenu>
             );
         }
+    }
+
+    getItems(merchant: Merchant) {
+        return this.state.merchantWares
+            .filter((source) => merchant._id === source.merchant)
+            .filter((source) => {
+                return !this.props.selected.some((s) => {
+                    return isEqual(s, source);
+                });
+            })
+            .map((source) => <GiftItem key={getId(source)} giftSource={source} onAddGift={this.props.onAddGift} />);
     }
 }

@@ -7,18 +7,22 @@ import { Character } from "data/types/schemas/characterSchema";
 import { Gift, GiftId } from "../data/types/schemas/giftSchema";
 import { Monastery } from "../data/types/schemas/monasterySchema";
 import { Merchant, MerchantId } from "../data/types/schemas/merchantSchema";
+import GiftMatch from "../data/types/GiftMatch";
+import { getId } from "data/types/GiftMatch";
 
 export default class Database {
     private characterDb: PouchDB.Database<Character>;
     private giftDb: PouchDB.Database<Gift>;
     private merchantDb: PouchDB.Database<Merchant>;
     private monasteryDb: PouchDB.Database<Monastery>;
+    private selectionDb: PouchDB.Database<GiftMatch>;
 
     constructor() {
         this.characterDb = new PouchDB("characters");
         this.giftDb = new PouchDB("gifts");
         this.merchantDb = new PouchDB("merchant");
         this.monasteryDb = new PouchDB("monastery");
+        this.selectionDb = new PouchDB("selection");
     }
 
     initialize() {
@@ -84,5 +88,13 @@ export default class Database {
 
     private populateMonastery(): Promise<boolean> {
         return this.monasteryDb.put(monastery as Monastery).then(() => true);
+    }
+
+    addGiftMatch(giftMatch: GiftMatch) {
+        return this.selectionDb.put({ _id: getId(giftMatch), ...giftMatch });
+    }
+
+    fetchSelectedGifts(): Promise<PouchDB.Core.AllDocsResponse<GiftMatch>> {
+        return this.selectionDb.allDocs({ include_docs: true });
     }
 }

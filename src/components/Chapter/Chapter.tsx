@@ -4,9 +4,11 @@ import "./Chapter.scss";
 import { Col, Row } from "react-bootstrap";
 import { Character } from "data/types/schemas/characterSchema";
 import { Monastery, RouteId } from "data/types/schemas/monasterySchema";
-import GiftOpportunity from "../Opportunity/GiftOpportunity/GiftOpportunity";
-import AdditionalOpportunity from "../Opportunity/AdditionalOpportunity/AdditionalOpportunity";
-import GiftSource from "../../data/types/GiftSource";
+import GiftOpportunity from "components/Opportunity/GiftOpportunity/GiftOpportunity";
+import AdditionalOpportunity from "components/Opportunity/AdditionalOpportunity/AdditionalOpportunity";
+import GiftSource from "data/types/GiftSource";
+import Database from "util/Database";
+import GiftMatch from "data/types/GiftMatch";
 
 const bem = bemNames.create("Chapter");
 
@@ -56,6 +58,7 @@ export default class Chapter extends React.Component<ChapterProps, ChapterState>
                         route={this.props.route}
                         chapterIndex={this.props.chapterIndex}
                         onAddGift={this.addGift}
+                        selectedGifts={this.state.shownOpportunities}
                     />
                 </Row>
             </Col>
@@ -77,5 +80,6 @@ export default class Chapter extends React.Component<ChapterProps, ChapterState>
         this.setState({
             shownOpportunities: [...this.state.shownOpportunities, gift],
         });
+        new Database().addGiftMatch(new GiftMatch(gift, this.props.character._id));
     }
 }

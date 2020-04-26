@@ -53,6 +53,7 @@ export default class GiftMenuItem extends React.Component<GiftMenuItemProps, Gif
     }
 
     addGift(eventHandler: MenuItemEventHandler) {
-        this.props.onAddGift(eventHandler.props as GiftSource);
+        let props = eventHandler.props as GiftSource;
+        this.props.onAddGift(new GiftSource(props.gift, props.merchant!, props.route, props.chapter));
     }
 }

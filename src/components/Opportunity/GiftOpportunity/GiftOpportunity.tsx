@@ -28,9 +28,14 @@ export default class GiftOpportunity extends React.Component<GiftOpportunityProp
         let database = new Database();
         database.initialize().then(() => {
             database.fetchGift(this.props.gift).then((gift) => {
-                this.setState({
-                    gift: gift,
-                });
+                this.setState(
+                    {
+                        gift: gift,
+                    },
+                    () => {
+                        this.opportunitySelected();
+                    }
+                );
             });
         });
     }

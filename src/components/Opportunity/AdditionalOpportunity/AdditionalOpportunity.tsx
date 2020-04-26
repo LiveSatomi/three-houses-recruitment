@@ -13,6 +13,7 @@ type AdditionalOpportunityProps = {
     route: RouteId;
     monastery: Monastery;
     onAddGift: (gift: GiftSource) => void;
+    selectedGifts: GiftSource[];
 };
 
 type AdditionalOpportunityState = {};
@@ -41,6 +42,7 @@ export default class AdditionalOpportunity extends React.Component<
                             .find((route) => route.id === "white-clouds")!
                             .chapters[this.props.chapterIndex].merchants.map((m) => m.id)}
                         onAddGift={this.addGift}
+                        selected={this.props.selectedGifts}
                     />
                     <Submenu label={"Facilities"}>
                         <Item>Share a Meal</Item>
