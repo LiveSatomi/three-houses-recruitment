@@ -8,7 +8,7 @@ import { Gift, GiftId } from "../data/types/schemas/giftSchema";
 import { Monastery } from "../data/types/schemas/monasterySchema";
 import { Merchant, MerchantId } from "../data/types/schemas/merchantSchema";
 import GiftMatch from "../data/types/GiftMatch";
-import { getId } from "data/types/GiftMatch";
+import { getId, copy } from "data/types/GiftMatch";
 
 export default class Database {
     private characterDb: PouchDB.Database<Character>;
@@ -94,7 +94,11 @@ export default class Database {
         return this.selectionDb.put({ _id: getId(giftMatch), ...giftMatch });
     }
 
-    fetchSelectedGifts(): Promise<PouchDB.Core.AllDocsResponse<GiftMatch>> {
-        return this.selectionDb.allDocs({ include_docs: true });
+    fetchSelectedGifts(): Promise<GiftMatch[]> {
+        return this.selectionDb.allDocs({ include_docs: true }).then((docs) => {
+            return docs.rows.map((row) => {
+                return copy(row.doc!);
+            });
+        });
     }
 }

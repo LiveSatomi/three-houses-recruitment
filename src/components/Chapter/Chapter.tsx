@@ -9,6 +9,7 @@ import AdditionalOpportunity from "components/Opportunity/AdditionalOpportunity/
 import GiftSource from "data/types/GiftSource";
 import Database from "util/Database";
 import GiftMatch from "data/types/GiftMatch";
+import GiftMenuItem from "../GiftMenuItem/GiftMenuItem";
 
 const bem = bemNames.create("Chapter");
 
@@ -17,11 +18,11 @@ type ChapterProps = {
     route: RouteId;
     chapterIndex: number;
     monastery: Monastery;
-    onPointChange: (points: number, character: Character) => void;
+    onMatchGift: (gift: GiftMatch) => void;
+    selectedOpportunities: GiftMatch[];
 };
 
 type ChapterState = {
-    shownOpportunities: GiftSource[];
     pointTotal: number;
 };
 
@@ -30,10 +31,8 @@ export default class Chapter extends React.Component<ChapterProps, ChapterState>
         super(props);
         this.state = {
             pointTotal: 0,
-            shownOpportunities: [],
         };
 
-        this.worthUpdated = this.worthUpdated.bind(this);
         this.addGift = this.addGift.bind(this);
     }
 
@@ -41,16 +40,22 @@ export default class Chapter extends React.Component<ChapterProps, ChapterState>
         return (
             <Col className={bem.b("border")} xs={6}>
                 <Row>
-                    {this.state.shownOpportunities.map((gift: GiftSource, index) => {
-                        return (
-                            <GiftOpportunity
-                                key={gift.gift + "+" + index}
-                                gift={gift.gift}
-                                character={this.props.character}
-                                onWorthChanged={this.worthUpdated}
-                            />
-                        );
-                    })}
+                    {this.props.selectedOpportunities
+                        .filter(
+                            (match) =>
+                                match.character === this.props.character._id &&
+                                match.giftSource.route === this.props.route &&
+                                match.giftSource.chapter === this.props.chapterIndex
+                        )
+                        .map((gift: GiftMatch, index) => {
+                            return (
+                                <GiftOpportunity
+                                    key={gift.giftSource.gift + "+" + index}
+                                    gift={gift.giftSource.gift}
+                                    character={this.props.character}
+                                />
+                            );
+                        })}
                     <AdditionalOpportunity
                         key={"additional"}
                         character={this.props.character}
@@ -58,28 +63,14 @@ export default class Chapter extends React.Component<ChapterProps, ChapterState>
                         route={this.props.route}
                         chapterIndex={this.props.chapterIndex}
                         onAddGift={this.addGift}
-                        selectedGifts={this.state.shownOpportunities}
+                        selectedGifts={this.props.selectedOpportunities.map((match) => match.giftSource)}
                     />
                 </Row>
             </Col>
         );
     }
 
-    worthUpdated(worth: number) {
-        this.setState(
-            {
-                pointTotal: this.state.pointTotal + worth,
-            },
-            () => {
-                this.props.onPointChange(this.state.pointTotal, this.props.character);
-            }
-        );
-    }
-
     addGift(gift: GiftSource) {
-        this.setState({
-            shownOpportunities: [...this.state.shownOpportunities, gift],
-        });
-        new Database().addGiftMatch(new GiftMatch(gift, this.props.character._id));
+        this.props.onMatchGift(new GiftMatch(gift, this.props.character._id));
     }
 }

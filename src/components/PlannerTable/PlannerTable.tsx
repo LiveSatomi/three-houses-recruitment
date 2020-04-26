@@ -10,6 +10,7 @@ import Assertions from "util/Assertions";
 import CharacterSelection from "data/types/CharacterSelection";
 import { Monastery } from "data/types/schemas/monasterySchema";
 import Chapter from "../Chapter/Chapter";
+import GiftMatch from "../../data/types/GiftMatch";
 
 const bem = bemNames.create("PlannerTable");
 
@@ -18,6 +19,7 @@ type PlannerTableProps = {};
 type PlannerTableState = {
     characters: Character[];
     characterSelections: CharacterSelection[];
+    giftMatches: GiftMatch[];
     monastery?: Monastery;
     scroll: number;
 };
@@ -28,12 +30,14 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
         this.state = {
             characters: [],
             characterSelections: [],
+            giftMatches: [],
             monastery: undefined,
             scroll: 0,
         };
 
         this.componentDidMount = this.componentDidMount.bind(this);
         this.handlePointChange = this.handlePointChange.bind(this);
+        this.handleGiftMatch = this.handleGiftMatch.bind(this);
     }
 
     componentDidMount(): void {
@@ -53,9 +57,17 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
                     characterSelections[i] = characterSelection;
                     return doc;
                 });
-                this.setState({
+                return this.setState({
                     characters: characters,
                     characterSelections: characterSelections,
+                });
+            })
+            .then(() => {
+                return database.fetchSelectedGifts();
+            })
+            .then((fetch) => {
+                this.setState({
+                    giftMatches: fetch,
                 });
             })
             .then(() => {
@@ -103,7 +115,8 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
                                                 route={"white-clouds"}
                                                 chapterIndex={i}
                                                 monastery={this.state.monastery!}
-                                                onPointChange={this.handlePointChange}
+                                                onMatchGift={this.handleGiftMatch}
+                                                selectedOpportunities={this.state.giftMatches}
                                             />
                                         );
                                     })}
@@ -113,6 +126,14 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
                 </Col>
             </Row>
         );
+    }
+
+    handleGiftMatch(giftMatch: GiftMatch) {
+        new Database().addGiftMatch(giftMatch).then(() => {
+            this.setState({
+                giftMatches: [...this.state.giftMatches, giftMatch],
+            });
+        });
     }
 
     handlePointChange(points: number, character: Character) {

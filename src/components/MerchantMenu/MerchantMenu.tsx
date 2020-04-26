@@ -46,7 +46,7 @@ export default class MerchantMenu extends React.Component<MerchantMenuProps, Mer
                         .map((merchant) => {
                             return merchant.wares.map(
                                 (ware) =>
-                                    new GiftSource(ware.id, merchant._id, this.props.route, this.props.chapterIndex)
+                                    new GiftSource(ware.id, this.props.route, this.props.chapterIndex, merchant._id)
                             );
                         })
                         .flat(),

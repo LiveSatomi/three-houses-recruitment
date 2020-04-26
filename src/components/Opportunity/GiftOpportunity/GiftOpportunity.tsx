@@ -8,7 +8,6 @@ import Database from "util/Database";
 type GiftOpportunityProps = {
     gift: GiftId;
     character: Character;
-    onWorthChanged: (change: number) => void;
 };
 
 type GiftOpportunityState = {
@@ -56,17 +55,8 @@ export default class GiftOpportunity extends React.Component<GiftOpportunityProp
     }
 
     private opportunitySelected() {
-        this.setState(
-            {
-                isSelected: !this.state.isSelected,
-            },
-            () => {
-                if (this.props.character.gifts.includes(this.state.gift._id)) {
-                    this.props.onWorthChanged(20 * (this.state.isSelected ? 1 : -1));
-                } else {
-                    this.props.onWorthChanged(10 * (this.state.isSelected ? 1 : -1));
-                }
-            }
-        );
+        this.setState({
+            isSelected: !this.state.isSelected,
+        });
     }
 }

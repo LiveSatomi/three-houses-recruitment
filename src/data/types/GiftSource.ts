@@ -10,7 +10,7 @@ export default class GiftSource {
     route: RouteId;
     chapter: number;
 
-    constructor(gift: GiftId, merchant: MerchantId, route: RouteId, chapter: number) {
+    constructor(gift: GiftId, route: RouteId, chapter: number, merchant?: MerchantId) {
         this.gift = gift;
         this.merchant = merchant;
         this.route = route;
@@ -20,4 +20,8 @@ export default class GiftSource {
 
 export function getId(source: GiftSource): string {
     return source.gift + DELIMITER + source.merchant + DELIMITER + source.route + source.chapter;
+}
+
+export function copy(source: GiftSource): GiftSource {
+    return new GiftSource(source.gift, source.route, source.chapter, source.merchant);
 }
