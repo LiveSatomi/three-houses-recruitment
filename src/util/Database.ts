@@ -2,18 +2,21 @@ import PouchDB from "pouchdb";
 import characters from "data/characters";
 import gifts from "data/gifts";
 import merchants from "data/merchant";
+import facilities from "../data/facility";
 import monastery from "data/monastery/monastery.json";
-import { Character } from "data/types/schemas/characterSchema";
+import { Character, CharacterId } from "data/types/schemas/characterSchema";
 import { Gift, GiftId } from "../data/types/schemas/giftSchema";
 import { Monastery } from "data/types/schemas/monasterySchema";
 import { Merchant, MerchantId } from "data/types/schemas/merchantSchema";
 import Occurrence from "data/types/Occurrence";
 import OccurrenceData from "data/types/OccurrenceData";
+import { Facility, FacilityId } from "../data/types/schemas/facilitySchema";
 
 export default class Database {
     private characterDb: PouchDB.Database<Character>;
     private giftDb: PouchDB.Database<Gift>;
     private merchantDb: PouchDB.Database<Merchant>;
+    private facilityDb: PouchDB.Database<Facility>;
     private monasteryDb: PouchDB.Database<Monastery>;
     private occurrenceDb: PouchDB.Database<Occurrence<OccurrenceData>>;
 
@@ -21,6 +24,7 @@ export default class Database {
         this.characterDb = new PouchDB("characters");
         this.giftDb = new PouchDB("gifts");
         this.merchantDb = new PouchDB("merchant");
+        this.facilityDb = new PouchDB("facility");
         this.monasteryDb = new PouchDB("monastery");
         this.occurrenceDb = new PouchDB("occurrence");
     }
@@ -34,6 +38,7 @@ export default class Database {
                         this.populateCharacters(),
                         this.populateGifts(),
                         this.populateMerchants(),
+                        this.populateFacilities(),
                         this.populateMonastery(),
                     ]).then(() => {
                         return true;
@@ -48,10 +53,16 @@ export default class Database {
             });
     }
 
-    fetchCharacters(): Promise<PouchDB.Core.AllDocsResponse<Character>> {
-        return this.characterDb.allDocs({
-            include_docs: true,
+    fetchCharacters(): Promise<Character[]> {
+        return this.characterDb.allDocs({ include_docs: true }).then((docs) => {
+            return docs.rows.map((row) => {
+                return row.doc!;
+            });
         });
+    }
+
+    fetchCharacter(character: CharacterId): Promise<Character> {
+        return this.characterDb.get(character);
     }
 
     fetchGifts(): Promise<PouchDB.Core.AllDocsResponse<Gift>> {
@@ -82,8 +93,16 @@ export default class Database {
         return Promise.all(gifts.map((gift) => this.giftDb.put(gift))).then(() => true);
     }
 
+    fetchFacility(facility: FacilityId): Promise<Facility> {
+        return this.facilityDb.get(facility);
+    }
+
     private populateMerchants(): Promise<boolean> {
         return Promise.all(merchants.map((merchant) => this.merchantDb.put(merchant))).then(() => true);
+    }
+
+    private populateFacilities(): Promise<boolean> {
+        return Promise.all(facilities.map((facility) => this.facilityDb.put(facility))).then(() => true);
     }
 
     private populateMonastery(): Promise<boolean> {

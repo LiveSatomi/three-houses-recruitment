@@ -5,11 +5,12 @@ import { Col, Row } from "react-bootstrap";
 import { Character } from "data/types/schemas/characterSchema";
 import { Monastery, RouteId } from "data/types/schemas/monasterySchema";
 import GiftOpportunity from "components/Opportunity/GiftOpportunity/GiftOpportunity";
+import FacilityOpportunity from "components/Opportunity/FacilityOpportunity/FacilityOpportunity";
 import AdditionalOpportunity from "components/Opportunity/AdditionalOpportunity/AdditionalOpportunity";
 import Occurrence from "data/types/Occurrence";
 import OccurrenceData from "data/types/OccurrenceData";
 import MerchantData from "data/types/MerchantData";
-import Time from "data/types/Time";
+import ChoirData from "data/types/ChoirData";
 
 const bem = bemNames.create("Chapter");
 
@@ -67,18 +68,30 @@ export default class Chapter extends React.Component<ChapterProps, ChapterState>
      * @param occurrences the full list of occurrences to map
      */
     mapComponentByType(occurrences: Occurrence<OccurrenceData>[]): JSX.Element[] {
-        return this.filterOccurrence(occurrences, MerchantData).map((occurrence: Occurrence<MerchantData>) => {
-            return (
-                <GiftOpportunity key={occurrence._id} gift={occurrence.data.gift} character={this.props.character} />
+        return this.filterOccurrence(occurrences, MerchantData)
+            .map((occurrence: Occurrence<MerchantData>) => {
+                return (
+                    <GiftOpportunity
+                        key={occurrence._id}
+                        gift={occurrence.data.gift}
+                        character={this.props.character}
+                    />
+                );
+            })
+            .concat(
+                this.filterOccurrence(occurrences, ChoirData).map((occurrence: Occurrence<ChoirData>) => {
+                    return (
+                        <FacilityOpportunity
+                            key={occurrence._id}
+                            facility={occurrence.data.type}
+                            partnerId={occurrence.characters.filter((c) => this.props.character._id !== c)[0]}
+                        />
+                    );
+                })
             );
-        });
     }
-    addGift(occurrenceData: OccurrenceData) {
-        this.props.onAddOccurrence(
-            new Occurrence(new Time(this.props.route, this.props.chapterIndex, 0), occurrenceData, [
-                this.props.character._id,
-            ])
-        );
+    addGift(occurrence: Occurrence<OccurrenceData>) {
+        this.props.onAddOccurrence(occurrence);
     }
 
     // Function based on the following thread:

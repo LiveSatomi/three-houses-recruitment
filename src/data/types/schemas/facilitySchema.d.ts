@@ -8,17 +8,12 @@
 /**
  * Name of facility
  */
-export type FacilityId =
-    | "choir-practice"
-    | "cooking-together"
-    | "share-a-meal"
-    | "sauna"
-    | "advice-box";
+export type FacilityId = "choir-practice" | "cooking-together" | "share-a-meal" | "sauna" | "advice-box";
 
 /**
  * Fire Emblem Facility Schema
  */
-export interface Gift {
+export interface Facility {
     _id: FacilityId;
     /**
      * Facility Name

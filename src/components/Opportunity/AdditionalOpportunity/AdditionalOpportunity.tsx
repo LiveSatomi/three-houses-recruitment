@@ -5,16 +5,18 @@ import Opportunity from "../Opportunity";
 import { Monastery, RouteId } from "data/types/schemas/monasterySchema";
 import { Item, Menu, MenuProvider, Submenu } from "react-contexify";
 import MerchantMenu from "components/MerchantMenu/MerchantMenu";
+import ChoirMenu from "components/ChoirMenu/ChoirMenu";
 import Occurrence from "data/types/Occurrence";
 import OccurrenceData from "data/types/OccurrenceData";
 import MerchantData from "data/types/MerchantData";
+import ChoirData from "data/types/ChoirData";
 
 type AdditionalOpportunityProps = {
     character: Character;
     chapterIndex: number;
     route: RouteId;
     monastery: Monastery;
-    onAddOccurrence: (occurrenceData: OccurrenceData) => void;
+    onAddOccurrence: (occurrence: Occurrence<OccurrenceData>) => void;
     selectedGifts: Occurrence<OccurrenceData>[];
 };
 
@@ -47,7 +49,13 @@ export default class AdditionalOpportunity extends React.Component<
                         selected={this.filterOccurrence(this.props.selectedGifts, MerchantData)}
                     />
                     <Submenu label={"Facilities"}>
-                        <Item>Share a Meal</Item>
+                        <ChoirMenu
+                            character={this.props.character}
+                            chapterIndex={this.props.chapterIndex}
+                            route={this.props.route}
+                            onAddOccurrence={this.addGift}
+                            selected={this.filterOccurrence(this.props.selectedGifts, ChoirData)}
+                        />
                     </Submenu>
                     <Submenu label={"Training"}>
                         <Item>Share a Meal</Item>
@@ -71,8 +79,8 @@ export default class AdditionalOpportunity extends React.Component<
         );
     }
 
-    addGift(occurrenceData: OccurrenceData) {
-        this.props.onAddOccurrence(occurrenceData);
+    addGift(occurrence: Occurrence<OccurrenceData>) {
+        this.props.onAddOccurrence(occurrence);
     }
 
     filterOccurrence<A extends OccurrenceData>(

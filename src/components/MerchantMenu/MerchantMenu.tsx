@@ -16,7 +16,7 @@ type MerchantMenuProps = {
     chapterIndex: number;
     route: RouteId;
     merchants: MerchantId[];
-    onAddGift: (occurrenceData: OccurrenceData) => void;
+    onAddGift: (occurrence: Occurrence<OccurrenceData>) => void;
     selected: Occurrence<MerchantData>[];
 };
 
@@ -93,7 +93,17 @@ export default class MerchantMenu extends React.Component<MerchantMenuProps, Mer
                 });
             })
             .map((source) => (
-                <GiftItem key={source.data.gift} sourceData={source.data} onAddGift={this.props.onAddGift} />
+                <GiftItem
+                    key={source.data.gift}
+                    sourceData={source.data}
+                    onAddGift={(occurrenceData) => {
+                        this.props.onAddGift(
+                            new Occurrence(new Time(this.props.route, this.props.chapterIndex, 0), occurrenceData, [
+                                this.props.character._id,
+                            ])
+                        );
+                    }}
+                />
             ));
     }
 }

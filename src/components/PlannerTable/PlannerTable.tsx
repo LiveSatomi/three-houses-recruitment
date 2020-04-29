@@ -44,20 +44,15 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
             .then(() => {
                 return database.fetchCharacters();
             })
-            .then((fetch: PouchDB.Core.AllDocsResponse<Character>) => {
-                let characters = fetch.rows.map((r) => {
-                    let doc = r.doc;
-                    Assertions.isDefined(doc, "Fetch must contain document");
-                    return doc;
-                });
+            .then((fetch: Character[]) => {
                 return this.setState({
-                    characters: characters,
+                    characters: fetch,
                 });
             })
             .then(() => {
                 return database.fetchOccurrences();
             })
-            .then((fetch) => {
+            .then((fetch: Occurrence<OccurrenceData>[]) => {
                 this.setState({
                     selectedOccurrences: fetch,
                 });

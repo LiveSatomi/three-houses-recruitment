@@ -80,12 +80,7 @@ export interface Character {
      * Route specific information for the character
      */
     routes: {
-        id:
-            | "white-clouds"
-            | "silver-snow"
-            | "crimson-flower"
-            | "azure-moon"
-            | "verdant-wind";
+        id: "white-clouds" | "silver-snow" | "crimson-flower" | "azure-moon" | "verdant-wind";
         chapters: {
             available: boolean;
         }[];

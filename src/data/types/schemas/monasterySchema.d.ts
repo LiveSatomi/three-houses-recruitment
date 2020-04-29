@@ -5,21 +5,11 @@
  * and run json-schema-to-typescript to regenerate this file.
  */
 
-export type RouteId =
-    | "white-clouds"
-    | "silver-snow"
-    | "crimson-flower"
-    | "azure-moon"
-    | "verdant-wind";
+export type RouteId = "white-clouds" | "silver-snow" | "crimson-flower" | "azure-moon" | "verdant-wind";
 /**
  * Name of facility
  */
-export type FacilityId =
-    | "choir-practice"
-    | "cooking-together"
-    | "share-a-meal"
-    | "sauna"
-    | "advice-box";
+export type FacilityId = "choir-practice" | "cooking-together" | "share-a-meal" | "sauna" | "advice-box";
 /**
  * Type of merchant
  */
