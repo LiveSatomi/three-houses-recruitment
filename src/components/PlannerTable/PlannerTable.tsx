@@ -7,10 +7,10 @@ import Database from "util/Database";
 import PouchDB from "pouchdb";
 import { Character } from "data/types/schemas/characterSchema";
 import Assertions from "util/Assertions";
-import CharacterSelection from "data/types/CharacterSelection";
 import { Monastery } from "data/types/schemas/monasterySchema";
 import Chapter from "../Chapter/Chapter";
-import GiftMatch from "../../data/types/GiftMatch";
+import Occurrence from "data/types/Occurrence";
+import OccurrenceData from "data/types/OccurrenceData";
 
 const bem = bemNames.create("PlannerTable");
 
@@ -18,8 +18,7 @@ type PlannerTableProps = {};
 
 type PlannerTableState = {
     characters: Character[];
-    characterSelections: CharacterSelection[];
-    giftMatches: GiftMatch[];
+    selectedOccurrences: Occurrence<OccurrenceData>[];
     monastery?: Monastery;
     scroll: number;
 };
@@ -29,15 +28,13 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
         super(props);
         this.state = {
             characters: [],
-            characterSelections: [],
-            giftMatches: [],
+            selectedOccurrences: [],
             monastery: undefined,
             scroll: 0,
         };
 
         this.componentDidMount = this.componentDidMount.bind(this);
-        this.handlePointChange = this.handlePointChange.bind(this);
-        this.handleGiftMatch = this.handleGiftMatch.bind(this);
+        this.handleAddOccurrence = this.handleAddOccurrence.bind(this);
     }
 
     componentDidMount(): void {
@@ -48,26 +45,21 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
                 return database.fetchCharacters();
             })
             .then((fetch: PouchDB.Core.AllDocsResponse<Character>) => {
-                let characterSelections: CharacterSelection[] = [];
-                let characters = fetch.rows.map((r, i) => {
+                let characters = fetch.rows.map((r) => {
                     let doc = r.doc;
                     Assertions.isDefined(doc, "Fetch must contain document");
-                    let characterSelection = new CharacterSelection(doc._id);
-                    characterSelection.points = 0;
-                    characterSelections[i] = characterSelection;
                     return doc;
                 });
                 return this.setState({
                     characters: characters,
-                    characterSelections: characterSelections,
                 });
             })
             .then(() => {
-                return database.fetchSelectedGifts();
+                return database.fetchOccurrences();
             })
             .then((fetch) => {
                 this.setState({
-                    giftMatches: fetch,
+                    selectedOccurrences: fetch,
                 });
             })
             .then(() => {
@@ -94,14 +86,14 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
                 }}
             >
                 <Col>
-                    {this.state.characters.map((char, i) => {
+                    {this.state.characters.map((char) => {
                         return (
                             <Row className={bem.e("bar")} key={char._id}>
                                 <CharacterHeader
                                     anchor={this.state.scroll}
                                     name={char.name}
                                     portraitUrl={char.portraitUrl}
-                                    points={this.state.characterSelections[i].points || 0}
+                                    points={0}
                                 />
                                 {this.state
                                     .monastery!.routes.find((route) => {
@@ -115,8 +107,8 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
                                                 route={"white-clouds"}
                                                 chapterIndex={i}
                                                 monastery={this.state.monastery!}
-                                                onMatchGift={this.handleGiftMatch}
-                                                selectedOpportunities={this.state.giftMatches}
+                                                onAddOccurrence={this.handleAddOccurrence}
+                                                selectedOpportunities={this.state.selectedOccurrences}
                                             />
                                         );
                                     })}
@@ -128,21 +120,11 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
         );
     }
 
-    handleGiftMatch(giftMatch: GiftMatch) {
-        new Database().addGiftMatch(giftMatch).then(() => {
+    handleAddOccurrence(occurrence: Occurrence<OccurrenceData>) {
+        new Database().addOccurrence(occurrence).then(() => {
             this.setState({
-                giftMatches: [...this.state.giftMatches, giftMatch],
+                selectedOccurrences: [...this.state.selectedOccurrences, occurrence],
             });
-        });
-    }
-
-    handlePointChange(points: number, character: Character) {
-        let index = this.state.characters.indexOf(character);
-        let characterSelection = this.state.characterSelections[index];
-        characterSelection.points = points;
-        let characterSelections = this.state.characterSelections;
-        this.setState({
-            characterSelections: characterSelections,
         });
     }
 }

@@ -1,25 +1,27 @@
 import { Character } from "data/types/schemas/characterSchema";
 import { RouteId } from "data/types/schemas/monasterySchema";
-import GiftSource, { getId } from "data/types/GiftSource";
 import { Merchant, MerchantId } from "data/types/schemas/merchantSchema";
 import * as React from "react";
 import Database from "util/Database";
 import PouchDB from "pouchdb";
 import { Submenu } from "react-contexify";
 import GiftItem from "../GiftMenuItem/GiftMenuItem";
-import isEqual from "lodash/isEqual";
+import Occurrence from "data/types/Occurrence";
+import Time from "data/types/Time";
+import MerchantData from "data/types/MerchantData";
+import OccurrenceData from "data/types/OccurrenceData";
 
 type MerchantMenuProps = {
     character: Character;
     chapterIndex: number;
     route: RouteId;
     merchants: MerchantId[];
-    onAddGift: (gift: GiftSource) => void;
-    selected: GiftSource[];
+    onAddGift: (occurrenceData: OccurrenceData) => void;
+    selected: Occurrence<MerchantData>[];
 };
 
 type MerchantMenuState = {
-    merchantWares: GiftSource[];
+    merchantWares: Occurrence<MerchantData>[];
     merchants: Merchant[];
 };
 
@@ -44,10 +46,13 @@ export default class MerchantMenu extends React.Component<MerchantMenuProps, Mer
                     merchants: values,
                     merchantWares: values
                         .map((merchant) => {
-                            return merchant.wares.map(
-                                (ware) =>
-                                    new GiftSource(ware.id, this.props.route, this.props.chapterIndex, merchant._id)
-                            );
+                            return merchant.wares.map((ware) => {
+                                return new Occurrence(
+                                    new Time(this.props.route, this.props.chapterIndex, 0),
+                                    new MerchantData(merchant._id, ware.id),
+                                    [this.props.character._id]
+                                );
+                            });
                         })
                         .flat(),
                 });
@@ -75,12 +80,20 @@ export default class MerchantMenu extends React.Component<MerchantMenuProps, Mer
 
     getItems(merchant: Merchant) {
         return this.state.merchantWares
-            .filter((source) => merchant._id === source.merchant)
+            .filter((source) => merchant._id === source.data.merchant)
             .filter((source) => {
                 return !this.props.selected.some((s) => {
-                    return isEqual(s, source);
+                    // Filter this item if this gift has been chosen for this merchant during this chapter
+                    return (
+                        s.time.route === source.time.route &&
+                        s.time.chapter === source.time.chapter &&
+                        s.data.merchant === source.data.merchant &&
+                        s.data.gift === source.data.gift
+                    );
                 });
             })
-            .map((source) => <GiftItem key={getId(source)} giftSource={source} onAddGift={this.props.onAddGift} />);
+            .map((source) => (
+                <GiftItem key={source.data.gift} sourceData={source.data} onAddGift={this.props.onAddGift} />
+            ));
     }
 }

@@ -2,12 +2,13 @@ import * as React from "react";
 import { Gift } from "data/types/schemas/giftSchema";
 import Database from "util/Database";
 import { Item } from "react-contexify";
-import GiftSource from "data/types/GiftSource";
-import { MenuItemEventHandler } from "react-contexify/lib/types";
+import MerchantData from "data/types/MerchantData";
+import OccurrenceData from "data/types/OccurrenceData";
+import QuestData from "data/types/QuestData";
 
 type GiftMenuItemProps = {
-    giftSource: GiftSource;
-    onAddGift: (gift: GiftSource) => void;
+    sourceData: MerchantData | QuestData;
+    onAddGift: (occurrenceData: OccurrenceData) => void;
 };
 
 type GiftMenuItemState = {
@@ -25,13 +26,14 @@ export default class GiftMenuItem extends React.Component<GiftMenuItemProps, Gif
     componentDidMount(): void {
         let database = new Database();
         database.initialize().then(() => {
-            database.fetchGift(this.props.giftSource.gift).then((gift) => {
+            database.fetchGift(this.props.sourceData.gift).then((gift) => {
                 this.setState({ gift: gift });
                 import(`data/${gift.imageUrl}`)
                     .then((image) => {
                         this.setState({ image: image.default });
                     })
                     .catch((reason) => {
+                        console.error(reason);
                         this.setState({
                             image: "",
                         });
@@ -42,18 +44,13 @@ export default class GiftMenuItem extends React.Component<GiftMenuItemProps, Gif
 
     render() {
         if (this.state.gift === undefined) {
-            return <Item>{this.props.giftSource.gift}</Item>;
+            return <Item>{this.props.sourceData.gift}</Item>;
         } else {
-            return (
-                <Item onClick={this.addGift} data={this.props.giftSource}>
-                    {this.state.gift.name}
-                </Item>
-            );
+            return <Item onClick={this.addGift}>{this.state.gift.name}</Item>;
         }
     }
 
-    addGift(eventHandler: MenuItemEventHandler) {
-        let props = eventHandler.props as GiftSource;
-        this.props.onAddGift(new GiftSource(props.gift, props.route, props.chapter, props.merchant!));
+    addGift() {
+        this.props.onAddGift(this.props.sourceData);
     }
 }

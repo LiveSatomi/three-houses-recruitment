@@ -4,16 +4,18 @@ import { Character } from "data/types/schemas/characterSchema";
 import Opportunity from "../Opportunity";
 import { Monastery, RouteId } from "data/types/schemas/monasterySchema";
 import { Item, Menu, MenuProvider, Submenu } from "react-contexify";
-import GiftSource from "data/types/GiftSource";
 import MerchantMenu from "components/MerchantMenu/MerchantMenu";
+import Occurrence from "data/types/Occurrence";
+import OccurrenceData from "data/types/OccurrenceData";
+import MerchantData from "data/types/MerchantData";
 
 type AdditionalOpportunityProps = {
     character: Character;
     chapterIndex: number;
     route: RouteId;
     monastery: Monastery;
-    onAddGift: (gift: GiftSource) => void;
-    selectedGifts: GiftSource[];
+    onAddOccurrence: (occurrenceData: OccurrenceData) => void;
+    selectedGifts: Occurrence<OccurrenceData>[];
 };
 
 type AdditionalOpportunityState = {};
@@ -42,7 +44,7 @@ export default class AdditionalOpportunity extends React.Component<
                             .find((route) => route.id === "white-clouds")!
                             .chapters[this.props.chapterIndex].merchants.map((m) => m.id)}
                         onAddGift={this.addGift}
-                        selected={this.props.selectedGifts}
+                        selected={this.filterOccurrence(this.props.selectedGifts, MerchantData)}
                     />
                     <Submenu label={"Facilities"}>
                         <Item>Share a Meal</Item>
@@ -69,7 +71,16 @@ export default class AdditionalOpportunity extends React.Component<
         );
     }
 
-    addGift(giftSource: GiftSource) {
-        this.props.onAddGift(giftSource);
+    addGift(occurrenceData: OccurrenceData) {
+        this.props.onAddOccurrence(occurrenceData);
+    }
+
+    filterOccurrence<A extends OccurrenceData>(
+        ocs: Occurrence<OccurrenceData>[],
+        t: new (...args: any[]) => A
+    ): Occurrence<A>[] {
+        return ocs.filter((o: Occurrence<OccurrenceData>) => {
+            return o.data instanceof t;
+        }) as Occurrence<A>[];
     }
 }

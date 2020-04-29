@@ -6,10 +6,10 @@ import { Character } from "data/types/schemas/characterSchema";
 import { Monastery, RouteId } from "data/types/schemas/monasterySchema";
 import GiftOpportunity from "components/Opportunity/GiftOpportunity/GiftOpportunity";
 import AdditionalOpportunity from "components/Opportunity/AdditionalOpportunity/AdditionalOpportunity";
-import GiftSource from "data/types/GiftSource";
-import Database from "util/Database";
-import GiftMatch from "data/types/GiftMatch";
-import GiftMenuItem from "../GiftMenuItem/GiftMenuItem";
+import Occurrence from "data/types/Occurrence";
+import OccurrenceData from "data/types/OccurrenceData";
+import MerchantData from "data/types/MerchantData";
+import Time from "data/types/Time";
 
 const bem = bemNames.create("Chapter");
 
@@ -18,8 +18,8 @@ type ChapterProps = {
     route: RouteId;
     chapterIndex: number;
     monastery: Monastery;
-    onMatchGift: (gift: GiftMatch) => void;
-    selectedOpportunities: GiftMatch[];
+    onAddOccurrence: (occurrence: Occurrence<OccurrenceData>) => void;
+    selectedOpportunities: Occurrence<OccurrenceData>[];
 };
 
 type ChapterState = {
@@ -40,37 +40,55 @@ export default class Chapter extends React.Component<ChapterProps, ChapterState>
         return (
             <Col className={bem.b("border")} xs={6}>
                 <Row>
-                    {this.props.selectedOpportunities
-                        .filter(
+                    {this.mapComponentByType(
+                        this.props.selectedOpportunities.filter(
                             (match) =>
-                                match.character === this.props.character._id &&
-                                match.giftSource.route === this.props.route &&
-                                match.giftSource.chapter === this.props.chapterIndex
+                                match.characters.includes(this.props.character._id) &&
+                                match.time.route === this.props.route &&
+                                match.time.chapter === this.props.chapterIndex
                         )
-                        .map((gift: GiftMatch, index) => {
-                            return (
-                                <GiftOpportunity
-                                    key={gift.giftSource.gift + "+" + index}
-                                    gift={gift.giftSource.gift}
-                                    character={this.props.character}
-                                />
-                            );
-                        })}
+                    )}
                     <AdditionalOpportunity
                         key={"additional"}
                         character={this.props.character}
                         monastery={this.props.monastery}
                         route={this.props.route}
                         chapterIndex={this.props.chapterIndex}
-                        onAddGift={this.addGift}
-                        selectedGifts={this.props.selectedOpportunities.map((match) => match.giftSource)}
+                        onAddOccurrence={this.addGift}
+                        selectedGifts={this.props.selectedOpportunities}
                     />
                 </Row>
             </Col>
         );
     }
 
-    addGift(gift: GiftSource) {
-        this.props.onMatchGift(new GiftMatch(gift, this.props.character._id));
+    /**
+     * Maps occurrences to Components of the appropriate type and returns all the components
+     * @param occurrences the full list of occurrences to map
+     */
+    mapComponentByType(occurrences: Occurrence<OccurrenceData>[]): JSX.Element[] {
+        return this.filterOccurrence(occurrences, MerchantData).map((occurrence: Occurrence<MerchantData>) => {
+            return (
+                <GiftOpportunity key={occurrence._id} gift={occurrence.data.gift} character={this.props.character} />
+            );
+        });
+    }
+    addGift(occurrenceData: OccurrenceData) {
+        this.props.onAddOccurrence(
+            new Occurrence(new Time(this.props.route, this.props.chapterIndex, 0), occurrenceData, [
+                this.props.character._id,
+            ])
+        );
+    }
+
+    // Function based on the following thread:
+    // https://stackoverflow.com/questions/41921868/how-to-filter-a-list-of-types-by-a-generic-type-in-typescript
+    filterOccurrence<A extends OccurrenceData>(
+        occurrences: Occurrence<OccurrenceData>[],
+        t: new (...args: any[]) => A
+    ): Occurrence<A>[] {
+        return occurrences.filter((o: Occurrence<OccurrenceData>) => {
+            return o.data instanceof t;
+        }) as Occurrence<A>[];
     }
 }

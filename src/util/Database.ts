@@ -5,24 +5,24 @@ import merchants from "data/merchant";
 import monastery from "data/monastery/monastery.json";
 import { Character } from "data/types/schemas/characterSchema";
 import { Gift, GiftId } from "../data/types/schemas/giftSchema";
-import { Monastery } from "../data/types/schemas/monasterySchema";
-import { Merchant, MerchantId } from "../data/types/schemas/merchantSchema";
-import GiftMatch from "../data/types/GiftMatch";
-import { getId, copy } from "data/types/GiftMatch";
+import { Monastery } from "data/types/schemas/monasterySchema";
+import { Merchant, MerchantId } from "data/types/schemas/merchantSchema";
+import Occurrence from "data/types/Occurrence";
+import OccurrenceData from "data/types/OccurrenceData";
 
 export default class Database {
     private characterDb: PouchDB.Database<Character>;
     private giftDb: PouchDB.Database<Gift>;
     private merchantDb: PouchDB.Database<Merchant>;
     private monasteryDb: PouchDB.Database<Monastery>;
-    private selectionDb: PouchDB.Database<GiftMatch>;
+    private occurrenceDb: PouchDB.Database<Occurrence<OccurrenceData>>;
 
     constructor() {
         this.characterDb = new PouchDB("characters");
         this.giftDb = new PouchDB("gifts");
         this.merchantDb = new PouchDB("merchant");
         this.monasteryDb = new PouchDB("monastery");
-        this.selectionDb = new PouchDB("selection");
+        this.occurrenceDb = new PouchDB("occurrence");
     }
 
     initialize() {
@@ -90,14 +90,14 @@ export default class Database {
         return this.monasteryDb.put(monastery as Monastery).then(() => true);
     }
 
-    addGiftMatch(giftMatch: GiftMatch) {
-        return this.selectionDb.put({ _id: getId(giftMatch), ...giftMatch });
+    addOccurrence(occurrence: Occurrence<OccurrenceData>) {
+        return this.occurrenceDb.put({ ...JSON.parse(JSON.stringify(occurrence)) });
     }
 
-    fetchSelectedGifts(): Promise<GiftMatch[]> {
-        return this.selectionDb.allDocs({ include_docs: true }).then((docs) => {
+    fetchOccurrences(): Promise<Occurrence<OccurrenceData>[]> {
+        return this.occurrenceDb.allDocs({ include_docs: true }).then((docs) => {
             return docs.rows.map((row) => {
-                return copy(row.doc!);
+                return Occurrence.cloneOccurrence(row.doc!);
             });
         });
     }
