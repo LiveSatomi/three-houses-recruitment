@@ -35,8 +35,7 @@ export default class MerchantMenu extends React.Component<MerchantMenuProps, Mer
     }
 
     componentDidMount(): void {
-        let database = new Database();
-        database.initialize().then(() => {
+        Database.getSingleton().then((database) => {
             return Promise.all(
                 this.props.merchants.map((merchant) => {
                     return database.fetchMerchant(merchant);

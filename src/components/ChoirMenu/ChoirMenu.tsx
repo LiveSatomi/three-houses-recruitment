@@ -32,8 +32,7 @@ export default class ChoirMenu extends React.Component<ChoirMenuProps, ChoirMenu
     }
 
     componentDidMount(): void {
-        let database = new Database();
-        database.initialize().then(() => {
+        Database.getSingleton().then((database) => {
             return database.fetchCharacters().then((values: PouchDB.Core.Document<Character>[]) => {
                 return this.setState({
                     characters: values,

@@ -4,9 +4,7 @@ import "./PlannerTable.scss";
 import CharacterHeader from "components/CharacterHeader/CharacterHeader";
 import { Col, Row } from "react-bootstrap";
 import Database from "util/Database";
-import PouchDB from "pouchdb";
 import { Character } from "data/types/schemas/characterSchema";
-import Assertions from "util/Assertions";
 import { Monastery } from "data/types/schemas/monasterySchema";
 import Chapter from "../Chapter/Chapter";
 import Occurrence from "data/types/Occurrence";
@@ -38,35 +36,23 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
     }
 
     componentDidMount(): void {
-        let database = new Database();
-        database
-            .initialize()
-            .then(() => {
-                return database.fetchCharacters();
-            })
-            .then((fetch: Character[]) => {
-                return this.setState({
-                    characters: fetch,
-                });
-            })
-            .then(() => {
-                return database.fetchOccurrences();
-            })
-            .then((fetch: Occurrence<OccurrenceData>[]) => {
-                this.setState({
-                    selectedOccurrences: fetch,
-                });
-            })
-            .then(() => {
-                return database.fetchMonastery();
-            })
-            .then((fetch: PouchDB.Core.AllDocsResponse<Monastery>) => {
-                let doc = fetch.rows[0].doc;
-                Assertions.isDefined(doc, "Fetch must contain document");
-                this.setState({
-                    monastery: doc,
-                });
+        let database = Database.getSingleton();
+        let charactersPromise: Promise<Character[]> = database.then((database) => {
+            return database.fetchCharacters();
+        });
+        let occurrencesPromise: Promise<Occurrence<OccurrenceData>[]> = database.then((database) => {
+            return database.fetchOccurrences();
+        });
+        let monasteryPromise: Promise<Monastery> = database.then((database) => {
+            return database.fetchMonastery("garreg mach");
+        });
+        Promise.all([charactersPromise, occurrencesPromise, monasteryPromise]).then(([chars, occs, mon]) => {
+            this.setState({
+                characters: chars,
+                selectedOccurrences: occs,
+                monastery: mon,
             });
+        });
     }
 
     render() {
@@ -86,9 +72,8 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
                             <Row className={bem.e("bar")} key={char._id}>
                                 <CharacterHeader
                                     anchor={this.state.scroll}
-                                    name={char.name}
-                                    portraitUrl={char.portraitUrl}
-                                    points={0}
+                                    character={char}
+                                    selectedOccurrences={this.state.selectedOccurrences}
                                 />
                                 {this.state
                                     .monastery!.routes.find((route) => {
@@ -116,10 +101,13 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
     }
 
     handleAddOccurrence(occurrence: Occurrence<OccurrenceData>) {
-        new Database().addOccurrence(occurrence).then(() => {
-            this.setState({
-                selectedOccurrences: [...this.state.selectedOccurrences, occurrence],
-            });
-        });
+        Database.getSingleton().then((database) =>
+            database.addOccurrence(occurrence).then(() => {
+                let selectedOccurrences = [...this.state.selectedOccurrences, occurrence];
+                this.setState({
+                    selectedOccurrences: selectedOccurrences,
+                });
+            })
+        );
     }
 }

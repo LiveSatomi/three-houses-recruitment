@@ -24,8 +24,7 @@ export default class GiftMenuItem extends React.Component<GiftMenuItemProps, Gif
     }
 
     componentDidMount(): void {
-        let database = new Database();
-        database.initialize().then(() => {
+        Database.getSingleton().then((database) => {
             database.fetchGift(this.props.sourceData.gift).then((gift) => {
                 this.setState({ gift: gift });
                 import(`data/${gift.imageUrl}`)

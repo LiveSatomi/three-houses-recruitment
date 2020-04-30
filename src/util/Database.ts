@@ -13,6 +13,18 @@ import OccurrenceData from "data/types/OccurrenceData";
 import { Facility, FacilityId } from "../data/types/schemas/facilitySchema";
 
 export default class Database {
+    static instance?: Database = undefined;
+
+    static getSingleton(): Promise<Database> {
+        if (Database.instance === undefined) {
+            let database: Database = new Database();
+            Database.instance = database;
+            return database.initialize().then(() => Promise.resolve(database));
+        } else {
+            return Promise.resolve(Database.instance);
+        }
+    }
+
     private characterDb: PouchDB.Database<Character>;
     private giftDb: PouchDB.Database<Gift>;
     private merchantDb: PouchDB.Database<Merchant>;
@@ -20,7 +32,7 @@ export default class Database {
     private monasteryDb: PouchDB.Database<Monastery>;
     private occurrenceDb: PouchDB.Database<Occurrence<OccurrenceData>>;
 
-    constructor() {
+    private constructor() {
         this.characterDb = new PouchDB("characters");
         this.giftDb = new PouchDB("gifts");
         this.merchantDb = new PouchDB("merchant");
@@ -75,9 +87,9 @@ export default class Database {
         return this.giftDb.get(id);
     }
 
-    fetchMonastery(): Promise<PouchDB.Core.AllDocsResponse<Monastery>> {
-        return this.monasteryDb.allDocs({
-            include_docs: true,
+    fetchMonastery(monastery: string): Promise<Monastery> {
+        return this.monasteryDb.get(monastery).then((doc) => {
+            return doc;
         });
     }
 

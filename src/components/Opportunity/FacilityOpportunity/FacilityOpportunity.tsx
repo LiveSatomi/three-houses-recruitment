@@ -21,27 +21,22 @@ export default class FacilityOpportunity extends React.Component<FacilityOpportu
     }
 
     componentDidMount(): void {
-        let database = new Database();
-        database
-            .initialize()
-            .then(() => {
-                database.fetchCharacter(this.props.partnerId).then((partner) => {
-                    this.setState({
-                        partner: partner,
-                    });
-                });
-            })
-            .then(() => {
-                database.fetchFacility(this.props.facility).then((facility) => {
-                    this.setState({
-                        facility: facility,
-                    });
+        Database.getSingleton().then((database) => {
+            database.fetchCharacter(this.props.partnerId).then((partner) => {
+                this.setState({
+                    partner: partner,
                 });
             });
+            database.fetchFacility(this.props.facility).then((facility) => {
+                this.setState({
+                    facility: facility,
+                });
+            });
+        });
     }
 
     render() {
-        if (this.state.facility === undefined) {
+        if (this.state.facility === undefined || this.state.partner === undefined) {
             return <span>Loading</span>;
         } else {
             return (
