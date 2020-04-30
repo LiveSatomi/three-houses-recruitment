@@ -1,10 +1,10 @@
 import { MerchantId } from "./schemas/merchantSchema";
-import OccurrenceData from "./OccurrenceData";
 import { GiftId } from "./schemas/giftSchema";
+import GiftData from "./GiftData";
 
 let DELIMITER: string = "+";
 
-export default class MerchantData implements OccurrenceData {
+export default class MerchantData implements GiftData {
     merchant: Readonly<MerchantId>;
     gift: Readonly<GiftId>;
     type: Readonly<string>;

@@ -4,14 +4,4 @@
     padding-left: map-get($spacers, 0);
     padding-right: map-get($spacers, 0);
     max-width: 80px;
-
-    &__selected {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        background: green;
-        color: white;
-        font-weight: bolder;
-        line-height: 1;
-    }
 }

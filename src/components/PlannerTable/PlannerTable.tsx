@@ -33,6 +33,7 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
 
         this.componentDidMount = this.componentDidMount.bind(this);
         this.handleAddOccurrence = this.handleAddOccurrence.bind(this);
+        this.handleRemoveOccurrence = this.handleRemoveOccurrence.bind(this);
     }
 
     componentDidMount(): void {
@@ -46,10 +47,10 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
         let monasteryPromise: Promise<Monastery> = database.then((database) => {
             return database.fetchMonastery("garreg mach");
         });
-        Promise.all([charactersPromise, occurrencesPromise, monasteryPromise]).then(([chars, occs, mon]) => {
+        Promise.all([charactersPromise, occurrencesPromise, monasteryPromise]).then(([chars, occurrences, mon]) => {
             this.setState({
                 characters: chars,
-                selectedOccurrences: occs,
+                selectedOccurrences: occurrences,
                 monastery: mon,
             });
         });
@@ -88,6 +89,7 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
                                                 chapterIndex={i}
                                                 monastery={this.state.monastery!}
                                                 onAddOccurrence={this.handleAddOccurrence}
+                                                onRemoveOccurrence={this.handleRemoveOccurrence}
                                                 selectedOpportunities={this.state.selectedOccurrences}
                                             />
                                         );
@@ -103,9 +105,18 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
     handleAddOccurrence(occurrence: Occurrence<OccurrenceData>) {
         Database.getSingleton().then((database) =>
             database.addOccurrence(occurrence).then(() => {
-                let selectedOccurrences = [...this.state.selectedOccurrences, occurrence];
                 this.setState({
-                    selectedOccurrences: selectedOccurrences,
+                    selectedOccurrences: [...this.state.selectedOccurrences, occurrence],
+                });
+            })
+        );
+    }
+
+    handleRemoveOccurrence(occurrence: Occurrence<OccurrenceData>) {
+        Database.getSingleton().then((database) =>
+            database.removeOccurrence(occurrence).then(() => {
+                this.setState({
+                    selectedOccurrences: this.state.selectedOccurrences.filter((o) => o._id !== occurrence._id),
                 });
             })
         );

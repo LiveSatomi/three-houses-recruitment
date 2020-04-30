@@ -3,10 +3,14 @@ import { Character, CharacterId } from "data/types/schemas/characterSchema";
 import Opportunity from "../Opportunity";
 import Database from "util/Database";
 import { Facility, FacilityId } from "data/types/schemas/facilitySchema";
+import Occurrence from "data/types/Occurrence";
+import OccurrenceData from "data/types/OccurrenceData";
 
 type FacilityOpportunityProps = {
     facility: FacilityId;
     partnerId: CharacterId;
+    occurrence: Occurrence<OccurrenceData>;
+    onRemove: (occurrence: Occurrence<OccurrenceData>) => void;
 };
 
 type FacilityOpportunityState = {
@@ -18,6 +22,8 @@ export default class FacilityOpportunity extends React.Component<FacilityOpportu
     constructor(props: FacilityOpportunityProps, state: FacilityOpportunityState) {
         super(props);
         this.state = state;
+
+        this.opportunitySelected = this.opportunitySelected.bind(this);
     }
 
     componentDidMount(): void {
@@ -41,12 +47,15 @@ export default class FacilityOpportunity extends React.Component<FacilityOpportu
         } else {
             return (
                 <Opportunity
-                    onSelect={() => {}}
+                    onSelect={this.opportunitySelected}
                     imageUrl={this.state.facility.imageUrl}
                     imageTitle={this.state.facility.name + " with " + this.state.partner.name}
-                    isSelected={false}
                 />
             );
         }
+    }
+
+    private opportunitySelected() {
+        this.props.onRemove(this.props.occurrence);
     }
 }

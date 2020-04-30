@@ -125,6 +125,17 @@ export default class Database {
         return this.occurrenceDb.put({ ...JSON.parse(JSON.stringify(occurrence)) });
     }
 
+    removeOccurrence(occurrence: Occurrence<OccurrenceData>): Promise<boolean> {
+        return this.occurrenceDb
+            .get(occurrence._id)
+            .then((doc) => {
+                return this.occurrenceDb.remove(doc);
+            })
+            .then((response) => {
+                return response.ok;
+            });
+    }
+
     fetchOccurrences(): Promise<Occurrence<OccurrenceData>[]> {
         return this.occurrenceDb.allDocs({ include_docs: true }).then((docs) => {
             return docs.rows.map((row) => {

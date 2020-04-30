@@ -68,12 +68,7 @@ export default class AdditionalOpportunity extends React.Component<
                     </Submenu>
                 </Menu>
                 <MenuProvider event={"onClick"} id={menuId}>
-                    <Opportunity
-                        onSelect={() => {}}
-                        imageUrl={"misc/additional.png"}
-                        imageTitle={"Add Support"}
-                        isSelected={false}
-                    />
+                    <Opportunity onSelect={() => {}} imageUrl={"misc/additional.png"} imageTitle={"Add Support"} />
                 </MenuProvider>
             </>
         );

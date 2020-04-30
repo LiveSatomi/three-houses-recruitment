@@ -1,18 +1,19 @@
 import * as React from "react";
 import "./GiftOpportunity.scss";
-import { Gift, GiftId } from "data/types/schemas/giftSchema";
-import { Character } from "data/types/schemas/characterSchema";
+import { Gift } from "data/types/schemas/giftSchema";
 import Opportunity from "../Opportunity";
 import Database from "util/Database";
+import Occurrence from "data/types/Occurrence";
+import OccurrenceData from "data/types/OccurrenceData";
+import GiftData from "data/types/GiftData";
 
 type GiftOpportunityProps = {
-    gift: GiftId;
-    character: Character;
+    occurrence: Occurrence<GiftData>;
+    onRemove: (occurrence: Occurrence<OccurrenceData>) => void;
 };
 
 type GiftOpportunityState = {
     gift: Gift;
-    isSelected: boolean;
 };
 
 export default class GiftOpportunity extends React.Component<GiftOpportunityProps, GiftOpportunityState> {
@@ -25,15 +26,10 @@ export default class GiftOpportunity extends React.Component<GiftOpportunityProp
 
     componentDidMount(): void {
         Database.getSingleton().then((database) => {
-            database.fetchGift(this.props.gift).then((gift) => {
-                this.setState(
-                    {
-                        gift: gift,
-                    },
-                    () => {
-                        this.opportunitySelected();
-                    }
-                );
+            database.fetchGift(this.props.occurrence.data.gift).then((gift) => {
+                this.setState({
+                    gift: gift,
+                });
             });
         });
     }
@@ -47,15 +43,12 @@ export default class GiftOpportunity extends React.Component<GiftOpportunityProp
                     onSelect={this.opportunitySelected}
                     imageUrl={this.state.gift.imageUrl}
                     imageTitle={this.state.gift.name}
-                    isSelected={this.state.isSelected}
                 />
             );
         }
     }
 
     private opportunitySelected() {
-        this.setState({
-            isSelected: !this.state.isSelected,
-        });
+        this.props.onRemove(this.props.occurrence);
     }
 }

@@ -9,8 +9,8 @@ import FacilityOpportunity from "components/Opportunity/FacilityOpportunity/Faci
 import AdditionalOpportunity from "components/Opportunity/AdditionalOpportunity/AdditionalOpportunity";
 import Occurrence from "data/types/Occurrence";
 import OccurrenceData from "data/types/OccurrenceData";
-import MerchantData from "data/types/MerchantData";
 import ChoirData from "data/types/ChoirData";
+import MerchantData from "data/types/MerchantData";
 
 const bem = bemNames.create("Chapter");
 
@@ -20,6 +20,7 @@ type ChapterProps = {
     chapterIndex: number;
     monastery: Monastery;
     onAddOccurrence: (occurrence: Occurrence<OccurrenceData>) => void;
+    onRemoveOccurrence: (occurrence: Occurrence<OccurrenceData>) => void;
     selectedOpportunities: Occurrence<OccurrenceData>[];
 };
 
@@ -34,7 +35,8 @@ export default class Chapter extends React.Component<ChapterProps, ChapterState>
             pointTotal: 0,
         };
 
-        this.addGift = this.addGift.bind(this);
+        this.addOccurrence = this.addOccurrence.bind(this);
+        this.removeOccurrence = this.removeOccurrence.bind(this);
     }
 
     render() {
@@ -55,7 +57,7 @@ export default class Chapter extends React.Component<ChapterProps, ChapterState>
                         monastery={this.props.monastery}
                         route={this.props.route}
                         chapterIndex={this.props.chapterIndex}
-                        onAddOccurrence={this.addGift}
+                        onAddOccurrence={this.addOccurrence}
                         selectedGifts={this.props.selectedOpportunities}
                     />
                 </Row>
@@ -65,17 +67,14 @@ export default class Chapter extends React.Component<ChapterProps, ChapterState>
 
     /**
      * Maps occurrences to Components of the appropriate type and returns all the components
+     * TODO possibly could make the mapper a utility with injected dependencies that know how to accept certain occurrence data by type
      * @param occurrences the full list of occurrences to map
      */
     mapComponentByType(occurrences: Occurrence<OccurrenceData>[]): JSX.Element[] {
         return this.filterOccurrence(occurrences, MerchantData)
             .map((occurrence: Occurrence<MerchantData>) => {
                 return (
-                    <GiftOpportunity
-                        key={occurrence._id}
-                        gift={occurrence.data.gift}
-                        character={this.props.character}
-                    />
+                    <GiftOpportunity key={occurrence._id} occurrence={occurrence} onRemove={this.removeOccurrence} />
                 );
             })
             .concat(
@@ -84,14 +83,21 @@ export default class Chapter extends React.Component<ChapterProps, ChapterState>
                         <FacilityOpportunity
                             key={occurrence._id}
                             facility={occurrence.data.type}
+                            occurrence={occurrence}
                             partnerId={occurrence.characters.filter((c) => this.props.character._id !== c)[0]}
+                            onRemove={this.removeOccurrence}
                         />
                     );
                 })
             );
     }
-    addGift(occurrence: Occurrence<OccurrenceData>) {
+
+    addOccurrence(occurrence: Occurrence<OccurrenceData>) {
         this.props.onAddOccurrence(occurrence);
+    }
+
+    removeOccurrence(occurrence: Occurrence<OccurrenceData>) {
+        this.props.onRemoveOccurrence(occurrence);
     }
 
     // Function based on the following thread:

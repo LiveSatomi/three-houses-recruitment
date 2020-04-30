@@ -9,7 +9,6 @@ type OpportunityProps = {
     onSelect: () => void;
     imageUrl: string;
     imageTitle: string;
-    isSelected: boolean;
 };
 
 type OpportunityState = {
@@ -46,15 +45,6 @@ export default class Opportunity extends React.Component<OpportunityProps, Oppor
 
     getContent() {
         let title = this.props.imageTitle;
-        let selectedMarker = <></>;
-        if (this.props.isSelected) {
-            selectedMarker = <span className={bem.e("selected")}>✓</span>;
-        }
-        return (
-            <>
-                <Image fluid src={this.state.image} title={title} alt={title} />
-                {selectedMarker}
-            </>
-        );
+        return <Image fluid src={this.state.image} title={title} alt={title} />;
     }
 }
