@@ -1,7 +1,7 @@
 import * as React from "react";
 import bemNames from "util/bemnames";
 import "./CharacterHeader.scss";
-import { Image, Col, Row } from "react-bootstrap";
+import { Col, Image, Row } from "react-bootstrap";
 import Occurrence from "../../data/types/Occurrence";
 import OccurrenceData from "../../data/types/OccurrenceData";
 import DefaultOccurrenceScaleUtil from "../../util/DefaultOccurrenceScaleUtil";
@@ -35,25 +35,26 @@ export default class CharacterHeader extends React.Component<CharacterHeaderProp
         this.getPoints();
     }
 
-    private getPoints() {
-        new DefaultOccurrenceScaleUtil([])
-            .calculate(
-                this.props.character._id,
-                this.props.selectedOccurrences.filter((o) => o.characters.includes(this.props.character._id))
-            )
-            .then((points) => {
-                this.setState({
-                    points: points,
-                });
-            });
-    }
-
     componentDidUpdate(
         prevProps: Readonly<CharacterHeaderProps>,
         prevState: Readonly<CharacterHeaderState>,
         snapshot?: any
     ): void {
         this.getPoints();
+    }
+    getPoints() {
+        new DefaultOccurrenceScaleUtil([])
+            .calculate(
+                this.props.character._id,
+                this.props.selectedOccurrences.filter((o) => o.characters.includes(this.props.character._id))
+            )
+            .then((points) => {
+                if (this.state.points !== points) {
+                    this.setState({
+                        points: points,
+                    });
+                }
+            });
     }
 
     render() {

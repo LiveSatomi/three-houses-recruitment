@@ -11,6 +11,7 @@ import Occurrence from "data/types/Occurrence";
 import OccurrenceData from "data/types/OccurrenceData";
 import ChoirData from "data/types/ChoirData";
 import MerchantData from "data/types/MerchantData";
+import CookingData from "data/types/CookingData";
 
 const bem = bemNames.create("Chapter");
 
@@ -79,6 +80,19 @@ export default class Chapter extends React.Component<ChapterProps, ChapterState>
             })
             .concat(
                 this.filterOccurrence(occurrences, ChoirData).map((occurrence: Occurrence<ChoirData>) => {
+                    return (
+                        <FacilityOpportunity
+                            key={occurrence._id}
+                            facility={occurrence.data.type}
+                            occurrence={occurrence}
+                            partnerId={occurrence.characters.filter((c) => this.props.character._id !== c)[0]}
+                            onRemove={this.removeOccurrence}
+                        />
+                    );
+                })
+            )
+            .concat(
+                this.filterOccurrence(occurrences, CookingData).map((occurrence: Occurrence<CookingData>) => {
                     return (
                         <FacilityOpportunity
                             key={occurrence._id}

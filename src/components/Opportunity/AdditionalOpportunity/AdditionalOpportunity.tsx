@@ -5,11 +5,13 @@ import Opportunity from "../Opportunity";
 import { Monastery, RouteId } from "data/types/schemas/monasterySchema";
 import { Item, Menu, MenuProvider, Submenu } from "react-contexify";
 import MerchantMenu from "components/MerchantMenu/MerchantMenu";
+import CookingMenu from "components/CookingMenu/CookingMenu";
 import ChoirMenu from "components/ChoirMenu/ChoirMenu";
 import Occurrence from "data/types/Occurrence";
 import OccurrenceData from "data/types/OccurrenceData";
 import MerchantData from "data/types/MerchantData";
 import ChoirData from "data/types/ChoirData";
+import CookingData from "data/types/CookingData";
 
 type AdditionalOpportunityProps = {
     character: Character;
@@ -29,7 +31,7 @@ export default class AdditionalOpportunity extends React.Component<
     constructor(props: AdditionalOpportunityProps) {
         super(props);
 
-        this.addGift = this.addGift.bind(this);
+        this.addOccurrence = this.addOccurrence.bind(this);
     }
 
     render() {
@@ -45,7 +47,7 @@ export default class AdditionalOpportunity extends React.Component<
                         merchants={this.props.monastery.routes
                             .find((route) => route.id === "white-clouds")!
                             .chapters[this.props.chapterIndex].merchants.map((m) => m.id)}
-                        onAddGift={this.addGift}
+                        onAddGift={this.addOccurrence}
                         selected={this.filterOccurrence(this.props.selectedGifts, MerchantData)}
                     />
                     <Submenu label={"Facilities"}>
@@ -53,8 +55,15 @@ export default class AdditionalOpportunity extends React.Component<
                             character={this.props.character}
                             chapterIndex={this.props.chapterIndex}
                             route={this.props.route}
-                            onAddOccurrence={this.addGift}
+                            onAddOccurrence={this.addOccurrence}
                             selected={this.filterOccurrence(this.props.selectedGifts, ChoirData)}
+                        />
+                        <CookingMenu
+                            character={this.props.character}
+                            chapterIndex={this.props.chapterIndex}
+                            route={this.props.route}
+                            onAddOccurrence={this.addOccurrence}
+                            selected={this.filterOccurrence(this.props.selectedGifts, CookingData)}
                         />
                     </Submenu>
                     <Submenu label={"Training"}>
@@ -74,7 +83,7 @@ export default class AdditionalOpportunity extends React.Component<
         );
     }
 
-    addGift(occurrence: Occurrence<OccurrenceData>) {
+    addOccurrence(occurrence: Occurrence<OccurrenceData>) {
         this.props.onAddOccurrence(occurrence);
     }
 

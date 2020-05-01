@@ -2,7 +2,6 @@ import { Character } from "data/types/schemas/characterSchema";
 import { RouteId } from "data/types/schemas/monasterySchema";
 import * as React from "react";
 import Database from "util/Database";
-import PouchDB from "pouchdb";
 import { Submenu } from "react-contexify";
 import Occurrence from "data/types/Occurrence";
 import Time from "data/types/Time";
@@ -33,7 +32,7 @@ export default class ChoirMenu extends React.Component<ChoirMenuProps, ChoirMenu
 
     componentDidMount(): void {
         Database.getSingleton().then((database) => {
-            return database.fetchCharacters().then((values: PouchDB.Core.Document<Character>[]) => {
+            return database.fetchCharacters().then((values: Character[]) => {
                 return this.setState({
                     characters: values,
                 });

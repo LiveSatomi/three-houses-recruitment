@@ -2,15 +2,7 @@
     "title": "Character",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "required": [
-        "_id",
-        "name",
-        "portraitUrl",
-        "gifts",
-        "lostItems",
-        "meals",
-        "routes"
-    ],
+    "required": ["_id", "name", "portraitUrl", "gifts", "lostItems", "meals", "choir", "cooking", "routes"],
     "description": "Fire Emblem Character Schema",
     "additionalProperties": false,
     "definitions": {
@@ -66,6 +58,16 @@
                     }
                 }
             }
+        },
+        "choir": {
+            "description": "Indicates whether the Choir Practice activity is liked or disliked",
+            "type": "string",
+            "enum": ["like", "dislike", ""]
+        },
+        "cooking": {
+            "description": "Indicates whether the Cooking Together activity is liked or disliked",
+            "type": "string",
+            "enum": ["like", "dislike", ""]
         },
         "routes": {
             "description": "Route specific information for the character",

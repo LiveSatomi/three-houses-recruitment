@@ -8,7 +8,7 @@ import OccurrenceData from "data/types/OccurrenceData";
 
 type FacilityOpportunityProps = {
     facility: FacilityId;
-    partnerId: CharacterId;
+    partnerId?: CharacterId;
     occurrence: Occurrence<OccurrenceData>;
     onRemove: (occurrence: Occurrence<OccurrenceData>) => void;
 };
@@ -28,30 +28,45 @@ export default class FacilityOpportunity extends React.Component<FacilityOpportu
 
     componentDidMount(): void {
         Database.getSingleton().then((database) => {
-            database.fetchCharacter(this.props.partnerId).then((partner) => {
-                this.setState({
-                    partner: partner,
+            if (this.props.partnerId !== undefined) {
+                database.fetchCharacter(this.props.partnerId).then((partner) => {
+                    this.setState({
+                        partner: partner,
+                    });
                 });
-            });
-            database.fetchFacility(this.props.facility).then((facility) => {
-                this.setState({
-                    facility: facility,
+            }
+            database
+                .fetchFacility(this.props.facility)
+                .then((facility) => {
+                    this.setState({
+                        facility: facility,
+                    });
+                })
+                .catch((err) => {
+                    console.error("Could not get facility " + this.props.facility, err);
                 });
-            });
         });
     }
 
     render() {
-        if (this.state.facility === undefined || this.state.partner === undefined) {
+        if (this.state.facility === undefined) {
             return <span>Loading</span>;
         } else {
             return (
                 <Opportunity
                     onSelect={this.opportunitySelected}
                     imageUrl={this.state.facility.imageUrl}
-                    imageTitle={this.state.facility.name + " with " + this.state.partner.name}
+                    imageTitle={this.getImageTitle()}
                 />
             );
+        }
+    }
+
+    private getImageTitle() {
+        if (this.state.partner === undefined) {
+            return this.state.facility.name;
+        } else {
+            return this.state.facility.name + " with " + this.state.partner.name;
         }
     }
 

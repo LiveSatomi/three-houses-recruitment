@@ -2,6 +2,7 @@ import OccurrenceData from "data/types/OccurrenceData";
 import MerchantData from "data/types/MerchantData";
 import QuestData from "data/types/QuestData";
 import ChoirData from "data/types/ChoirData";
+import CookingData from "data/types/CookingData";
 
 // TODO somehow invert dependency on this making OccurrenceData implement OccurrenceFactory and injecting all the OccurrenceData classes to a list in this class
 export default class OccurrenceFactory {
@@ -17,6 +18,9 @@ export default class OccurrenceFactory {
             case "choir-practice":
                 castData = data as ChoirData;
                 return new ChoirData();
+            case "cooking-together":
+                castData = data as CookingData;
+                return new CookingData();
             default:
                 throw new Error(data.type + " does not have an OccurrenceFactory");
         }

@@ -13,6 +13,8 @@
         "liked": ["peachSorbet"],
         "disliked": ["friedCrayfish"]
     },
+    "choir": "like",
+    "cooking": "dislike",
     "routes": [
         {
             "id": "white-clouds",

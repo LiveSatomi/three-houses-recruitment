@@ -77,6 +77,14 @@ export interface Character {
         disliked: Meal[];
     };
     /**
+     * Indicates whether the Choir Practice activity is liked or disliked
+     */
+    choir: "like" | "dislike" | "";
+    /**
+     * Indicates whether the Cooking Together activity is liked or disliked
+     */
+    cooking: "like" | "dislike" | "";
+    /**
      * Route specific information for the character
      */
     routes: {
