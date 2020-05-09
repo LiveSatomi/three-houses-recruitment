@@ -6,10 +6,19 @@
             "routeName": "White Clouds",
             "chapters": [
                 {
+                    "events": [
+                        "free",
+                        "instruction"
+                    ],
                     "facilities": [
                         {
-                            "id": "share-a-meal",
-                            "available": false
+                            "id": "share-a-meal"
+                        },
+                        {
+                            "id": "choir-practice"
+                        },
+                        {
+                            "id": "cooking-together"
                         }
                     ],
                     "lostItem": [
@@ -29,20 +38,24 @@
                         }
                     ],
                     "merchants": [{
-                        "id": "eastern",
-                        "available": true
+                        "id": "eastern"
                     },
                         {
-                            "id": "southern",
-                            "available": true
+                            "id": "southern"
                         }
                     ]
                 },
                 {
+                    "events": [
+                        "free",
+                        "instruction",
+                        "free",
+                        "instruction",
+                        "free"
+                    ],
                     "facilities": [
                         {
-                            "id": "share-a-meal",
-                            "available": false
+                            "id": "share-a-meal"
                         }
                     ],
                     "lostItem": [
@@ -63,15 +76,14 @@
                     ],
                     "merchants": [
                         {
-                            "id": "eastern",
-                            "available": true
+                            "id": "eastern"
                         }
                     ]
                 },{
+                    "events": ["free"],
                     "facilities": [
                         {
-                            "id": "share-a-meal",
-                            "available": false
+                            "id": "share-a-meal"
                         }
                     ],
                     "lostItem": [

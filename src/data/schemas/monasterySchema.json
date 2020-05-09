@@ -20,6 +20,7 @@
             "type": "object",
             "title": "Chapter",
             "required": [
+                "events",
                 "facilities",
                 "lostItem",
                 "dialog",
@@ -27,18 +28,23 @@
             ],
             "additionalProperties": false,
             "properties": {
+                "events": {
+                    "type": "array",
+                    "description": "The order of free days and instruction days",
+                    "items": {
+                        "type": "string",
+                        "enum": ["free", "instruction"]
+                    }
+                },
                 "facilities": {
                     "type": "array",
                     "items": {
                         "type": "object",
-                        "required": ["id", "available"],
+                        "required": ["id"],
                         "additionalProperties": false,
                         "properties": {
                             "id": {
                                 "$ref": "facilitySchema.json#/definitions/facilityId"
-                            },
-                            "available": {
-                                "type": "boolean"
                             }
                         }
                     }
@@ -101,14 +107,11 @@
                     "type": "array",
                     "items": {
                         "type": "object",
-                        "required": ["id", "available"],
+                        "required": ["id"],
                         "additionalProperties": false,
                         "properties": {
                             "id": {
                                 "$ref": "merchantSchema.json#/definitions/merchantId"
-                            },
-                            "available": {
-                                "type": "boolean"
                             }
                         }
                     }

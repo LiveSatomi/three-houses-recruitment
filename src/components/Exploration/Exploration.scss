@@ -1,0 +1,8 @@
+@import "src/themeFunctions";
+
+.jm-FreeTime {
+    &__opportunity {
+        padding-left: map-get($spacers, 0);
+        padding-right: map-get($spacers, 0);
+    }
+}

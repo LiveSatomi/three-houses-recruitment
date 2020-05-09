@@ -77,12 +77,6 @@ export default class Database {
         return this.characterDb.get(character);
     }
 
-    fetchGifts(): Promise<PouchDB.Core.AllDocsResponse<Gift>> {
-        return this.giftDb.allDocs({
-            include_docs: true,
-        });
-    }
-
     fetchGift(id: GiftId): Promise<PouchDB.Core.Document<Gift>> {
         return this.giftDb.get(id);
     }

@@ -86,7 +86,7 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
                                                 key={char._id + " chapter" + i}
                                                 character={char}
                                                 route={"white-clouds"}
-                                                chapterIndex={i}
+                                                chapter={i}
                                                 monastery={this.state.monastery!}
                                                 onAddOccurrence={this.handleAddOccurrence}
                                                 onRemoveOccurrence={this.handleRemoveOccurrence}

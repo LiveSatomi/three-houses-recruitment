@@ -37,9 +37,12 @@ export interface Route {
     chapters: Chapter[];
 }
 export interface Chapter {
+    /**
+     * The order of free days and instruction days
+     */
+    events: ("free" | "instruction")[];
     facilities: {
         id: FacilityId;
-        available: boolean;
     }[];
     lostItem: {
         id: string;
@@ -55,6 +58,5 @@ export interface Chapter {
     }[];
     merchants: {
         id: MerchantId;
-        available: boolean;
     }[];
 }

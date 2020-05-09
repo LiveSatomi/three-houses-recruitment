@@ -6,13 +6,14 @@ import { CharacterId } from "../data/types/schemas/characterSchema";
 import ChoirPracticeScalar from "./ChoirPracticeScalar";
 import GiftScalar from "./GiftScalar";
 import CookingScalar from "./CookingScalar";
+import InstructionScalar from "./InstructionScalar";
 
 export default class DefaultOccurrenceScaleUtil implements OccurrenceScaleUtil {
     scalars: OccurrenceScalar[];
 
     constructor(scalars: OccurrenceScalar[]) {
         // TODO inject scalars when bug ix fixed https://github.com/inversify/InversifyJS/issues/1004#issuecomment-598776777
-        this.scalars = [new ChoirPracticeScalar(), new GiftScalar(), new CookingScalar()];
+        this.scalars = [new ChoirPracticeScalar(), new GiftScalar(), new CookingScalar(), new InstructionScalar()];
     }
 
     calculate(character: CharacterId, occurrences: Occurrence<OccurrenceData>[]): Promise<number> {
