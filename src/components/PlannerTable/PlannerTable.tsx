@@ -102,8 +102,8 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
         );
     }
 
-    handleAddOccurrence(occurrence: Occurrence<OccurrenceData>) {
-        Database.getSingleton().then((database) =>
+    handleAddOccurrence(occurrence: Occurrence<OccurrenceData>): Promise<void> {
+        return Database.getSingleton().then((database) =>
             database.addOccurrence(occurrence).then(() => {
                 this.setState({
                     selectedOccurrences: [...this.state.selectedOccurrences, occurrence],
@@ -112,13 +112,13 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
         );
     }
 
-    handleRemoveOccurrence(occurrence: Occurrence<OccurrenceData>) {
-        Database.getSingleton().then((database) =>
-            database.removeOccurrence(occurrence).then(() => {
+    handleRemoveOccurrence(occurrence: Occurrence<OccurrenceData>): Promise<void> {
+        return Database.getSingleton().then((database) => {
+            return database.removeOccurrence(occurrence).then(() => {
                 this.setState({
                     selectedOccurrences: this.state.selectedOccurrences.filter((o) => o._id !== occurrence._id),
                 });
-            })
-        );
+            });
+        });
     }
 }

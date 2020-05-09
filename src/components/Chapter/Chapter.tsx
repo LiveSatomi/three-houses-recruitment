@@ -11,8 +11,8 @@ type ChapterProps = {
     route: RouteId;
     chapter: number;
     monastery: Monastery;
-    onAddOccurrence: (occurrence: Occurrence<OccurrenceData>) => void;
-    onRemoveOccurrence: (occurrence: Occurrence<OccurrenceData>) => void;
+    onAddOccurrence: (occurrence: Occurrence<OccurrenceData>) => Promise<void>;
+    onRemoveOccurrence: (occurrence: Occurrence<OccurrenceData>) => Promise<void>;
     selectedOpportunities: Occurrence<OccurrenceData>[];
 };
 
@@ -71,11 +71,11 @@ export default class Chapter extends React.Component<ChapterProps, ChapterState>
             });
     }
 
-    addOccurrence(occurrence: Occurrence<OccurrenceData>) {
-        this.props.onAddOccurrence(occurrence);
+    addOccurrence(occurrence: Occurrence<OccurrenceData>): Promise<void> {
+        return this.props.onAddOccurrence(occurrence);
     }
 
-    removeOccurrence(occurrence: Occurrence<OccurrenceData>) {
-        this.props.onRemoveOccurrence(occurrence);
+    removeOccurrence(occurrence: Occurrence<OccurrenceData>): Promise<void> {
+        return this.props.onRemoveOccurrence(occurrence);
     }
 }

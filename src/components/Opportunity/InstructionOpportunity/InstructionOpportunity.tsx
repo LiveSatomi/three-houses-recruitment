@@ -20,7 +20,7 @@ export default class InstructionOpportunity extends React.Component<
     InstructionOpportunityProps,
     InstructionOpportunityState
 > {
-    constructor(props: InstructionOpportunityProps, state: InstructionOpportunityState) {
+    constructor(props: InstructionOpportunityProps) {
         super(props);
         this.state = {
             effectImages: [],
@@ -50,6 +50,7 @@ export default class InstructionOpportunity extends React.Component<
                 onSelect={this.opportunitySelected}
                 imageUrl={`instruction/${effectId[effect.indexOf(this.props.occurrence.data.effectiveness)]}.png`}
                 imageTitle={this.props.occurrence.data.effectiveness}
+                count={this.props.occurrence.data.count}
             />
         );
     }

@@ -18,8 +18,8 @@ type InstructionProps = {
     chapter: number;
     event: number;
     monastery: Monastery;
-    onAddOccurrence: (occurrence: Occurrence<OccurrenceData>) => void;
-    onRemoveOccurrence: (occurrence: Occurrence<OccurrenceData>) => void;
+    onAddOccurrence: (occurrence: Occurrence<OccurrenceData>) => Promise<void>;
+    onRemoveOccurrence: (occurrence: Occurrence<OccurrenceData>) => Promise<void>;
     selectedOpportunities: Occurrence<OccurrenceData>[];
 };
 
@@ -58,6 +58,7 @@ export default class Instruction extends React.Component<InstructionProps, Instr
                         chapter={this.props.chapter}
                         event={this.props.event}
                         onAddOccurrence={this.addOccurrence}
+                        onRemoveOccurrence={this.removeOccurrence}
                         selectedGifts={this.props.selectedOpportunities}
                     />
                 </Row>
@@ -78,12 +79,12 @@ export default class Instruction extends React.Component<InstructionProps, Instr
         });
     }
 
-    addOccurrence(occurrence: Occurrence<OccurrenceData>) {
-        this.props.onAddOccurrence(occurrence);
+    addOccurrence(occurrence: Occurrence<OccurrenceData>): Promise<void> {
+        return this.props.onAddOccurrence(occurrence);
     }
 
-    removeOccurrence(occurrence: Occurrence<OccurrenceData>) {
-        this.props.onRemoveOccurrence(occurrence);
+    removeOccurrence(occurrence: Occurrence<OccurrenceData>): Promise<void> {
+        return this.props.onRemoveOccurrence(occurrence);
     }
 
     // Function based on the following thread:

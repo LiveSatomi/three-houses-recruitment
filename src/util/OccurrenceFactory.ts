@@ -12,7 +12,7 @@ export default class OccurrenceFactory {
         switch (data.type) {
             case "InstructionData":
                 castData = data as InstructionData;
-                return new InstructionData(castData.effectiveness);
+                return new InstructionData(castData.effectiveness, castData.count);
             case "MerchantData":
                 castData = data as MerchantData;
                 return new MerchantData(castData.merchant, castData.gift);

@@ -7,13 +7,13 @@ import { Item, Menu, MenuProvider, Submenu } from "react-contexify";
 import MerchantMenu from "components/MerchantMenu/MerchantMenu";
 import CookingMenu from "components/CookingMenu/CookingMenu";
 import ChoirMenu from "components/ChoirMenu/ChoirMenu";
+import InstructionMenu from "components/InstructionMenu/InstructionMenu";
 import Occurrence from "data/types/Occurrence";
 import OccurrenceData from "data/types/OccurrenceData";
 import MerchantData from "data/types/MerchantData";
 import ChoirData from "data/types/ChoirData";
 import CookingData from "data/types/CookingData";
-import InstructionMenu from "../../InstructionMenu/InstructionMenu";
-import InstructionData from "../../../data/types/InstructionData";
+import InstructionData from "data/types/InstructionData";
 
 type AdditionalOpportunityProps = {
     character: Character;
@@ -21,7 +21,8 @@ type AdditionalOpportunityProps = {
     chapter: number;
     event: number;
     monastery: Monastery;
-    onAddOccurrence: (occurrence: Occurrence<OccurrenceData>) => void;
+    onAddOccurrence: (occurrence: Occurrence<OccurrenceData>) => Promise<void>;
+    onRemoveOccurrence: (occurrence: Occurrence<OccurrenceData>) => Promise<void>;
     selectedGifts: Occurrence<OccurrenceData>[];
 };
 
@@ -35,6 +36,7 @@ export default class AdditionalOpportunity extends React.Component<
         super(props);
 
         this.addOccurrence = this.addOccurrence.bind(this);
+        this.replaceOccurrence = this.replaceOccurrence.bind(this);
     }
 
     render() {
@@ -72,6 +74,7 @@ export default class AdditionalOpportunity extends React.Component<
                     event={this.props.event}
                     route={this.props.route}
                     onAddOccurrence={this.props.onAddOccurrence}
+                    onReplaceOccurrence={this.replaceOccurrence}
                     selected={this.filterOccurrence(this.props.selectedGifts, InstructionData)}
                 />
             </Menu>
@@ -121,7 +124,13 @@ export default class AdditionalOpportunity extends React.Component<
     }
 
     addOccurrence(occurrence: Occurrence<OccurrenceData>) {
-        this.props.onAddOccurrence(occurrence);
+        this.props.onAddOccurrence(occurrence).then(() => true);
+    }
+
+    replaceOccurrence(occurrence: Occurrence<OccurrenceData>, newOccurrence: Occurrence<OccurrenceData>) {
+        this.props.onRemoveOccurrence(occurrence).then(() => {
+            this.props.onAddOccurrence(newOccurrence).then(() => true);
+        });
     }
 
     filterOccurrence<A extends OccurrenceData>(

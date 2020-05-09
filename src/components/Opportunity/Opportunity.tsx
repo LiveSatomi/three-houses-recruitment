@@ -9,6 +9,7 @@ type OpportunityProps = {
     onSelect: () => void;
     imageUrl: string;
     imageTitle: string;
+    count?: number;
 };
 
 type OpportunityState = {
@@ -45,6 +46,15 @@ export default class Opportunity extends React.Component<OpportunityProps, Oppor
 
     getContent() {
         let title = this.props.imageTitle;
-        return <Image fluid src={this.state.image} title={title} alt={title} />;
+        let countDisplay = <></>;
+        if (this.props.count !== undefined) {
+            countDisplay = <span className={bem.e("count")}>{this.props.count}</span>;
+        }
+        return (
+            <>
+                <Image fluid src={this.state.image} title={title} alt={title} />
+                {countDisplay}
+            </>
+        );
     }
 }
