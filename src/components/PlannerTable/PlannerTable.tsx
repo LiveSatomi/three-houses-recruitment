@@ -68,6 +68,26 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
                 }}
             >
                 <Col>
+                    <Row className={bem.e("bar")} key={"headers"}>
+                        <Col className={bem.e("corner", "col-4", "border")} style={{ left: this.state.scroll }}>
+                            <span>Planning Table</span>
+                        </Col>
+                        {this.state
+                            .monastery!.routes.find((route) => {
+                                return route.id === "white-clouds";
+                            })!
+                            .chapters.map((chapter, i) => {
+                                return chapter.events.map((event, j) => {
+                                    let eventTypeCount = chapter.events.slice(0, j + 1).filter((e) => e === event)
+                                        .length;
+                                    return (
+                                        <Col className={bem.b("border")} xs={6}>{`Chapter ${
+                                            i + 1
+                                        }: ${event} ${eventTypeCount}`}</Col>
+                                    );
+                                });
+                            })}
+                    </Row>
                     {this.state.characters.map((char) => {
                         return (
                             <Row className={bem.e("bar")} key={char._id}>

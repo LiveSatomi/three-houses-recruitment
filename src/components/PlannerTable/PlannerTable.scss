@@ -8,4 +8,10 @@
     &__bar {
         flex-wrap: nowrap;
     }
+
+    &__corner {
+        z-index: 1;
+        // Opaque white
+        background: #ffffffff;
+    }
 }
