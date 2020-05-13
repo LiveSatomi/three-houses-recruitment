@@ -7,9 +7,7 @@
     "additionalProperties": false,
     "definitions": {
         "giftId": {
-            "title": "GiftId",
             "description": "Name of gift",
-            "type": "string",
             "enum": [
                 "ancient-coin",
                 "arithmetic-textbook",
@@ -24,8 +22,21 @@
                 "smoked-meat",
                 "tasty-baked-treat",
                 "training-weight",
-                "violet"
-            ]
+                "violet",
+                "whetstone",
+                "riding-boots",
+                "owl-feather",
+                "watering-can",
+                "fishing-float",
+                "floral-adornment",
+                "landscape-painting",
+                "goddess-statuette",
+                "gemstone-beads",
+                "stylish-hair-clip"
+
+            ],
+            "title": "GiftId",
+            "type": "string"
         }
     },
     "properties": {
