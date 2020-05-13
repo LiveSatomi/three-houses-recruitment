@@ -5,7 +5,7 @@ import * as React from "react";
 import Database from "util/Database";
 import PouchDB from "pouchdb";
 import { Submenu } from "react-contexify";
-import GiftItem from "../GiftMenuItem/GiftMenuItem";
+import GiftItem from "../../OpportunityMenuItem/GiftMenuItem/GiftMenuItem";
 import Occurrence from "data/types/Occurrence";
 import Time from "data/types/Time";
 import MerchantData from "data/types/MerchantData";

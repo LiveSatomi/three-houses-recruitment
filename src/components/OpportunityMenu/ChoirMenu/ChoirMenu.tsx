@@ -6,7 +6,7 @@ import { Submenu } from "react-contexify";
 import Occurrence from "data/types/Occurrence";
 import Time from "data/types/Time";
 import OccurrenceData from "data/types/OccurrenceData";
-import CharacterMenuItem from "../CharacterMenuItem/CharacterMenuItem";
+import CharacterMenuItem from "../../OpportunityMenuItem/CharacterMenuItem/CharacterMenuItem";
 import isEqual from "lodash/isEqual";
 import ChoirData from "data/types/ChoirData";
 

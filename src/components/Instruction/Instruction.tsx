@@ -47,7 +47,8 @@ export default class Instruction extends React.Component<InstructionProps, Instr
                             (match) =>
                                 match.characters.includes(this.props.character._id) &&
                                 match.time.route === this.props.route &&
-                                match.time.chapter === this.props.chapter
+                                match.time.chapter === this.props.chapter &&
+                                match.time.event === this.props.event
                         )
                     )}
                     <AdditionalOpportunity
@@ -59,7 +60,7 @@ export default class Instruction extends React.Component<InstructionProps, Instr
                         event={this.props.event}
                         onAddOccurrence={this.addOccurrence}
                         onRemoveOccurrence={this.removeOccurrence}
-                        selectedGifts={this.props.selectedOpportunities}
+                        selected={this.props.selectedOpportunities}
                     />
                 </Row>
             </Col>

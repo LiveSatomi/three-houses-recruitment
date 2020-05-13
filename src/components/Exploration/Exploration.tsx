@@ -12,6 +12,8 @@ import OccurrenceData from "data/types/OccurrenceData";
 import ChoirData from "data/types/ChoirData";
 import MerchantData from "data/types/MerchantData";
 import CookingData from "data/types/CookingData";
+import InstructionData from "../../data/types/InstructionData";
+import InstructionOpportunity from "../Opportunity/InstructionOpportunity/InstructionOpportunity";
 
 const bem = bemNames.create("Exploration");
 
@@ -26,16 +28,11 @@ type ExplorationProps = {
     selectedOpportunities: Occurrence<OccurrenceData>[];
 };
 
-type ExplorationState = {
-    pointTotal: number;
-};
+type ExplorationState = {};
 
 export default class Exploration extends React.Component<ExplorationProps, ExplorationState> {
     constructor(props: ExplorationProps) {
         super(props);
-        this.state = {
-            pointTotal: 0,
-        };
 
         this.addOccurrence = this.addOccurrence.bind(this);
         this.removeOccurrence = this.removeOccurrence.bind(this);
@@ -50,7 +47,8 @@ export default class Exploration extends React.Component<ExplorationProps, Explo
                             (match) =>
                                 match.characters.includes(this.props.character._id) &&
                                 match.time.route === this.props.route &&
-                                match.time.chapter === this.props.chapter
+                                match.time.chapter === this.props.chapter &&
+                                match.time.event === this.props.event
                         )
                     )}
                     <AdditionalOpportunity
@@ -62,7 +60,7 @@ export default class Exploration extends React.Component<ExplorationProps, Explo
                         event={this.props.event}
                         onAddOccurrence={this.addOccurrence}
                         onRemoveOccurrence={this.removeOccurrence}
-                        selectedGifts={this.props.selectedOpportunities}
+                        selected={this.props.selectedOpportunities}
                     />
                 </Row>
             </Col>
@@ -102,6 +100,17 @@ export default class Exploration extends React.Component<ExplorationProps, Explo
                             facility={occurrence.data.type}
                             occurrence={occurrence}
                             partnerId={occurrence.characters.filter((c) => this.props.character._id !== c)[0]}
+                            onRemove={this.removeOccurrence}
+                        />
+                    );
+                })
+            )
+            .concat(
+                this.filterOccurrence(occurrences, InstructionData).map((occurrence: Occurrence<InstructionData>) => {
+                    return (
+                        <InstructionOpportunity
+                            key={occurrence._id}
+                            occurrence={occurrence}
                             onRemove={this.removeOccurrence}
                         />
                     );
