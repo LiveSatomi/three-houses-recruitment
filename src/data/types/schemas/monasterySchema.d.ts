@@ -14,6 +14,55 @@ export type FacilityId = "choir-practice" | "cooking-together" | "share-a-meal" 
  * Type of merchant
  */
 export type MerchantId = "eastern" | "southern" | "dark";
+/**
+ * Quest ID
+ */
+export type QuestId =
+    | "learning-to-teach"
+    | "lost-found"
+    | "roster-retrieval"
+    | "know-your-enemy"
+    | "in-hiding"
+    | "maintaining-your-training"
+    | "herbal-remedies"
+    | "herbs-fit-horse"
+    | "special-delivery"
+    | "fishing-tournament"
+    | "carried-away"
+    | "banish-bandits"
+    | "the-best-best"
+    | "secret-messenger"
+    | "something-to-prove"
+    | "catherines-request"
+    | "adventures-wood-carving";
+/**
+ * Name of gift
+ */
+export type GiftId =
+    | "ancient-coin"
+    | "arithmetic-textbook"
+    | "armored-bear-stuffy"
+    | "blue-cheese"
+    | "book-of-crest-designs"
+    | "ceremonial-sword"
+    | "exotic-spices"
+    | "hunting-dagger"
+    | "legends-of-chivalry"
+    | "lily"
+    | "smoked-meat"
+    | "tasty-baked-treat"
+    | "training-weight"
+    | "violet"
+    | "whetstone"
+    | "riding-boots"
+    | "owl-feather"
+    | "watering-can"
+    | "fishing-float"
+    | "floral-adornment"
+    | "landscape-painting"
+    | "goddess-statuette"
+    | "gemstone-beads"
+    | "stylish-hair-clip";
 
 /**
  * Defines what opportunities are available at the monastery.
@@ -27,6 +76,10 @@ export interface Monastery {
      * Route specific information for the monastery
      */
     routes: Route[];
+    /**
+     * List of quests that give gift rewards.
+     */
+    quests?: Quest[];
 }
 /**
  * A route in the game
@@ -59,4 +112,26 @@ export interface Chapter {
     merchants: {
         id: MerchantId;
     }[];
+}
+/**
+ * Describes a quest.
+ */
+export interface Quest {
+    id: QuestId;
+    /**
+     * Quest name
+     */
+    name: string;
+    /**
+     * Earliest time that the reward can be collected.
+     */
+    rewardFrom: {
+        route: RouteId;
+        chapter: number;
+        event: number;
+    };
+    /**
+     * Quest rewards
+     */
+    rewards: GiftId[];
 }

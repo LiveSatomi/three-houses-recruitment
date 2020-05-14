@@ -3,18 +3,20 @@ import "./AdditionalOpportunity.scss";
 import { Character } from "data/types/schemas/characterSchema";
 import Opportunity from "../Opportunity";
 import { Monastery, RouteId } from "data/types/schemas/monasterySchema";
-import { Item, Menu, MenuProvider, Submenu } from "react-contexify";
+import { Menu, MenuProvider, Submenu } from "react-contexify";
 import MerchantMenu from "components/OpportunityMenu/MerchantMenu/MerchantMenu";
 import CookingMenu from "components/OpportunityMenu/CookingMenu/CookingMenu";
 import ChoirMenu from "components/OpportunityMenu/ChoirMenu/ChoirMenu";
 import InstructionMenu from "components/OpportunityMenu/InstructionMenu/InstructionMenu";
+import TrainingMenu from "components/OpportunityMenu/TrainingMenu/TrainingMenu";
+import QuestMenu from "components/OpportunityMenu/QuestMenu/QuestMenu";
 import Occurrence from "data/types/Occurrence";
 import OccurrenceData from "data/types/OccurrenceData";
 import MerchantData from "data/types/MerchantData";
 import ChoirData from "data/types/ChoirData";
 import CookingData from "data/types/CookingData";
 import InstructionData from "data/types/InstructionData";
-import TrainingMenu from "../../OpportunityMenu/TrainingMenu/TrainingMenu";
+import QuestData from "data/types/QuestData";
 
 type AdditionalOpportunityProps = {
     character: Character;
@@ -122,9 +124,15 @@ export default class AdditionalOpportunity extends React.Component<
                         selected={this.filterOccurrence(this.props.selected, InstructionData)}
                     />
                 </Submenu>
-                <Submenu label={"Quests"}>
-                    <Item>Share a Meal</Item>
-                </Submenu>
+                <QuestMenu
+                    character={this.props.character}
+                    route={this.props.route}
+                    chapter={this.props.chapter}
+                    event={this.props.event}
+                    quests={this.props.monastery.quests!}
+                    onAddGift={this.props.onAddOccurrence}
+                    selected={this.filterOccurrence(this.props.selected, QuestData)}
+                />
             </Menu>
         );
     }

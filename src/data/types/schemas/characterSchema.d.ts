@@ -26,7 +26,17 @@ export type GiftId =
     | "smoked-meat"
     | "tasty-baked-treat"
     | "training-weight"
-    | "violet";
+    | "violet"
+    | "whetstone"
+    | "riding-boots"
+    | "owl-feather"
+    | "watering-can"
+    | "fishing-float"
+    | "floral-adornment"
+    | "landscape-painting"
+    | "goddess-statuette"
+    | "gemstone-beads"
+    | "stylish-hair-clip";
 /**
  * ID of lost item
  */

@@ -1,108 +1,79 @@
 import { Character } from "data/types/schemas/characterSchema";
-import { RouteId } from "data/types/schemas/monasterySchema";
-import { Merchant, MerchantId } from "data/types/schemas/merchantSchema";
+import { Quest, RouteId } from "data/types/schemas/monasterySchema";
 import * as React from "react";
-import Database from "util/Database";
-import PouchDB from "pouchdb";
 import { Submenu } from "react-contexify";
 import GiftItem from "../../OpportunityMenuItem/GiftMenuItem/GiftMenuItem";
 import Occurrence from "data/types/Occurrence";
 import Time from "data/types/Time";
-import MerchantData from "data/types/MerchantData";
 import OccurrenceData from "data/types/OccurrenceData";
+import QuestData from "data/types/QuestData";
+import isEqual from "lodash/isEqual";
 
-type MerchantMenuProps = {
+type QuestMenuProps = {
     character: Character;
-    chapterIndex: number;
     route: RouteId;
-    merchants: MerchantId[];
+    chapter: number;
+    event: number;
+    quests: Quest[];
     onAddGift: (occurrence: Occurrence<OccurrenceData>) => void;
-    selected: Occurrence<MerchantData>[];
+    selected: Occurrence<QuestData>[];
 };
 
-type MerchantMenuState = {
-    merchantWares: Occurrence<MerchantData>[];
-    merchants: Merchant[];
-};
+type QuestMenuState = {};
 
-export default class MerchantMenu extends React.Component<MerchantMenuProps, MerchantMenuState> {
-    constructor(props: MerchantMenuProps) {
-        super(props);
-        this.state = {
-            merchantWares: [],
-            merchants: [],
-        };
-    }
-
-    componentDidMount(): void {
-        Database.getSingleton().then((database) => {
-            return Promise.all(
-                this.props.merchants.map((merchant) => {
-                    return database.fetchMerchant(merchant);
-                })
-            ).then((values: PouchDB.Core.Document<Merchant>[]) => {
-                return this.setState({
-                    merchants: values,
-                    merchantWares: values
-                        .map((merchant) => {
-                            return merchant.wares.map((ware) => {
-                                return new Occurrence(
-                                    new Time(this.props.route, this.props.chapterIndex, 0),
-                                    new MerchantData(merchant._id, ware.id),
-                                    [this.props.character._id]
-                                );
-                            });
-                        })
-                        .flat(),
-                });
-            });
-        });
-    }
-
+export default class QuestMenu extends React.Component<QuestMenuProps, QuestMenuState> {
     render() {
-        if (this.state.merchants.length === 0) {
-            return null;
-        } else {
-            return (
-                <Submenu label={"Merchants"}>
-                    {this.state.merchants.map((merchant: Merchant) => {
+        return (
+            <Submenu label={"Quests"}>
+                {this.props.quests
+                    .filter((quest) => {
                         return (
-                            <Submenu key={merchant._id} label={merchant.name}>
-                                {this.getItems(merchant)}
+                            (this.props.route === "white-clouds" || this.props.route === quest.rewardFrom.route) &&
+                            this.props.chapter >= quest.rewardFrom.chapter &&
+                            this.props.event >= quest.rewardFrom.event
+                        );
+                    })
+                    .filter((quest) => {
+                        return !this.allSelected(quest);
+                    })
+                    .map((quest: Quest) => {
+                        return (
+                            <Submenu key={quest.id} label={quest.name}>
+                                {this.getItems(quest)}
                             </Submenu>
                         );
                     })}
-                </Submenu>
-            );
-        }
+            </Submenu>
+        );
     }
 
-    getItems(merchant: Merchant) {
-        return this.state.merchantWares
-            .filter((source) => merchant._id === source.data.merchant)
-            .filter((source) => {
-                return !this.props.selected.some((s) => {
-                    // Filter this item if this gift has been chosen for this merchant during this chapter
-                    return (
-                        s.time.route === source.time.route &&
-                        s.time.chapter === source.time.chapter &&
-                        s.data.merchant === source.data.merchant &&
-                        s.data.gift === source.data.gift
-                    );
-                });
-            })
-            .map((source) => (
+    getItems(quest: Quest) {
+        return quest.rewards.map((gift) => {
+            let questData = new QuestData(quest.id, gift);
+            return (
                 <GiftItem
-                    key={source.data.gift}
-                    sourceData={source.data}
+                    key={questData.id}
+                    sourceData={questData}
                     onAddGift={(occurrenceData) => {
                         this.props.onAddGift(
-                            new Occurrence(new Time(this.props.route, this.props.chapterIndex, 0), occurrenceData, [
-                                this.props.character._id,
-                            ])
+                            new Occurrence(
+                                new Time(this.props.route, this.props.chapter, this.props.event),
+                                occurrenceData,
+                                [this.props.character._id]
+                            )
                         );
                     }}
                 />
-            ));
+            );
+        });
+    }
+
+    allSelected(quest: Quest): boolean {
+        return quest.rewards.every((gift) => {
+            let questData = new QuestData(quest.id, gift);
+            return this.props.selected.some((s) => {
+                return isEqual(s.data, questData);
+            });
+        });
     }
 }

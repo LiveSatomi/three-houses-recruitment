@@ -127,5 +127,187 @@
             "routeName": "Verdant Winds",
             "chapters": []
         }
+    ],
+    "quests": [
+        {
+            "id": "learning-to-teach",
+            "name": "Learning to Teach",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 2,
+                "event": 0
+            },
+            "rewards": [
+                "training-weight"
+            ]
+        },
+        {
+            "id": "lost-found",
+            "name": "Lost? Found!",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 3,
+                "event": 0
+            },
+            "rewards": [
+                "whetstone",
+                "riding-boots",
+                "armored-bear-stuffy"
+            ]
+        },
+        {
+            "id": "roster-retrieval",
+            "name": "Roster Retrieval",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 3,
+                "event": 2
+            },
+            "rewards": [
+                "owl-feather"
+            ]
+        },
+        {
+            "id": "know-your-enemy",
+            "name": "Know Your Enemy",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 4,
+                "event": 0
+            },
+            "rewards": [
+                "owl-feather"
+            ]
+        },
+        {
+            "id": "in-hiding",
+            "name": "In Hiding",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 4,
+                "event": 0
+            },
+            "rewards": [
+                "ancient-coin"
+            ]
+        },
+        {
+            "id": "maintaining-your-training",
+            "name": "Maintaining Your Training",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 5,
+                "event": 2
+            },
+            "rewards": ["training-weight"]
+        },
+        {
+            "id": "herbal-remedies",
+            "name": "Herbal Remedies",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 5,
+                "event": 0
+            },
+            "rewards": [
+                "tasty-baked-treat"
+            ]
+        },
+        {
+            "id": "herbs-fit-horse",
+            "name": "Herbs Fit for a Horse",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 6,
+                "event": 0
+            },
+            "rewards": [
+                "riding-boots"
+            ]
+        },
+        {
+            "id": "special-delivery",
+            "name": "Special Delivery",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 6,
+                "event": 0
+            },
+            "rewards": [
+                "watering-can"
+            ]
+        },
+        {
+            "id": "fishing-tournament",
+            "name": "Fishing Tournament",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 7,
+                "event": 0
+            },
+            "rewards": ["fishing-float"]
+        },
+        {
+            "id": "banish-bandits",
+            "name": "Banish the Bandits",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 7,
+                "event": 2
+            },
+            "rewards": [
+                "smoked-meat"
+            ]
+        },
+        {
+            "id": "the-best-best",
+            "name": "The Best of the Best",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 7,
+                "event": 2
+            },
+            "rewards": ["watering-can"]
+        },
+        {
+            "id": "secret-messenger",
+            "name": "Secret Messenger",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 8,
+                "event": 0
+            },
+            "rewards": ["landscape-painting"]
+        },
+        {
+            "id": "something-to-prove",
+            "name": "Something to Prove",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 8,
+                "event": 2
+            },
+            "rewards": ["hunting-dagger"]
+        },
+        {
+            "id": "catherines-request",
+            "name": "Catherine's/Shamir's Request",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 8,
+                "event": 0
+            },
+            "rewards": ["whetstone"]
+        },
+        {
+            "id": "adventures-wood-carving",
+            "name": "Adventures in Wood Carving",
+            "rewardFrom": {
+                "route": "white-clouds",
+                "chapter": 9,
+                "event": 0
+            },
+            "rewards": ["goddess-statuette"]
+        }
     ]
 }

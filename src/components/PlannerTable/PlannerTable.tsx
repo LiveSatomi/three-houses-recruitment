@@ -68,8 +68,12 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
                 }}
             >
                 <Col>
-                    <Row className={bem.e("bar")} key={"headers"}>
-                        <Col className={bem.e("corner", "col-4", "border")} style={{ left: this.state.scroll }}>
+                    <Row key={"headers"} className={bem.e("bar")}>
+                        <Col
+                            key={"corner"}
+                            className={bem.e("corner", "col-4", "border")}
+                            style={{ left: this.state.scroll }}
+                        >
                             <span>Planning Table</span>
                         </Col>
                         {this.state
@@ -81,9 +85,11 @@ export default class PlannerTable extends React.Component<PlannerTableProps, Pla
                                     let eventTypeCount = chapter.events.slice(0, j + 1).filter((e) => e === event)
                                         .length;
                                     return (
-                                        <Col className={bem.b("border")} xs={6}>{`Chapter ${
-                                            i + 1
-                                        }: ${event} ${eventTypeCount}`}</Col>
+                                        <Col
+                                            key={`chapter${i}event${j}`}
+                                            className={bem.b("border")}
+                                            xs={6}
+                                        >{`Chapter ${i + 1}: ${event} ${eventTypeCount}`}</Col>
                                     );
                                 });
                             })}

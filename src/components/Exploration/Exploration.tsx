@@ -7,13 +7,14 @@ import { Monastery, RouteId } from "data/types/schemas/monasterySchema";
 import GiftOpportunity from "components/Opportunity/GiftOpportunity/GiftOpportunity";
 import FacilityOpportunity from "components/Opportunity/FacilityOpportunity/FacilityOpportunity";
 import AdditionalOpportunity from "components/Opportunity/AdditionalOpportunity/AdditionalOpportunity";
+import InstructionOpportunity from "components/Opportunity/InstructionOpportunity/InstructionOpportunity";
 import Occurrence from "data/types/Occurrence";
 import OccurrenceData from "data/types/OccurrenceData";
 import ChoirData from "data/types/ChoirData";
 import MerchantData from "data/types/MerchantData";
 import CookingData from "data/types/CookingData";
-import InstructionData from "../../data/types/InstructionData";
-import InstructionOpportunity from "../Opportunity/InstructionOpportunity/InstructionOpportunity";
+import InstructionData from "data/types/InstructionData";
+import QuestData from "data/types/QuestData";
 
 const bem = bemNames.create("Exploration");
 
@@ -100,6 +101,17 @@ export default class Exploration extends React.Component<ExplorationProps, Explo
                             facility={occurrence.data.type}
                             occurrence={occurrence}
                             partnerId={occurrence.characters.filter((c) => this.props.character._id !== c)[0]}
+                            onRemove={this.removeOccurrence}
+                        />
+                    );
+                })
+            )
+            .concat(
+                this.filterOccurrence(occurrences, QuestData).map((occurrence: Occurrence<QuestData>) => {
+                    return (
+                        <GiftOpportunity
+                            key={occurrence._id}
+                            occurrence={occurrence}
                             onRemove={this.removeOccurrence}
                         />
                     );

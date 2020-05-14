@@ -2,30 +2,41 @@
     "title": "Monastery",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "type": "object",
-    "required": ["_id", "routes"],
+    "required": ["_id", "routes", "quests"],
     "description": "Defines what opportunities are available at the monastery.",
     "additionalProperties": false,
     "definitions": {
         "routeId": {
             "type": "string",
+            "enum": ["white-clouds", "silver-snow", "crimson-flower", "azure-moon", "verdant-wind"]
+        },
+        "questId": {
+            "description": "Quest ID",
+            "type": "string",
             "enum": [
-                "white-clouds",
-                "silver-snow",
-                "crimson-flower",
-                "azure-moon",
-                "verdant-wind"
+                "learning-to-teach",
+                "lost-found",
+                "roster-retrieval",
+                "know-your-enemy",
+                "in-hiding",
+                "maintaining-your-training",
+                "herbal-remedies",
+                "herbs-fit-horse",
+                "special-delivery",
+                "fishing-tournament",
+                "carried-away",
+                "banish-bandits",
+                "the-best-best",
+                "secret-messenger",
+                "something-to-prove",
+                "catherines-request",
+                "adventures-wood-carving"
             ]
         },
         "chapter": {
             "type": "object",
             "title": "Chapter",
-            "required": [
-                "events",
-                "facilities",
-                "lostItem",
-                "dialog",
-                "merchants"
-            ],
+            "required": ["events", "facilities", "lostItem", "dialog", "merchants"],
             "additionalProperties": false,
             "properties": {
                 "events": {
@@ -53,12 +64,7 @@
                     "type": "array",
                     "items": {
                         "type": "object",
-                        "required": [
-                            "id",
-                            "name",
-                            "recipient",
-                            "location"
-                        ],
+                        "required": ["id", "name", "recipient", "location"],
                         "additionalProperties": false,
                         "properties": {
                             "id": {
@@ -80,12 +86,7 @@
                     "type": "array",
                     "items": {
                         "type": "object",
-                        "required": [
-                            "id",
-                            "recipient",
-                            "conversation",
-                            "answer"
-                        ],
+                        "required": ["id", "recipient", "conversation", "answer"],
                         "additionalProperties": false,
                         "properties": {
                             "id": {
@@ -118,7 +119,6 @@
                 }
             }
         }
-
     },
     "properties": {
         "_id": {
@@ -129,11 +129,11 @@
             "description": "Route specific information for the monastery",
             "type": "array",
             "items": {
+                "description": "A route in the game",
+                "type": "object",
                 "title": "Route",
                 "required": ["id", "routeName", "chapters"],
-                "description": "A route in the game",
                 "additionalProperties": false,
-                "type": "object",
                 "properties": {
                     "id": {
                         "$ref": "#/definitions/routeId"
@@ -145,6 +145,52 @@
                         "type": "array",
                         "items": {
                             "$ref": "#/definitions/chapter"
+                        }
+                    }
+                }
+            }
+        },
+        "quests": {
+            "description": "List of quests that give gift rewards.",
+            "type": "array",
+            "additionalItems": false,
+            "items": {
+                "description": "Describes a quest.",
+                "type": "object",
+                "title": "Quest",
+                "required": ["id", "name", "rewardFrom", "rewards"],
+                "additionalProperties": false,
+                "properties": {
+                    "id": {
+                        "$ref": "#/definitions/questId"
+                    },
+                    "name": {
+                        "description": "Quest name",
+                        "type": "string"
+                    },
+                    "rewardFrom": {
+                        "description": "Earliest time that the reward can be collected.",
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": ["route", "chapter", "event"],
+                        "properties": {
+                            "route": {
+                                "$ref": "#/definitions/routeId"
+                            },
+                            "chapter": {
+                                "type": "number"
+                            },
+                            "event": {
+                                "type": "number"
+                            }
+                        }
+                    },
+                    "rewards": {
+                        "description": "Quest rewards",
+                        "type": "array",
+                        "additionalItems": false,
+                        "items": {
+                            "$ref": "giftSchema.json#/definitions/giftId"
                         }
                     }
                 }

@@ -1,15 +1,16 @@
 import { GiftId } from "./schemas/giftSchema";
 import GiftData from "./GiftData";
+import { QuestId } from "./schemas/monasterySchema";
 
 let DELIMITER: string = "+";
 
 export default class QuestData implements GiftData {
-    quest: Readonly<string>;
+    quest: Readonly<QuestId>;
     gift: Readonly<GiftId>;
     type: Readonly<string>;
     id: Readonly<string>;
 
-    constructor(quest: string, gift: GiftId) {
+    constructor(quest: QuestId, gift: GiftId) {
         this.quest = quest;
         this.gift = gift;
         this.type = "QuestData";
