@@ -11,8 +11,9 @@ import CookingData from "data/types/CookingData";
 
 type CookingMenuProps = {
     character: Character;
-    chapterIndex: number;
     route: RouteId;
+    chapter: number;
+    event: number;
     onAddOccurrence: (occurrenceData: Occurrence<OccurrenceData>) => void;
     selected: Occurrence<CookingData>[];
 };
@@ -46,7 +47,7 @@ export default class CookingMenu extends React.Component<CookingMenuProps, Cooki
                 onClick={() => {
                     this.props.onAddOccurrence(
                         new Occurrence<OccurrenceData>(
-                            new Time(this.props.route, this.props.chapterIndex, 0),
+                            new Time(this.props.route, this.props.chapter, this.props.event),
                             new CookingData(),
                             [this.props.character._id]
                         )
@@ -60,8 +61,9 @@ export default class CookingMenu extends React.Component<CookingMenuProps, Cooki
 
     isDisabled() {
         return (
-            this.props.selected.filter((s) => isEqual(s.time, new Time(this.props.route, this.props.chapterIndex, 0)))
-                .length > 0
+            this.props.selected.filter((s) =>
+                isEqual(s.time, new Time(this.props.route, this.props.chapter, this.props.event))
+            ).length > 0
         );
     }
 }

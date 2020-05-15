@@ -56,7 +56,7 @@ export type LostItemId =
 /**
  * Name of meal
  */
-export type Meal = "peachSorbet" | "friedCrayfish";
+export type MealId = "peachSorbet" | "friedCrayfish";
 
 /**
  * Fire Emblem Character Schema
@@ -83,8 +83,8 @@ export interface Character {
      * Lists of liked and disliked meals
      */
     meals: {
-        liked: Meal[];
-        disliked: Meal[];
+        liked: MealId[];
+        disliked: MealId[];
     };
     /**
      * Indicates whether the Choir Practice activity is liked or disliked

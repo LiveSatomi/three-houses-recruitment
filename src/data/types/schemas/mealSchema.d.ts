@@ -8,13 +8,13 @@
 /**
  * Name of meal
  */
-export type Meal1 = "peachSorbet" | "friedCrayfish";
+export type MealId = "peachSorbet" | "friedCrayfish";
 
 /**
  * Fire Emblem Meal Schema
  */
 export interface Meal {
-    _id: Meal1;
+    _id: MealId;
     /**
      * Meal name
      */

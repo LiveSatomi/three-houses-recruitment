@@ -10,6 +10,7 @@ import ChoirMenu from "components/OpportunityMenu/ChoirMenu/ChoirMenu";
 import InstructionMenu from "components/OpportunityMenu/InstructionMenu/InstructionMenu";
 import TrainingMenu from "components/OpportunityMenu/TrainingMenu/TrainingMenu";
 import QuestMenu from "components/OpportunityMenu/QuestMenu/QuestMenu";
+import ShareMealMenu from "components/OpportunityMenu/ShareMealMenu/ShareMealMenu";
 import Occurrence from "data/types/Occurrence";
 import OccurrenceData from "data/types/OccurrenceData";
 import MerchantData from "data/types/MerchantData";
@@ -17,6 +18,7 @@ import ChoirData from "data/types/ChoirData";
 import CookingData from "data/types/CookingData";
 import InstructionData from "data/types/InstructionData";
 import QuestData from "data/types/QuestData";
+import ShareMealData from "data/types/ShareMealData";
 
 type AdditionalOpportunityProps = {
     character: Character;
@@ -100,17 +102,27 @@ export default class AdditionalOpportunity extends React.Component<
                 <Submenu label={"Facilities"}>
                     <ChoirMenu
                         character={this.props.character}
-                        chapterIndex={this.props.chapter}
                         route={this.props.route}
+                        chapter={this.props.chapter}
+                        event={this.props.event}
                         onAddOccurrence={this.addOccurrence}
                         selected={this.filterOccurrence(this.props.selected, ChoirData)}
                     />
                     <CookingMenu
                         character={this.props.character}
-                        chapterIndex={this.props.chapter}
                         route={this.props.route}
+                        chapter={this.props.chapter}
+                        event={this.props.event}
                         onAddOccurrence={this.addOccurrence}
                         selected={this.filterOccurrence(this.props.selected, CookingData)}
+                    />
+                    <ShareMealMenu
+                        character={this.props.character}
+                        route={this.props.route}
+                        chapter={this.props.chapter}
+                        event={this.props.event}
+                        onAddOccurrence={this.addOccurrence}
+                        selected={this.filterOccurrence(this.props.selected, ShareMealData)}
                     />
                 </Submenu>
                 <Submenu label={"Training"}>

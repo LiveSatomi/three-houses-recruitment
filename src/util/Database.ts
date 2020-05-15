@@ -2,15 +2,17 @@ import PouchDB from "pouchdb";
 import characters from "data/characters";
 import gifts from "data/gifts";
 import merchants from "data/merchant";
-import facilities from "../data/facility";
+import facilities from "data/facility";
+import meals from "data/meal";
 import monastery from "data/monastery/monastery.json";
 import { Character, CharacterId } from "data/types/schemas/characterSchema";
-import { Gift, GiftId } from "../data/types/schemas/giftSchema";
+import { Gift, GiftId } from "data/types/schemas/giftSchema";
 import { Monastery } from "data/types/schemas/monasterySchema";
 import { Merchant, MerchantId } from "data/types/schemas/merchantSchema";
 import Occurrence from "data/types/Occurrence";
 import OccurrenceData from "data/types/OccurrenceData";
-import { Facility, FacilityId } from "../data/types/schemas/facilitySchema";
+import { Facility, FacilityId } from "data/types/schemas/facilitySchema";
+import { Meal } from "data/types/schemas/mealSchema";
 
 export default class Database {
     static instance?: Database = undefined;
@@ -29,6 +31,7 @@ export default class Database {
     private giftDb: PouchDB.Database<Gift>;
     private merchantDb: PouchDB.Database<Merchant>;
     private facilityDb: PouchDB.Database<Facility>;
+    private mealsDb: PouchDB.Database<Meal>;
     private monasteryDb: PouchDB.Database<Monastery>;
     private occurrenceDb: PouchDB.Database<Occurrence<OccurrenceData>>;
 
@@ -37,6 +40,7 @@ export default class Database {
         this.giftDb = new PouchDB("gifts");
         this.merchantDb = new PouchDB("merchant");
         this.facilityDb = new PouchDB("facility");
+        this.mealsDb = new PouchDB("meal");
         this.monasteryDb = new PouchDB("monastery");
         this.occurrenceDb = new PouchDB("occurrence");
     }
@@ -51,6 +55,7 @@ export default class Database {
                         this.populateGifts(),
                         this.populateMerchants(),
                         this.populateFacilities(),
+                        this.populateMeals(),
                         this.populateMonastery(),
                     ]).then(() => {
                         return true;
@@ -103,12 +108,24 @@ export default class Database {
         return this.facilityDb.get(facility);
     }
 
+    fetchMeals(): Promise<Meal[]> {
+        return this.mealsDb.allDocs({ include_docs: true }).then((docs) => {
+            return docs.rows.map((row) => {
+                return row.doc!;
+            });
+        });
+    }
+
     private populateMerchants(): Promise<boolean> {
         return Promise.all(merchants.map((merchant) => this.merchantDb.put(merchant))).then(() => true);
     }
 
     private populateFacilities(): Promise<boolean> {
         return Promise.all(facilities.map((facility) => this.facilityDb.put(facility))).then(() => true);
+    }
+
+    private populateMeals(): Promise<boolean> {
+        return Promise.all(meals.map((meal) => this.mealsDb.put(meal))).then(() => true);
     }
 
     private populateMonastery(): Promise<boolean> {

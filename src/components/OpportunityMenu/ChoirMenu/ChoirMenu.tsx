@@ -12,8 +12,9 @@ import ChoirData from "data/types/ChoirData";
 
 type ChoirMenuProps = {
     character: Character;
-    chapterIndex: number;
     route: RouteId;
+    chapter: number;
+    event: number;
     onAddOccurrence: (occurrenceData: Occurrence<OccurrenceData>) => void;
     selected: Occurrence<ChoirData>[];
 };
@@ -46,8 +47,9 @@ export default class ChoirMenu extends React.Component<ChoirMenuProps, ChoirMenu
 
     getItems() {
         if (
-            this.props.selected.filter((s) => isEqual(s.time, new Time(this.props.route, this.props.chapterIndex, 0)))
-                .length > 0
+            this.props.selected.filter((s) =>
+                isEqual(s.time, new Time(this.props.route, this.props.chapter, this.props.event))
+            ).length > 0
         ) {
             return this.state.characters
                 .filter((character) => this.props.selected[0].characters.includes(character._id))
@@ -63,7 +65,7 @@ export default class ChoirMenu extends React.Component<ChoirMenuProps, ChoirMenu
                             onSelectCharacter={(character) => {
                                 this.props.onAddOccurrence(
                                     new Occurrence(
-                                        new Time(this.props.route, this.props.chapterIndex, 0),
+                                        new Time(this.props.route, this.props.chapter, this.props.event),
                                         new ChoirData(),
                                         [this.props.character._id, character._id]
                                     )

@@ -7,7 +7,7 @@
     "additionalProperties": false,
     "definitions": {
         "mealId": {
-            "title": "Meal",
+            "title": "MealId",
             "description": "Name of meal",
             "type": "string",
             "enum": [

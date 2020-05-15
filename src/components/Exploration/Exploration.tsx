@@ -15,6 +15,7 @@ import MerchantData from "data/types/MerchantData";
 import CookingData from "data/types/CookingData";
 import InstructionData from "data/types/InstructionData";
 import QuestData from "data/types/QuestData";
+import ShareMealData from "data/types/ShareMealData";
 
 const bem = bemNames.create("Exploration");
 
@@ -123,6 +124,19 @@ export default class Exploration extends React.Component<ExplorationProps, Explo
                         <InstructionOpportunity
                             key={occurrence._id}
                             occurrence={occurrence}
+                            onRemove={this.removeOccurrence}
+                        />
+                    );
+                })
+            )
+            .concat(
+                this.filterOccurrence(occurrences, ShareMealData).map((occurrence: Occurrence<ShareMealData>) => {
+                    return (
+                        <FacilityOpportunity
+                            key={occurrence._id}
+                            facility={occurrence.data.type}
+                            occurrence={occurrence}
+                            partnerId={occurrence.characters.filter((c) => this.props.character._id !== c)[0]}
                             onRemove={this.removeOccurrence}
                         />
                     );

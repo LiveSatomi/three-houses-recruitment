@@ -79,7 +79,7 @@ export interface Monastery {
     /**
      * List of quests that give gift rewards.
      */
-    quests?: Quest[];
+    quests: Quest[];
 }
 /**
  * A route in the game
