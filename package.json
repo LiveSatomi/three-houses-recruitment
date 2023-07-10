@@ -14,7 +14,7 @@
         "react-contexify": "^4.1.1",
         "react-dom": "^16.13.1",
         "react-router-dom": "^5.1.2",
-        "react-scripts": "3.4.1",
+        "react-scripts": "5.0.1",
         "reflect-metadata": "^0.1.13",
         "typescript": "^3.7.5"
     },
